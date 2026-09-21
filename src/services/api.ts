@@ -235,6 +235,8 @@ export const api = {
         method: 'POST',
         body: JSON.stringify(data),
       }),
+    getByProduct: (productId: string) =>
+      request<{ success: boolean; data: any[] }>(`/reviews/product/${productId}`),
     getAdmin: (status?: string) => {
       const q = status ? `?status=${status}` : '';
       return request<{ success: boolean; data: any[] }>(`/reviews/admin${q}`);

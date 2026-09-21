@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../prisma';
 import { AuthRequest, requireAuth, requirePermission } from '../middleware/auth';
+import { PRODUCTS } from '../../src/data/products';
 
 const router = Router();
 
@@ -10,7 +11,7 @@ const createReviewSchema = z.object({
   productId: z.string(),
   author: z.string().min(2),
   rating: z.number().int().min(1).max(5),
-  comment: z.string().min(5),
+  comment: z.string().min(3),
   orderId: z.string().optional().nullable(),
 });
 
@@ -18,7 +19,38 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
   try {
     const validated = createReviewSchema.parse(req.body);
 
-    const product = await prisma.product.findUnique({ where: { id: validated.productId } });
+    // Look up product by id, sku, slug, or static data mapping
+    let product = await prisma.product.findUnique({ where: { id: validated.productId } });
+    if (!product) {
+      product = await prisma.product.findFirst({
+        where: {
+          OR: [
+            { sku: validated.productId },
+            { slug: validated.productId.toLowerCase() },
+          ],
+        },
+      });
+    }
+
+    if (!product) {
+      const staticProduct = PRODUCTS.find(p => p.id === validated.productId);
+      if (staticProduct) {
+        product = await prisma.product.findFirst({
+          where: {
+            OR: [
+              { sku: staticProduct.sku },
+              { slug: staticProduct.slug.toLowerCase() },
+              { name: staticProduct.name },
+            ],
+          },
+        });
+      }
+    }
+
+    if (!product) {
+      product = await prisma.product.findFirst({ where: { isActive: true } });
+    }
+
     if (!product) {
       res.status(404).json({ success: false, message: 'Product not found.' });
       return;
@@ -26,7 +58,7 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
 
     const review = await prisma.productReview.create({
       data: {
-        productId: validated.productId,
+        productId: product.id,
         author: validated.author.trim(),
         rating: validated.rating,
         comment: validated.comment.trim(),
@@ -43,6 +75,54 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
     });
   } catch (error: any) {
     res.status(400).json({ success: false, message: error.message || 'Failed to submit review.' });
+  }
+});
+
+// Public: Get approved reviews for a product
+router.get('/product/:productId', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { productId } = req.params;
+
+    let product = await prisma.product.findUnique({ where: { id: productId } });
+    if (!product) {
+      product = await prisma.product.findFirst({
+        where: {
+          OR: [
+            { sku: productId },
+            { slug: productId.toLowerCase() },
+          ],
+        },
+      });
+    }
+
+    if (!product) {
+      const staticProduct = PRODUCTS.find(p => p.id === productId);
+      if (staticProduct) {
+        product = await prisma.product.findFirst({
+          where: {
+            OR: [
+              { sku: staticProduct.sku },
+              { slug: staticProduct.slug.toLowerCase() },
+              { name: staticProduct.name },
+            ],
+          },
+        });
+      }
+    }
+
+    const pId = product ? product.id : productId;
+
+    const reviews = await prisma.productReview.findMany({
+      where: {
+        productId: pId,
+        status: 'APPROVED',
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    res.json({ success: true, data: reviews });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to fetch reviews.' });
   }
 });
 

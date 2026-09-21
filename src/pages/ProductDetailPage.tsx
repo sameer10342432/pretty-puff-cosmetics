@@ -61,6 +61,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
   const [reviewComment, setReviewComment] = useState('');
   const [reviewRating, setReviewRating] = useState(5);
   const [submittedReview, setSubmittedReview] = useState(false);
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [dbReviews, setDbReviews] = useState<any[]>([]);
+
+  // Fetch approved reviews from database
+  const loadProductReviews = async (pId: string) => {
+    try {
+      const res = await api.reviews.getByProduct(pId);
+      if (res?.success && Array.isArray(res.data)) {
+        setDbReviews(res.data);
+      }
+    } catch {
+      // fallback smoothly to static testimonials
+    }
+  };
 
   // Sync when product changes
   useEffect(() => {
@@ -68,8 +82,10 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
     setSelectedColour(product.colours?.[0]?.name);
     setSelectedSize(product.sizes?.[0]);
     setQuantity(1);
+    setSubmittedReview(false);
     recordRecentlyViewed(product);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    loadProductReviews(product.id);
   }, [product.id]);
 
   const inWishlist = isInWishlist(product.id);
@@ -114,6 +130,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
       showToast('Please fill in your name and review comments', 'error');
       return;
     }
+    setIsSubmittingReview(true);
     try {
       await api.reviews.submit({
         productId: product.id,
@@ -122,10 +139,13 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
         comment: reviewComment.trim(),
       });
       setSubmittedReview(true);
-      showToast('Thank you! Your verified review has been submitted.', 'success');
-    } catch {
-      setSubmittedReview(true);
-      showToast('Thank you! Your verified review was recorded.', 'success');
+      setShowReviewForm(false);
+      showToast('Thank you! Your review has been submitted for moderation.', 'success');
+      loadProductReviews(product.id);
+    } catch (err: any) {
+      showToast(err?.message || 'Failed to submit review. Please try again.', 'error');
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -606,46 +626,79 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
 
             <button
               type="submit"
-              className="px-6 py-2.5 bg-[#1E1E24] text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-[#C24560] transition-colors"
+              disabled={isSubmittingReview}
+              className="px-6 py-2.5 bg-[#1E1E24] text-white text-xs font-semibold uppercase tracking-wider rounded-xl hover:bg-[#C24560] disabled:opacity-50 transition-colors"
             >
-              Submit Review
+              {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
             </button>
           </form>
         )}
 
         {/* Existing verified reviews */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {TESTIMONIALS.slice(0, 4).map(r => (
-            <div
-              key={r.id}
-              className="p-5 rounded-2xl bg-white border border-[#F0E6DE] shadow-xs space-y-2"
-            >
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-[#1E1E24]">{r.author}</span>
-                <span className="text-[10px] text-[#7A7478]">{r.date}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <RatingStars rating={r.rating} size="sm" />
-                {r.verified && (
-                  <span className="text-[10px] text-[#258237] font-semibold flex items-center gap-0.5">
-                    <CheckCircle2 className="w-3 h-3" /> Verified Buyer
-                  </span>
-                )}
-              </div>
-              <p className="text-xs text-[#4A4549] leading-relaxed">"{r.comment}"</p>
-            </div>
-          ))}
-
           {submittedReview && (
-            <div className="p-5 rounded-2xl bg-[#EAF5EC] border border-[#BDE0C3] shadow-xs space-y-2">
+            <div className="p-5 rounded-2xl bg-[#F4F9F5] border border-[#BDE0C3] shadow-xs space-y-2">
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold text-[#1E1E24]">{reviewName}</span>
-                <span className="text-[10px] text-[#258237]">Just now</span>
+                <span className="text-[10px] bg-[#E1F2E4] text-[#20692D] font-medium px-2.5 py-0.5 rounded-full">
+                  Under Moderation
+                </span>
               </div>
               <RatingStars rating={reviewRating} size="sm" />
               <p className="text-xs text-[#1E1E24] leading-relaxed">"{reviewComment}"</p>
+              <p className="text-[11px] text-[#258237] italic pt-1">
+                Your review has been submitted and will appear here publicly once verified by our team.
+              </p>
             </div>
           )}
+
+          {dbReviews.length > 0
+            ? dbReviews.map(r => (
+                <div
+                  key={r.id}
+                  className="p-5 rounded-2xl bg-white border border-[#F0E6DE] shadow-xs space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1E1E24]">{r.author}</span>
+                    <span className="text-[10px] text-[#7A7478]">
+                      {new Date(r.createdAt).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RatingStars rating={r.rating} size="sm" />
+                    {r.verified && (
+                      <span className="text-[10px] text-[#258237] font-semibold flex items-center gap-0.5">
+                        <CheckCircle2 className="w-3 h-3" /> Verified Buyer
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-[#4A4549] leading-relaxed">"{r.comment}"</p>
+                </div>
+              ))
+            : TESTIMONIALS.slice(0, 4).map(r => (
+                <div
+                  key={r.id}
+                  className="p-5 rounded-2xl bg-white border border-[#F0E6DE] shadow-xs space-y-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#1E1E24]">{r.author}</span>
+                    <span className="text-[10px] text-[#7A7478]">{r.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <RatingStars rating={r.rating} size="sm" />
+                    {r.verified && (
+                      <span className="text-[10px] text-[#258237] font-semibold flex items-center gap-0.5">
+                        <CheckCircle2 className="w-3 h-3" /> Verified Buyer
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-[#4A4549] leading-relaxed">"{r.comment}"</p>
+                </div>
+              ))}
         </div>
       </section>
 
