@@ -1,0 +1,7 @@
+{
+  "name": "Pretty Puff - Luxury Cosmetics & Beauty Store",
+  "description": "Online cosmetics, skincare, haircare, fragrances and beauty essentials store.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
