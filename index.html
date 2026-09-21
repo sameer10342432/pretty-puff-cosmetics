@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pretty Puff - Luxury Cosmetics & Beauty Store</title>
+    <meta name="description" content="Online cosmetics, skincare, haircare, fragrances and beauty essentials store." />
+    <meta property="og:title" content="Pretty Puff - Luxury Cosmetics & Beauty Store" />
+    <meta property="og:description" content="Online cosmetics, skincare, haircare, fragrances and beauty essentials store." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script>
+      // Polyfill/guard window.fetch to ensure it is writable by dev tools, test harnesses, or sandboxed environments
+      (function() {
+        try {
+          var _fetch = window.fetch;
+          Object.defineProperty(window, 'fetch', {
+            get: function() {
+              return _fetch;
+            },
+            set: function(val) {
+              _fetch = val;
+            },
+            configurable: true,
+            enumerable: true
+          });
+        } catch (e) {
+          try {
+            Object.defineProperty(window, 'fetch', {
+              value: window.fetch,
+              writable: true,
+              configurable: true,
+              enumerable: true
+            });
+          } catch (err) {}
+        }
+      })();
+    </script>
+    
+    <!-- Google Fonts: Playfair Display + Plus Jakarta Sans + Cormorant Garamond -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="./assets/index-CPhWxs6f.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-lnHf2l-s.css">
+  </head>
+  <body class="bg-[#FCFAF8] text-[#1E1E24] antialiased selection:bg-[#F3D2D6] selection:text-[#1E1E24]">
+    <div id="root"></div>
+  </body>
+</html>
+
