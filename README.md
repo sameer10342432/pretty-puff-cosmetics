@@ -313,43 +313,59 @@ The test suite validates:
 
 ---
 
-## 🚢 Production Deployment
+## 🚢 Production Deployment (cPanel Shared Hosting)
 
-### 1. Switching from SQLite to PostgreSQL
+Pretty Puff is engineered specifically for deployment on **cPanel Shared Hosting** using the native **Setup Node.js App** feature and **MySQL / MariaDB**.
 
-To deploy to PostgreSQL (Neon, Supabase, Railway, AWS RDS, Docker, etc.):
+👉 **For the complete, step-by-step guide with screenshots and MySQL configuration, please read [CPANEL_DEPLOYMENT.md](CPANEL_DEPLOYMENT.md).**
 
-1. In `prisma/schema.prisma`, update the datasource provider:
-   ```prisma
-   datasource db {
-     provider = "postgresql"
-     url      = env("DATABASE_URL")
-   }
-   ```
-2. In your production `.env` or cloud provider environment variables:
-   ```env
-   DATABASE_URL="postgresql://username:password@your-postgres-host:5432/pretty_puff?schema=public&sslmode=require"
-   ```
-3. Run the migration command:
+### Quick Deployment Workflow
+
+1. **Build & Package the Application Locally:**
    ```bash
-   node ./node_modules/prisma/build/index.js db push
-   node ./node_modules/tsx/dist/cli.mjs server/seed.ts
+   npm run build:deploy
    ```
+   This generates a clean, optimized deployment package:
+   `dist/prettypuff-cpanel-deploy.zip` (~0.4 MB, excluding `node_modules` and `.git`).
 
-### 2. Building and Running for Production
+2. **Upload & Extract in cPanel File Manager:**
+   - Upload `prettypuff-cpanel-deploy.zip` to `/home/youruser/prettypuff/`.
+   - Extract the ZIP archive.
 
-```bash
-# 1. Build optimized client bundle
-npm run build
+3. **Import Database in phpMyAdmin:**
+   - In cPanel **MySQL Databases**, create database (e.g. `youruser_prettypuff`) and user with `ALL PRIVILEGES`.
+   - In **phpMyAdmin**, click your database and click **Import**.
+   - Select `database_schema.sql` and click **Go**. All 28 tables are created immediately!
 
-# 2. Start the Express API server (serves static assets and API routes)
-node ./node_modules/tsx/dist/cli.mjs server/index.ts
-```
+4. **Configure Node.js App in cPanel:**
+   - Open **Setup Node.js App** in cPanel.
+   - Click **Create Application**:
+     - **Node.js version**: 18.x or 20.x LTS
+     - **Application mode**: Production
+     - **Application root**: `prettypuff`
+     - **Startup file**: `server.js`
+   - Add Environment Variables (`DATABASE_URL`, `APP_URL`, `AUTH_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`).
+   - Click **Run NPM Install** (or run `npm install --production && npx prisma generate` in terminal).
+   - (Optional) Seed 32 products and demo content: `node seed.js`.
+   - Click **Restart Application**.
 
-In production, you can use **PM2** or **Docker** to manage the Node.js process:
-```bash
-pm2 start "node ./node_modules/tsx/dist/cli.mjs server/index.ts" --name "pretty-puff-api"
-```
+---
+
+## 🛠️ Complete Available NPM Scripts
+
+| Command | Description |
+| :--- | :--- |
+| `npm run dev` | Starts Vite client (`:3000`) and Express server (`:5000`) concurrently for development |
+| `npm run build` | Compiles client SPA bundle (`dist/`) and bundles `server.js` and `seed.js` |
+| `npm run build:client` | Builds Vite frontend client assets into `dist/` |
+| `npm run build:server` | Bundles `server/index.ts` to `server.js` and `seed.ts` to `seed.js` via esbuild |
+| `npm run build:deploy` | Automated cPanel deployment workflow: builds client, server, and packages `prettypuff-cpanel-deploy.zip` |
+| `npm start` | Launches production monolithic server (`node server.js`) |
+| `npm run seed` | Runs database seeder in development via tsx |
+| `npm run seed:prod` | Runs standalone database seeder in production (`node seed.js`) |
+| `npm run prisma:generate` | Generates Prisma Client |
+| `npm run prisma:push` | Synchronizes database schema directly |
+| `npm run test` | Runs Vitest automated test suite |
 
 ---
 
@@ -357,3 +373,4 @@ pm2 start "node ./node_modules/tsx/dist/cli.mjs server/index.ts" --name "pretty-
 
 Copyright © 2026 Pretty Puff Cosmetics. Developed with pride by Sameer Liaqat.
 All rights reserved.
+

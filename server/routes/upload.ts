@@ -12,7 +12,10 @@ router.post('/single', requireAuth, upload.single('image'), (req: AuthRequest, r
       return;
     }
 
-    const fileUrl = `/uploads/${req.file.filename}`;
+    const folderName = path.basename(req.file.destination);
+    const subPath = folderName === 'uploads' ? '' : `${folderName}/`;
+    const fileUrl = `/uploads/${subPath}${req.file.filename}`;
+
     res.json({
       success: true,
       message: 'Image uploaded successfully.',
@@ -33,7 +36,12 @@ router.post('/multiple', requireAuth, upload.array('images', 8), (req: AuthReque
       return;
     }
 
-    const urls = files.map(f => `/uploads/${f.filename}`);
+    const urls = files.map(f => {
+      const folderName = path.basename(f.destination);
+      const subPath = folderName === 'uploads' ? '' : `${folderName}/`;
+      return `/uploads/${subPath}${f.filename}`;
+    });
+
     res.json({
       success: true,
       message: `${files.length} images uploaded successfully.`,
