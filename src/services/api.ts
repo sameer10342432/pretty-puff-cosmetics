@@ -3,7 +3,7 @@
  * Connects frontend customer pages and administrative suite to Express backend.
  */
 
-const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL || '/api';
+const API_BASE_URL = '/api';
 
 export class ApiError extends Error {
   status: number;
