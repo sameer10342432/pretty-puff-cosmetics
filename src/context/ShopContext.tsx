@@ -169,7 +169,15 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // URL Parsing on initial load & popstate
   useEffect(() => {
     const handleLocation = () => {
-      const path = window.location.pathname.toLowerCase();
+      let path = window.location.pathname.toLowerCase();
+      // Strip GitHub Pages repository subpath if present
+      if (path.startsWith('/pretty-puff-cosmetics')) {
+        path = path.slice('/pretty-puff-cosmetics'.length);
+      }
+      if (!path.startsWith('/')) {
+        path = '/' + path;
+      }
+
       if (path === '/' || path === '') {
         setCurrentPage('home');
       } else if (path.startsWith('/admin')) {
@@ -290,8 +298,9 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
       url = `/${page}`;
     }
 
+    const basePath = window.location.pathname.startsWith('/pretty-puff-cosmetics') ? '/pretty-puff-cosmetics' : '';
     try {
-      window.history.pushState({}, '', url);
+      window.history.pushState({}, '', `${basePath}${url}`);
     } catch {
       // In sandbox if pushState is restricted, navigation still functions via React state
     }
