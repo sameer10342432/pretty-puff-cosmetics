@@ -57,19 +57,19 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
     );
   }
 
-  const m = data?.metrics || {
-    totalSales: 0,
-    todaySales: 0,
-    thisMonthSales: 0,
-    totalOrders: 0,
-    pendingOrders: 0,
-    completedOrders: 0,
-    cancelledOrders: 0,
-    totalCustomers: 0,
-    totalProducts: 0,
-    lowStockProducts: 0,
-    outOfStockProducts: 0,
-    publishedBlogs: 0,
+  const m = {
+    totalSales: Number(data?.metrics?.totalSales) || 0,
+    todaySales: Number(data?.metrics?.todaySales) || 0,
+    thisMonthSales: Number(data?.metrics?.thisMonthSales) || 0,
+    totalOrders: Number(data?.metrics?.totalOrders) || 0,
+    pendingOrders: Number(data?.metrics?.pendingOrders) || 0,
+    completedOrders: Number(data?.metrics?.completedOrders) || 0,
+    cancelledOrders: Number(data?.metrics?.cancelledOrders) || 0,
+    totalCustomers: Number(data?.metrics?.totalCustomers) || 0,
+    totalProducts: Number(data?.metrics?.totalProducts) || 0,
+    lowStockProducts: Number(data?.metrics?.lowStockProducts) || 0,
+    outOfStockProducts: Number(data?.metrics?.outOfStockProducts) || 0,
+    publishedBlogs: Number(data?.metrics?.publishedBlogs) || 0,
   };
 
   return (
@@ -268,42 +268,50 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {data?.recentOrders?.map((ord: any) => (
-                  <tr key={ord.id} className="hover:bg-gray-50/80 transition-colors">
-                    <td className="py-3 px-4 font-mono font-semibold text-gray-900">
-                      {ord.orderNumber}
-                    </td>
-                    <td className="py-3 px-4 font-medium text-gray-800">{ord.fullName}</td>
-                    <td className="py-3 px-4 text-gray-500">{ord.city}</td>
-                    <td className="py-3 px-4 font-semibold text-gray-900">
-                      {formatPKR(ord.total)}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
-                          ord.orderStatus === 'DELIVERED'
-                            ? 'bg-green-100 text-green-800'
-                            : ord.orderStatus === 'PROCESSING'
-                            ? 'bg-blue-100 text-blue-800'
-                            : ord.orderStatus === 'CANCELLED'
-                            ? 'bg-red-100 text-red-800'
-                            : 'bg-amber-100 text-amber-800'
-                        }`}
-                      >
-                        {ord.orderStatus}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <button
-                        onClick={() => onNavigateTab('orders')}
-                        className="p-1 text-gray-400 hover:text-[#C24560] rounded-md"
-                        title="Inspect Order"
-                      >
-                        <Eye className="w-4 h-4" />
-                      </button>
+                {(!data?.recentOrders || data.recentOrders.length === 0) ? (
+                  <tr>
+                    <td colSpan={6} className="py-6 text-center text-xs text-gray-400">
+                      No recent customer orders found.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  data.recentOrders.map((ord: any) => (
+                    <tr key={ord.id} className="hover:bg-gray-50/80 transition-colors">
+                      <td className="py-3 px-4 font-mono font-semibold text-gray-900">
+                        {ord.orderNumber}
+                      </td>
+                      <td className="py-3 px-4 font-medium text-gray-800">{ord.fullName}</td>
+                      <td className="py-3 px-4 text-gray-500">{ord.city || 'N/A'}</td>
+                      <td className="py-3 px-4 font-semibold text-gray-900">
+                        {formatPKR(ord.total)}
+                      </td>
+                      <td className="py-3 px-4">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold uppercase tracking-wider ${
+                            ord.orderStatus === 'DELIVERED'
+                              ? 'bg-green-100 text-green-800'
+                              : ord.orderStatus === 'PROCESSING'
+                              ? 'bg-blue-100 text-blue-800'
+                              : ord.orderStatus === 'CANCELLED'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-amber-100 text-amber-800'
+                          }`}
+                        >
+                          {ord.orderStatus}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <button
+                          onClick={() => onNavigateTab('orders')}
+                          className="p-1 text-gray-400 hover:text-[#C24560] rounded-md"
+                          title="Inspect Order"
+                        >
+                          <Eye className="w-4 h-4" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
@@ -325,16 +333,16 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
           </div>
 
           <div className="divide-y divide-gray-100">
-            {data?.lowStockAlerts?.length === 0 ? (
+            {(!data?.lowStockAlerts || data.lowStockAlerts.length === 0) ? (
               <div className="p-6 text-center text-xs text-gray-400">
                 All catalog items have healthy stock levels.
               </div>
             ) : (
-              data?.lowStockAlerts?.map((item: any) => (
+              data.lowStockAlerts.map((item: any) => (
                 <div key={item.id} className="p-4 flex items-center justify-between gap-3">
                   <div className="flex items-center gap-3 overflow-hidden">
                     <img
-                      src={item.thumbnail}
+                      src={item.thumbnail || '/placeholder-product.png'}
                       alt={item.name}
                       className="w-10 h-10 rounded-lg object-cover bg-gray-50 shrink-0"
                     />
@@ -346,10 +354,10 @@ export const AdminDashboardPage: React.FC<AdminDashboardPageProps> = ({ onNaviga
                   <div className="text-right shrink-0">
                     <span
                       className={`inline-block px-2 py-0.5 rounded-md text-xs font-bold ${
-                        item.stock <= 0 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
+                        (item.stock ?? 0) <= 0 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-800'
                       }`}
                     >
-                      {item.stock <= 0 ? '0 Left' : `${item.stock} Left`}
+                      {(item.stock ?? 0) <= 0 ? '0 Left' : `${item.stock} Left`}
                     </span>
                   </div>
                 </div>

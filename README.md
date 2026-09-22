@@ -101,8 +101,8 @@ Review and adjust variables as required:
 | `PORT` | Backend Express server port | `5000` |
 | `DATABASE_URL` | Database connection string | `file:./dev.db` (SQLite) |
 | `JWT_SECRET` | Secret key for signing admin authentication tokens | `prettypuff_super_secure_jwt_secret_key_2026_luxury_cosmetics` |
-| `ADMIN_EMAIL` | Default Super Admin email address | `sameerliaqat81@gmail.com` |
-| `ADMIN_PASSWORD` | Default Super Admin initial password | `Admin@PrettyPuff2026` |
+| `ADMIN_EMAIL` | Default Super Admin email address | Set in `.env` |
+| `ADMIN_PASSWORD` | Default Super Admin initial password | Set securely in `.env` |
 | `STORE_EMAIL` | Customer support email | `sameerliaqat81@gmail.com` |
 | `STORE_PHONE` | Customer support contact number | `+923474542881` |
 | `WHATSAPP_URL` | WhatsApp direct contact link | `https://wa.me/923474542881` |
@@ -148,14 +148,10 @@ npm run dev:server
 
 ## 🔐 Administrative Access & RBAC
 
-### Super Admin Default Credentials
+### Super Admin Access
 
-- **URL**: `http://localhost:3000/admin` (or click **Admin Portal** in the storefront header/footer)
-- **Email**: `sameerliaqat81@gmail.com`
-- **Password**: `Admin@PrettyPuff2026`
-
-> [!NOTE]
-> For convenience during local development and demonstrations, the Admin Login view features a one-click **Fill Demo Credentials** button.
+- **URL**: `http://localhost:3000/admin` (or click **Admin Portal** in the storefront footer)
+- **Credentials**: Configured privately in your `.env` file (`ADMIN_EMAIL` & `ADMIN_PASSWORD`)
 
 ### Role-Based Access Control (RBAC) Matrix
 

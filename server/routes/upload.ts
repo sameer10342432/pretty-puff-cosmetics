@@ -1,4 +1,5 @@
 import { Router, Response } from 'express';
+import path from 'path';
 import { AuthRequest, requireAuth } from '../middleware/auth';
 import { upload } from '../middleware/upload';
 

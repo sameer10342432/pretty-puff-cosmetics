@@ -1,5 +1,6 @@
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express, { Request, Response, NextFunction } from 'express';
@@ -7,11 +8,24 @@ import express, { Request, Response, NextFunction } from 'express';
 // Load environment variables
 dotenv.config();
 
-// Ensure upload directory exists
-const uploadDir = path.resolve(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Determine application root directory reliably (supports local dev and cPanel Passenger)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const candidateDirs = [
+  path.resolve(__dirname),
+  path.resolve(__dirname, '..'),
+  process.cwd(),
+];
+const appRootDir = candidateDirs.find(d => fs.existsSync(path.join(d, 'package.json'))) || process.cwd();
+
+// Ensure upload directory and subfolders exist
+const uploadDir = path.resolve(appRootDir, 'uploads');
+['', 'products', 'blog', 'banners', 'general'].forEach(sub => {
+  const dir = path.join(uploadDir, sub);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+});
 
 // Import route handlers
 import authRoutes from './routes/auth';
@@ -33,7 +47,11 @@ import uploadRoutes from './routes/upload';
 import { prisma } from './prisma';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+// Hosting-provided PORT with safe fallback for local development
+const rawPort = process.env.PORT || 3000;
+const isNumericPort = !isNaN(Number(rawPort)) && !isNaN(parseFloat(String(rawPort)));
+const listenTarget = isNumericPort ? Number(rawPort) : rawPort;
 
 // Security & Parsing Middleware
 app.use(cors({ origin: true, credentials: true }));
@@ -45,7 +63,7 @@ app.use('/uploads', express.static(uploadDir));
 app.use('/public/uploads', express.static(uploadDir));
 
 // Public directory if exists
-const publicDir = path.resolve(process.cwd(), 'public');
+const publicDir = path.resolve(appRootDir, 'public');
 if (fs.existsSync(publicDir)) {
   app.use(express.static(publicDir));
 }
@@ -138,12 +156,19 @@ app.use('/api/users', usersRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/upload', uploadRoutes);
 
-// In production, serve frontend client
-const distPath = path.resolve(process.cwd(), 'dist');
+// Serve Vite production build
+const distPath = path.resolve(appRootDir, 'dist');
+const indexHtmlPath = path.join(distPath, 'index.html');
+
 if (fs.existsSync(distPath)) {
+  // Serve static assets from dist/
   app.use(express.static(distPath));
+
+  // Single Page Application (SPA) wildcard fallback for browser navigation
   app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    // Exclude API routes, file uploads, and SEO files from HTML fallback
     if (
+      req.path === '/api' ||
       req.path.startsWith('/api/') ||
       req.path.startsWith('/uploads/') ||
       req.path.startsWith('/public/uploads/') ||
@@ -152,12 +177,45 @@ if (fs.existsSync(distPath)) {
     ) {
       return next();
     }
-    res.sendFile(path.join(distPath, 'index.html'));
+
+    if (fs.existsSync(indexHtmlPath)) {
+      res.sendFile(indexHtmlPath);
+    } else {
+      next();
+    }
+  });
+} else {
+  console.warn(`⚠️ Warning: Frontend dist/ directory not found at "${distPath}". Run "npm run build" to compile the Vite client.`);
+  app.get('/', (_req: Request, res: Response) => {
+    res.status(503).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Pretty Puff - Building Production Assets</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #FCFAF8; color: #1E1E24; text-align: center; padding: 60px 20px; }
+            .card { max-width: 540px; margin: 0 auto; background: white; border-radius: 12px; padding: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+            h1 { color: #C27A86; font-size: 24px; margin-bottom: 12px; }
+            code { background: #f4f4f5; padding: 3px 8px; border-radius: 4px; font-size: 14px; }
+          </style>
+        </head>
+        <body>
+          <div class="card">
+            <h1>🌸 Pretty Puff Backend is Active</h1>
+            <p>The Node.js server is online, but the frontend assets (<code>dist/</code>) have not been compiled yet.</p>
+            <p>Run <code>npm run build</code> in the cPanel Terminal to compile the store.</p>
+            <p><a href="/api/health">Check API Health Endpoint</a></p>
+          </div>
+        </body>
+      </html>
+    `);
   });
 }
 
-// 404 handler for unmatched API routes
-app.use('/api/*', (_req: Request, res: Response) => {
+// 404 handler for unmatched API routes (must return JSON, never HTML)
+app.all(['/api', '/api/*'], (_req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     message: 'API endpoint not found.',
@@ -177,12 +235,19 @@ app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
 
 // Start Server if not imported by test suite
 if (process.env.NODE_ENV !== 'test') {
-  app.listen(Number(PORT), '0.0.0.0', () => {
-    console.log(`🌸 Pretty Puff Server running on http://0.0.0.0:${PORT}`);
-    console.log(`   Health check: http://localhost:${PORT}/api/health`);
-    console.log(`   Admin Login:  sameerliaqat81@gmail.com`);
-    console.log(`   Sitemap:      http://localhost:${PORT}/sitemap.xml`);
-  });
+  if (typeof listenTarget === 'number') {
+    app.listen(listenTarget, '0.0.0.0', () => {
+      console.log(`🌸 Pretty Puff Server running on http://0.0.0.0:${listenTarget}`);
+      console.log(`   Health check: http://localhost:${listenTarget}/api/health`);
+      console.log(`   Admin Login:  sameerliaqat81@gmail.com`);
+      console.log(`   Sitemap:      http://localhost:${listenTarget}/sitemap.xml`);
+    });
+  } else {
+    // Passenger Unix domain socket path
+    app.listen(listenTarget, () => {
+      console.log(`🌸 Pretty Puff Server bound to socket: ${listenTarget}`);
+    });
+  }
 }
 
 export default app;

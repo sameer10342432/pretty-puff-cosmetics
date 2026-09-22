@@ -73,9 +73,12 @@ async function main() {
 
   // 2. Super Admin User
   console.log('🌱 Seeding Super Admin Account...');
-  const adminEmail = (process.env.ADMIN_EMAIL || 'sameerliaqat81@gmail.com').toLowerCase().trim();
-  const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@PrettyPuff2026';
-  const adminName = process.env.ADMIN_NAME || 'Sameer Liaqat';
+  const adminEmail = (process.env.ADMIN_EMAIL || 'admin@prettypuff.pk').toLowerCase().trim();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    throw new Error('ADMIN_PASSWORD must be defined in your .env file before running the seeder.');
+  }
+  const adminName = process.env.ADMIN_NAME || 'Store Administrator';
 
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(adminPassword, salt);

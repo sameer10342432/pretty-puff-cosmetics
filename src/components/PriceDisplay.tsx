@@ -8,8 +8,12 @@ interface PriceDisplayProps {
   className?: string;
 }
 
-export const formatPKR = (amount: number): string => {
-  return `Rs. ${amount.toLocaleString('en-PK')}`;
+export const formatPKR = (amount?: number | null): string => {
+  if (amount === undefined || amount === null || isNaN(Number(amount))) {
+    return 'Rs. 0';
+  }
+  const num = Number(amount);
+  return `Rs. ${num.toLocaleString('en-PK')}`;
 };
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({

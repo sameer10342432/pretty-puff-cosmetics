@@ -1,0 +1,3170 @@
+{
+  "categories": [
+    {
+      "id": "makeup",
+      "name": "Makeup",
+      "slug": "makeup",
+      "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80",
+      "description": "Flawless complexion essentials, radiant powders, and velvety formulas.",
+      "subcategories": [
+        {
+          "id": "foundation",
+          "name": "Foundation",
+          "slug": "foundation"
+        },
+        {
+          "id": "concealer",
+          "name": "Concealer",
+          "slug": "concealer"
+        },
+        {
+          "id": "blush",
+          "name": "Blush",
+          "slug": "blush"
+        },
+        {
+          "id": "highlighter",
+          "name": "Highlighter",
+          "slug": "highlighter"
+        },
+        {
+          "id": "contour-bronzer",
+          "name": "Contour & Bronzer",
+          "slug": "contour-bronzer"
+        },
+        {
+          "id": "setting-powder",
+          "name": "Setting Powder",
+          "slug": "setting-powder"
+        },
+        {
+          "id": "setting-spray",
+          "name": "Setting Spray",
+          "slug": "setting-spray"
+        }
+      ]
+    },
+    {
+      "id": "eyes",
+      "name": "Eyes",
+      "slug": "eyes",
+      "image": "https://images.unsplash.com/photo-1583241800698-e9ab01830a27?auto=format&fit=crop&w=900&q=80",
+      "description": "Captivating eyeshadow palettes, voluminous mascaras, and defined liners.",
+      "subcategories": [
+        {
+          "id": "eyeliner",
+          "name": "Eyeliner",
+          "slug": "eyeliner"
+        },
+        {
+          "id": "mascara",
+          "name": "Mascara",
+          "slug": "mascara"
+        },
+        {
+          "id": "eyeshadow",
+          "name": "Eyeshadow",
+          "slug": "eyeshadow"
+        },
+        {
+          "id": "eyebrow-pencil",
+          "name": "Eyebrow Pencil",
+          "slug": "eyebrow-pencil"
+        },
+        {
+          "id": "eyebrow-gel",
+          "name": "Eyebrow Gel",
+          "slug": "eyebrow-gel"
+        },
+        {
+          "id": "false-eyelashes",
+          "name": "False Eyelashes",
+          "slug": "false-eyelashes"
+        }
+      ]
+    },
+    {
+      "id": "lips",
+      "name": "Lips",
+      "slug": "lips",
+      "image": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=900&q=80",
+      "description": "Ultra-hydrating lipsticks, high-shine glass glosses, and couture lip liners.",
+      "subcategories": [
+        {
+          "id": "lipstick",
+          "name": "Lipstick",
+          "slug": "lipstick"
+        },
+        {
+          "id": "lip-gloss",
+          "name": "Lip Gloss",
+          "slug": "lip-gloss"
+        },
+        {
+          "id": "lip-liner",
+          "name": "Lip Liner",
+          "slug": "lip-liner"
+        },
+        {
+          "id": "lip-tint",
+          "name": "Lip Tint",
+          "slug": "lip-tint"
+        },
+        {
+          "id": "lip-balm",
+          "name": "Lip Balm",
+          "slug": "lip-balm"
+        },
+        {
+          "id": "liquid-lipstick",
+          "name": "Liquid Lipstick",
+          "slug": "liquid-lipstick"
+        }
+      ]
+    },
+    {
+      "id": "skincare",
+      "name": "Skincare",
+      "slug": "skincare",
+      "image": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80",
+      "description": "Botanical cleansers, rejuvenating serums, and barrier-repair moisturisers.",
+      "subcategories": [
+        {
+          "id": "face-wash",
+          "name": "Face Wash",
+          "slug": "face-wash"
+        },
+        {
+          "id": "moisturiser",
+          "name": "Moisturiser",
+          "slug": "moisturiser"
+        },
+        {
+          "id": "serums",
+          "name": "Serums",
+          "slug": "serums"
+        },
+        {
+          "id": "sunscreen",
+          "name": "Sunscreen",
+          "slug": "sunscreen"
+        },
+        {
+          "id": "toner",
+          "name": "Toner",
+          "slug": "toner"
+        },
+        {
+          "id": "face-masks",
+          "name": "Face Masks",
+          "slug": "face-masks"
+        },
+        {
+          "id": "scrubs",
+          "name": "Scrubs",
+          "slug": "scrubs"
+        },
+        {
+          "id": "eye-cream",
+          "name": "Eye Cream",
+          "slug": "eye-cream"
+        }
+      ]
+    },
+    {
+      "id": "hair-care",
+      "name": "Hair Care",
+      "slug": "hair-care",
+      "image": "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=900&q=80",
+      "description": "Nourishing oils, salon-grade masks, and silky finishing serums.",
+      "subcategories": [
+        {
+          "id": "shampoo",
+          "name": "Shampoo",
+          "slug": "shampoo"
+        },
+        {
+          "id": "conditioner",
+          "name": "Conditioner",
+          "slug": "conditioner"
+        },
+        {
+          "id": "hair-oil",
+          "name": "Hair Oil",
+          "slug": "hair-oil"
+        },
+        {
+          "id": "hair-serum",
+          "name": "Hair Serum",
+          "slug": "hair-serum"
+        },
+        {
+          "id": "hair-masks",
+          "name": "Hair Masks",
+          "slug": "hair-masks"
+        },
+        {
+          "id": "hair-styling-products",
+          "name": "Hair Styling Products",
+          "slug": "hair-styling-products"
+        }
+      ]
+    },
+    {
+      "id": "fragrances",
+      "name": "Fragrances",
+      "slug": "fragrances",
+      "image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+      "description": "Enchanting floral eau de parfums, delicate body mists, and luxury attars.",
+      "subcategories": [
+        {
+          "id": "perfumes",
+          "name": "Perfumes",
+          "slug": "perfumes"
+        },
+        {
+          "id": "body-mists",
+          "name": "Body Mists",
+          "slug": "body-mists"
+        },
+        {
+          "id": "body-sprays",
+          "name": "Body Sprays",
+          "slug": "body-sprays"
+        },
+        {
+          "id": "attars",
+          "name": "Attars",
+          "slug": "attars"
+        },
+        {
+          "id": "perfume-oils",
+          "name": "Perfume Oils",
+          "slug": "perfume-oils"
+        }
+      ]
+    },
+    {
+      "id": "body-care",
+      "name": "Body Care",
+      "slug": "body-care",
+      "image": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80",
+      "description": "Whipped body butters, softening scrubs, and rose-scented lotions.",
+      "subcategories": [
+        {
+          "id": "body-lotion",
+          "name": "Body Lotion",
+          "slug": "body-lotion"
+        },
+        {
+          "id": "body-wash",
+          "name": "Body Wash",
+          "slug": "body-wash"
+        },
+        {
+          "id": "body-scrub",
+          "name": "Body Scrub",
+          "slug": "body-scrub"
+        },
+        {
+          "id": "hand-cream",
+          "name": "Hand Cream",
+          "slug": "hand-cream"
+        },
+        {
+          "id": "foot-care",
+          "name": "Foot Care",
+          "slug": "foot-care"
+        },
+        {
+          "id": "deodorants",
+          "name": "Deodorants",
+          "slug": "deodorants"
+        }
+      ]
+    },
+    {
+      "id": "nails",
+      "name": "Nails",
+      "slug": "nails",
+      "image": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=900&q=80",
+      "description": "High-gloss lacquer shades, gel lacquers, and cuticle recovery treatments.",
+      "subcategories": [
+        {
+          "id": "nail-polish",
+          "name": "Nail Polish",
+          "slug": "nail-polish"
+        },
+        {
+          "id": "gel-polish",
+          "name": "Gel Polish",
+          "slug": "gel-polish"
+        },
+        {
+          "id": "nail-extensions",
+          "name": "Nail Extensions",
+          "slug": "nail-extensions"
+        },
+        {
+          "id": "nail-art",
+          "name": "Nail Art",
+          "slug": "nail-art"
+        },
+        {
+          "id": "nail-polish-remover",
+          "name": "Nail Polish Remover",
+          "slug": "nail-polish-remover"
+        },
+        {
+          "id": "nail-care",
+          "name": "Nail Care",
+          "slug": "nail-care"
+        }
+      ]
+    },
+    {
+      "id": "beauty-tools",
+      "name": "Beauty Tools",
+      "slug": "beauty-tools",
+      "image": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80",
+      "description": "Silk-touch brush sets, plush blending sponges, and rose quartz rollers.",
+      "subcategories": [
+        {
+          "id": "makeup-brushes",
+          "name": "Makeup Brushes",
+          "slug": "makeup-brushes"
+        },
+        {
+          "id": "beauty-blenders",
+          "name": "Beauty Blenders",
+          "slug": "beauty-blenders"
+        },
+        {
+          "id": "makeup-sponges",
+          "name": "Makeup Sponges",
+          "slug": "makeup-sponges"
+        },
+        {
+          "id": "eyelash-curlers",
+          "name": "Eyelash Curlers",
+          "slug": "eyelash-curlers"
+        },
+        {
+          "id": "tweezers",
+          "name": "Tweezers",
+          "slug": "tweezers"
+        },
+        {
+          "id": "facial-rollers",
+          "name": "Facial Rollers",
+          "slug": "facial-rollers"
+        },
+        {
+          "id": "makeup-organisers",
+          "name": "Makeup Organisers",
+          "slug": "makeup-organisers"
+        }
+      ]
+    },
+    {
+      "id": "beauty-accessories",
+      "name": "Accessories",
+      "slug": "beauty-accessories",
+      "image": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80",
+      "description": "Quilted cosmetic travel pouches, vanity mirrors, and mulberry silk scrunchies.",
+      "subcategories": [
+        {
+          "id": "makeup-bags",
+          "name": "Makeup Bags",
+          "slug": "makeup-bags"
+        },
+        {
+          "id": "hair-accessories",
+          "name": "Hair Accessories",
+          "slug": "hair-accessories"
+        },
+        {
+          "id": "mirrors",
+          "name": "Mirrors",
+          "slug": "mirrors"
+        },
+        {
+          "id": "cosmetic-cases",
+          "name": "Cosmetic Cases",
+          "slug": "cosmetic-cases"
+        },
+        {
+          "id": "travel-beauty-kits",
+          "name": "Travel Beauty Kits",
+          "slug": "travel-beauty-kits"
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "id": "prod-01",
+      "name": "Pretty Puff Velvet Matte Foundation",
+      "slug": "pretty-puff-velvet-matte-foundation",
+      "category": "makeup",
+      "subcategory": "foundation",
+      "brand": "Pretty Puff",
+      "shortDescription": "24-hour weightless matte coverage infused with hyaluronic acid and niacinamide.",
+      "description": "A luxurious liquid foundation delivering buildable medium-to-full coverage with a soft-focus velvet finish. Formulated with skin-loving ingredients to blur pores and control excess shine without drying out your skin.",
+      "price": 3499,
+      "salePrice": 2899,
+      "discount": 17,
+      "images": [
+        "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1631729371254-42c2892f0e6e?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "01 Ivory Glow",
+          "hex": "#F3DFC8"
+        },
+        {
+          "name": "02 Warm Beige",
+          "hex": "#E7C8A9"
+        },
+        {
+          "name": "03 Honey Nude",
+          "hex": "#D8B08A"
+        },
+        {
+          "name": "04 Golden Caramel",
+          "hex": "#B88B63"
+        }
+      ],
+      "sizes": [
+        "30ml / 1.0 fl oz"
+      ],
+      "ingredients": "Aqua/Water, Cyclopentasiloxane, Dimethicone, Niacinamide, Sodium Hyaluronate, Tocopherol (Vitamin E), Silica, Phenoxyethanol.",
+      "howToUse": "Pump 1–2 drops onto the back of your hand. Blend seamlessly outward with the Pretty Puff Soft Touch Blender or stippling brush.",
+      "benefits": [
+        "24-Hour Non-Oxidizing Wear",
+        "Controls Shine & Blurs Pores",
+        "Infused with Niacinamide",
+        "Non-comedogenic"
+      ],
+      "stock": 45,
+      "sku": "PP-FND-001",
+      "rating": 4.9,
+      "reviewCount": 142,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2026-01-10"
+    },
+    {
+      "id": "prod-02",
+      "name": "Pretty Puff Glow Concealer",
+      "slug": "pretty-puff-glow-concealer",
+      "category": "makeup",
+      "subcategory": "concealer",
+      "brand": "Pretty Puff",
+      "shortDescription": "Crease-proof brightening concealer that erases dark circles effortlessly.",
+      "description": "Enriched with caffeine peptides and botanicals, this ultra-creamy concealer delivers instant brightness to tired eyes and hides blemishes without settling into fine lines.",
+      "price": 1899,
+      "salePrice": 1599,
+      "discount": 16,
+      "images": [
+        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Fair Light",
+          "hex": "#F6E4D1"
+        },
+        {
+          "name": "Warm Medium",
+          "hex": "#E3BE9B"
+        },
+        {
+          "name": "Caramel Deep",
+          "hex": "#C2966F"
+        }
+      ],
+      "sizes": [
+        "6ml"
+      ],
+      "ingredients": "Water, Isohexadecane, Glycerin, Caffeine, Palmitoyl Tripeptide-5, Green Tea Extract.",
+      "howToUse": "Dot under the eyes or over imperfections, then tap lightly with your ring finger or mini sponge until diffused.",
+      "benefits": [
+        "Instantly Awakens Eyes",
+        "Crease-Proof 16h Wear",
+        "Enriched with Caffeine",
+        "Lightweight Feel"
+      ],
+      "stock": 60,
+      "sku": "PP-CNC-002",
+      "rating": 4.8,
+      "reviewCount": 98,
+      "isFeatured": true,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-01"
+    },
+    {
+      "id": "prod-03",
+      "name": "Pretty Puff Rose Petal Cream Blush",
+      "slug": "pretty-puff-rose-petal-cream-blush",
+      "category": "makeup",
+      "subcategory": "blush",
+      "brand": "Pretty Puff",
+      "shortDescription": "Melt-in dewy cream blush delivering a natural, youthful flush.",
+      "description": "Infused with squalane and rosehip oil, this silky cream formula melts seamlessly onto bare skin or over powder for an all-day luminous, glass-skin blush effect.",
+      "price": 1699,
+      "salePrice": 1399,
+      "discount": 18,
+      "images": [
+        "https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1515688594390-b649af70d282?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Rose Petal",
+          "hex": "#E27D8C"
+        },
+        {
+          "name": "Peach Sorbet",
+          "hex": "#F0967A"
+        },
+        {
+          "name": "Berry Bliss",
+          "hex": "#AA435F"
+        }
+      ],
+      "sizes": [
+        "8g"
+      ],
+      "ingredients": "Plant-Derived Squalane, Jojoba Seed Oil, Rosa Canina (Rosehip) Fruit Oil, Mica, Iron Oxides.",
+      "howToUse": "Dab onto the apples of your cheeks using fingertips or a brush and blend upward toward the temples.",
+      "benefits": [
+        "Dewy, Healthy Sheen",
+        "Buildable Pigment",
+        "Non-Sticky Texture",
+        "Skin-Hydrating Oils"
+      ],
+      "stock": 80,
+      "sku": "PP-BLS-003",
+      "rating": 4.9,
+      "reviewCount": 215,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-20"
+    },
+    {
+      "id": "prod-04",
+      "name": "Pretty Puff Liquid Champagne Highlighter",
+      "slug": "pretty-puff-liquid-champagne-highlighter",
+      "category": "makeup",
+      "subcategory": "highlighter",
+      "brand": "Pretty Puff",
+      "shortDescription": "Silky drops that impart a lit-from-within celestial radiance.",
+      "description": "Ultra-fine pearls suspended in a featherweight serum base create an ethereal, glass-skin glow without glitter or chalkiness.",
+      "price": 1999,
+      "images": [
+        "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1508746829417-e6f548d8d6ed?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Champagne Frost",
+          "hex": "#EBDCB9"
+        },
+        {
+          "name": "Rose Gold Shimmer",
+          "hex": "#E7B5A8"
+        }
+      ],
+      "sizes": [
+        "15ml"
+      ],
+      "ingredients": "Isododecane, Mica, Squalane, Camellia Seed Oil, Synthetic Fluorphlogopite.",
+      "howToUse": "Apply to cheekbones, brow bones, and cupid bow, or mix a drop into your foundation for all-over luminosity.",
+      "benefits": [
+        "Micro-Fine Pearlescence",
+        "No Glitter Fallout",
+        "Mixes with Skincare or Base"
+      ],
+      "stock": 35,
+      "sku": "PP-HLT-004",
+      "rating": 4.7,
+      "reviewCount": 76,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-15"
+    },
+    {
+      "id": "prod-05",
+      "name": "Pretty Puff Cloud Blur Translucent Powder",
+      "slug": "pretty-puff-cloud-blur-translucent-powder",
+      "category": "makeup",
+      "subcategory": "setting-powder",
+      "brand": "Pretty Puff",
+      "shortDescription": "Micro-milled invisible setting powder that locks makeup for 16 hours.",
+      "description": "An ultra-fine translucent powder that blurs texture, controls oil, and gives a soft cashmere touch without flashback or cakey buildup.",
+      "price": 2199,
+      "salePrice": 1899,
+      "discount": 14,
+      "images": [
+        "https://images.unsplash.com/photo-1590156546946-ce55a12a6a5f?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1590156546946-ce55a12a6a5f?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "20g"
+      ],
+      "ingredients": "Silica, Zea Mays (Corn) Starch, Mica, Tocopherol Acetate.",
+      "howToUse": "Press lightly into the T-zone and under-eye area with a puff or fluffy brush.",
+      "benefits": [
+        "Zero Flashback",
+        "Matte Yet Breathable",
+        "All-Day Makeup Lock"
+      ],
+      "stock": 50,
+      "sku": "PP-PWD-005",
+      "rating": 4.8,
+      "reviewCount": 112,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-12-05"
+    },
+    {
+      "id": "prod-06",
+      "name": "Pretty Puff Rose Nude Eyeshadow Palette",
+      "slug": "pretty-puff-rose-nude-eyeshadow-palette",
+      "category": "eyes",
+      "subcategory": "eyeshadow",
+      "brand": "Pretty Puff",
+      "shortDescription": "12 velvety matte and multidimensional metallic rose-toned shades.",
+      "description": "From daytime soft romance to sultry evening glamour, this buttery 12-shade curated palette offers high-pigment payoff, effortless blendability, and zero creasing.",
+      "price": 3299,
+      "salePrice": 2799,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1583241800698-e9ab01830a27?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1583241800698-e9ab01830a27?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "12 x 1.2g"
+      ],
+      "ingredients": "Talc, Mica, Magnesium Stearate, Dimethicone, Ethylhexyl Palmitate.",
+      "howToUse": "Apply lighter shades as an all-over base, transition shades in the crease, and deep metallics on the lid or inner corner.",
+      "benefits": [
+        "12 Day-to-Night Hues",
+        "Buttery Soft Texture",
+        "High Color Payoff"
+      ],
+      "stock": 40,
+      "sku": "PP-EYE-006",
+      "rating": 4.9,
+      "reviewCount": 184,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-10-18"
+    },
+    {
+      "id": "prod-07",
+      "name": "Pretty Puff Lash Sculpting Volume Mascara",
+      "slug": "pretty-puff-lash-sculpting-volume-mascara",
+      "category": "eyes",
+      "subcategory": "mascara",
+      "brand": "Pretty Puff",
+      "shortDescription": "Water-resistant, clump-free drama and panoramic lash lift.",
+      "description": "Engineered with an hourglass fiber wand and peptide-infused carbon black pigments that coat every single lash from root to tip for extreme volume and dramatic curl.",
+      "price": 1799,
+      "images": [
+        "https://images.unsplash.com/photo-1591360236480-4ed861025fa1?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1591360236480-4ed861025fa1?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Intense Midnight Black",
+          "hex": "#111111"
+        }
+      ],
+      "sizes": [
+        "10ml"
+      ],
+      "ingredients": "Aqua, Copernicia Cerifera Cera, Stearic Acid, Castor Oil, Biotinoyl Tripeptide-1.",
+      "howToUse": "Wiggle the brush at the base of your lashes and pull straight through to the tips.",
+      "benefits": [
+        "Smudge-Proof & Flake-Free",
+        "Lash Conditioning Peptides",
+        "Instant Dramatic Volume"
+      ],
+      "stock": 65,
+      "sku": "PP-MSC-007",
+      "rating": 4.8,
+      "reviewCount": 89,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-12"
+    },
+    {
+      "id": "prod-08",
+      "name": "Pretty Puff Precision Waterproof Liquid Eyeliner",
+      "slug": "pretty-puff-precision-waterproof-liquid-eyeliner",
+      "category": "eyes",
+      "subcategory": "eyeliner",
+      "brand": "Pretty Puff",
+      "shortDescription": "0.1mm micro-felt tip for razor-sharp wings that hold all day.",
+      "description": "An intensely pigmented, smudge-proof waterproof liquid liner that glides smoothly without dragging or skipping.",
+      "price": 1399,
+      "salePrice": 1199,
+      "discount": 14,
+      "images": [
+        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Deep Jet Black",
+          "hex": "#0B0B0C"
+        },
+        {
+          "name": "Rich Espresso Brown",
+          "hex": "#3B2F2F"
+        }
+      ],
+      "sizes": [
+        "1.2ml"
+      ],
+      "ingredients": "Water, Acrylates Copolymer, Carbon Black, Butylene Glycol.",
+      "howToUse": "Rest elbow on a table and draw small connected dashes along your lash line.",
+      "benefits": [
+        "24-Hour Waterproof",
+        "Ultra Fine 0.1mm Tip",
+        "Deep Matte Black"
+      ],
+      "stock": 90,
+      "sku": "PP-EYL-008",
+      "rating": 4.7,
+      "reviewCount": 65,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-10"
+    },
+    {
+      "id": "prod-09",
+      "name": "Pretty Puff Cashmere Matte Lipstick",
+      "slug": "pretty-puff-cashmere-matte-lipstick",
+      "category": "lips",
+      "subcategory": "lipstick",
+      "brand": "Pretty Puff",
+      "shortDescription": "Couture comfort matte lipstick enriched with French rose extract.",
+      "description": "Experience pure pigment in a single stroke. This featherlight formula wraps lips in silky, comfortable hydration while delivering a velvety modern matte statement.",
+      "price": 1999,
+      "salePrice": 1699,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Rose Nude",
+          "hex": "#C27D7F"
+        },
+        {
+          "name": "Blush Affair",
+          "hex": "#B85E6E"
+        },
+        {
+          "name": "Warm Terracotta",
+          "hex": "#9E4738"
+        },
+        {
+          "name": "Berry Royal",
+          "hex": "#77253D"
+        }
+      ],
+      "sizes": [
+        "3.8g"
+      ],
+      "ingredients": "Dimethicone, Polyglyceryl-2 Triisostearate, Shea Butter, Rose Flower Oil, Vitamin E.",
+      "howToUse": "Glide directly across lips, starting from the center and sweeping outward.",
+      "benefits": [
+        "Comfort-Hydrating Matte",
+        "Rich 1-Swipe Pigment",
+        "Non-Drying Botanical Oils"
+      ],
+      "stock": 120,
+      "sku": "PP-LIP-009",
+      "rating": 4.9,
+      "reviewCount": 340,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-09-15"
+    },
+    {
+      "id": "prod-10",
+      "name": "Pretty Puff Glass Glaze Lip Oil & Gloss",
+      "slug": "pretty-puff-glass-glaze-lip-oil-and-gloss",
+      "category": "lips",
+      "subcategory": "lip-gloss",
+      "brand": "Pretty Puff",
+      "shortDescription": "Cushiony non-sticky high shine with lip-plumping peptides.",
+      "description": "The ultimate crystal-clear mirror shine. Infused with hyaluronic acid microspheres and sweet almond oil for nourished, cushion-soft, fuller-looking lips.",
+      "price": 1599,
+      "salePrice": 1399,
+      "discount": 12,
+      "images": [
+        "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1617897903246-719242758050?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Clear Crystal",
+          "hex": "#FDFBFB"
+        },
+        {
+          "name": "Pink Petal Sheen",
+          "hex": "#F7CBD2"
+        },
+        {
+          "name": "Honey Glaze",
+          "hex": "#F5D7B5"
+        }
+      ],
+      "sizes": [
+        "7ml"
+      ],
+      "ingredients": "Hydrogenated Polyisobutene, Sweet Almond Oil, Sodium Hyaluronate, Peptides, Flavor.",
+      "howToUse": "Wear alone for a wet-look sheen or layer over lipstick for high-voltage glossy glam.",
+      "benefits": [
+        "Zero Stickiness",
+        "Deep Moisture Protection",
+        "Subtle Plumping Volume"
+      ],
+      "stock": 85,
+      "sku": "PP-GLS-010",
+      "rating": 4.9,
+      "reviewCount": 167,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-01-20"
+    },
+    {
+      "id": "prod-11",
+      "name": "Pretty Puff Velveteen Lip Contour Pencil",
+      "slug": "pretty-puff-velveteen-lip-contour-pencil",
+      "category": "lips",
+      "subcategory": "lip-liner",
+      "brand": "Pretty Puff",
+      "shortDescription": "Creamy waterproof pencil to define, contour, and sculpt lips.",
+      "description": "Glides like silk and sets like a dream. Formulated to prevent lipstick bleeding while defining and contouring lips naturally.",
+      "price": 1199,
+      "images": [
+        "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Nude Silhouette",
+          "hex": "#B57E7A"
+        },
+        {
+          "name": "Dusty Mauve",
+          "hex": "#9E5B6A"
+        },
+        {
+          "name": "Spiced Rose",
+          "hex": "#8C3E4A"
+        }
+      ],
+      "sizes": [
+        "1.4g"
+      ],
+      "ingredients": "Hydrogenated Vegetable Oil, Carnauba Wax, Synthetic Beeswax, Tocopherol.",
+      "howToUse": "Trace the natural lip perimeter, gently blending inward before applying lip color.",
+      "benefits": [
+        "Transfer-Resistant",
+        "Buttery Smooth Application",
+        "Prevents Feathering"
+      ],
+      "stock": 70,
+      "sku": "PP-LNR-011",
+      "rating": 4.8,
+      "reviewCount": 54,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-28"
+    },
+    {
+      "id": "prod-12",
+      "name": "Pretty Puff Glow Revival 15% Vitamin C Serum",
+      "slug": "pretty-puff-glow-revival-15-vitamin-c-serum",
+      "category": "skincare",
+      "subcategory": "serums",
+      "brand": "Pretty Puff",
+      "shortDescription": "Potent antioxidant elixir that fades spots and boosts skin luminosity.",
+      "description": "Stabilized Ethyl Ascorbic Acid combined with Ferulic Acid and Vitamin E. This lightweight, fast-absorbing serum targets hyperpigmentation, uneven skin tone, and pollution damage.",
+      "price": 2999,
+      "salePrice": 2499,
+      "discount": 17,
+      "images": [
+        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1608248597359-2165b4c10c14?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "30ml / 1.0 fl oz"
+      ],
+      "ingredients": "Aqua, 3-O-Ethyl Ascorbic Acid (15%), Ferulic Acid, Sodium Hyaluronate, Panthenol, Glycerin.",
+      "howToUse": "Dispense 3–4 drops onto cleansed skin each morning. Follow with your favorite moisturiser and SPF.",
+      "benefits": [
+        "Visibly Brightens Dull Skin",
+        "Fades Dark Spots & Sun Marks",
+        "Potent Antioxidant Defense",
+        "Dermatologist Tested"
+      ],
+      "stock": 55,
+      "sku": "PP-SKN-012",
+      "rating": 4.9,
+      "reviewCount": 280,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-08-10"
+    },
+    {
+      "id": "prod-13",
+      "name": "Pretty Puff Ceramide Hydrating Cloud Cream",
+      "slug": "pretty-puff-ceramide-hydrating-cloud-cream",
+      "category": "skincare",
+      "subcategory": "moisturiser",
+      "brand": "Pretty Puff",
+      "shortDescription": "Deep 72-hour moisture cushion fortified with 5 vital ceramides.",
+      "description": "A comforting cloud-like gel-cream that restores your skin barrier, soothes irritation, and plumps dehydration lines without clogging pores.",
+      "price": 2499,
+      "salePrice": 2099,
+      "discount": 16,
+      "images": [
+        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "50ml / 1.7 oz"
+      ],
+      "ingredients": "Aqua, Ceramide NP, Ceramide AP, Ceramide EOP, Phytosphingosine, Centella Asiatica Extract.",
+      "howToUse": "Smooth a generous nickel-sized amount over face and neck morning and evening.",
+      "benefits": [
+        "Restores Barrier Health",
+        "Non-Greasy Cloud Texture",
+        "Soothes Redness & Sensitivity"
+      ],
+      "stock": 65,
+      "sku": "PP-SKN-013",
+      "rating": 4.8,
+      "reviewCount": 195,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-09-01"
+    },
+    {
+      "id": "prod-14",
+      "name": "Pretty Puff Dew Barrier SPF 50+ Sunscreen",
+      "slug": "pretty-puff-dew-barrier-spf-50-sunscreen",
+      "category": "skincare",
+      "subcategory": "sunscreen",
+      "brand": "Pretty Puff",
+      "shortDescription": "Ultra-light water gel SPF 50+ PA++++ with zero white cast.",
+      "description": "Formulated specifically for warm, humid climates. Absorbs in seconds, leaves a breathable soft-glow veil, and doubles as an impeccably smooth makeup primer.",
+      "price": 2299,
+      "salePrice": 1999,
+      "discount": 13,
+      "images": [
+        "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "50ml"
+      ],
+      "ingredients": "Water, Ethylhexyl Methoxycinnamate, Zinc Oxide, Niacinamide, Adenosine, Birch Juice.",
+      "howToUse": "Apply 2 finger-lengths evenly across face and neck 15 minutes before sun exposure. Reapply every 2 hours.",
+      "benefits": [
+        "Zero White Cast",
+        "No Greasiness or Stickiness",
+        "Broad Spectrum UVA/UVB",
+        "Works Flawlessly Under Makeup"
+      ],
+      "stock": 90,
+      "sku": "PP-SKN-014",
+      "rating": 4.9,
+      "reviewCount": 310,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-01-05"
+    },
+    {
+      "id": "prod-15",
+      "name": "Pretty Puff Gentle Rose Petal Gel Cleanser",
+      "slug": "pretty-puff-gentle-rose-petal-gel-cleanser",
+      "category": "skincare",
+      "subcategory": "face-wash",
+      "brand": "Pretty Puff",
+      "shortDescription": "pH-balanced purifying cleanser infused with real Damask rose water.",
+      "description": "Washes away impurities, excess sebum, and makeup residue while preserving essential moisture. Leaves skin feeling petal-soft, clean, and refreshed.",
+      "price": 1599,
+      "images": [
+        "https://images.unsplash.com/photo-1556228722-d0b5d120a16b?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1556228722-d0b5d120a16b?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "150ml"
+      ],
+      "ingredients": "Rosa Damascena Flower Water, Coco-Glucoside, Glycerin, Aloe Barbadensis Leaf Juice, Citric Acid.",
+      "howToUse": "Massage onto damp face in circular motions, lather gently, and rinse with lukewarm water.",
+      "benefits": [
+        "pH 5.5 Skin-Safe",
+        "Non-Stripping Formula",
+        "Natural Rose Aroma"
+      ],
+      "stock": 75,
+      "sku": "PP-SKN-015",
+      "rating": 4.8,
+      "reviewCount": 110,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-10-25"
+    },
+    {
+      "id": "prod-16",
+      "name": "Pretty Puff Silk Gloss Hair Repair Serum",
+      "slug": "pretty-puff-silk-gloss-hair-repair-serum",
+      "category": "hair-care",
+      "subcategory": "hair-serum",
+      "brand": "Pretty Puff",
+      "shortDescription": "Weightless argan and camellia nectar that tames frizz and seals split ends.",
+      "description": "Transform dry, heat-stressed strands into glossy liquid silk. Protects against heat up to 230°C while infusing hair with brilliant shine and a delicate floral breeze.",
+      "price": 2399,
+      "salePrice": 1999,
+      "discount": 17,
+      "images": [
+        "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "80ml"
+      ],
+      "ingredients": "Cyclopentasiloxane, Argania Spinosa Kernel Oil, Camellia Japonica Seed Oil, Fragrance.",
+      "howToUse": "Rub 1–2 pumps between palms and distribute through damp or dry mid-lengths and ends.",
+      "benefits": [
+        "Heat Protection 230°C",
+        "Instantly Tames Frizz",
+        "Glass-Like Mirror Shine",
+        "Non-Greasy Touch"
+      ],
+      "stock": 50,
+      "sku": "PP-HAR-016",
+      "rating": 4.8,
+      "reviewCount": 94,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-15"
+    },
+    {
+      "id": "prod-17",
+      "name": "Pretty Puff Rosemary & Biotin Scalp Elixir",
+      "slug": "pretty-puff-rosemary-and-biotin-scalp-elixir",
+      "category": "hair-care",
+      "subcategory": "hair-oil",
+      "brand": "Pretty Puff",
+      "shortDescription": "Stimulating botanical scalp oil for thicker, fuller, healthier hair growth.",
+      "description": "Formulated with pure cold-pressed rosemary oil, biotin peptides, and golden jojoba to stimulate circulation, nourish hair follicles, and curb hair fall.",
+      "price": 2199,
+      "salePrice": 1899,
+      "discount": 14,
+      "images": [
+        "https://images.unsplash.com/photo-1608248597249-43a69409d6a0?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1608248597249-43a69409d6a0?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "100ml"
+      ],
+      "ingredients": "Rosmarinus Officinalis Leaf Oil, Biotin, Simmondsia Chinensis Seed Oil, Castor Oil, Peppermint Oil.",
+      "howToUse": "Part hair into sections, apply directly to scalp, and gently massage for 5 minutes. Leave on for 2 hours or overnight before washing.",
+      "benefits": [
+        "Promotes Scalp Circulation",
+        "Strengthens Root Follicles",
+        "100% Pure Plant Actives"
+      ],
+      "stock": 60,
+      "sku": "PP-HAR-017",
+      "rating": 4.9,
+      "reviewCount": 172,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-01-18"
+    },
+    {
+      "id": "prod-18",
+      "name": "Pretty Puff Keratin Melt Intensive Hair Mask",
+      "slug": "pretty-puff-keratin-melt-intensive-hair-mask",
+      "category": "hair-care",
+      "subcategory": "hair-masks",
+      "brand": "Pretty Puff",
+      "shortDescription": "5-minute deep conditioning salon treatment for silky, restored locks.",
+      "description": "Restores elasticity, repairs chemical damage, and drenches thirsty strands with hydrolysed keratin and raw coconut nectar.",
+      "price": 2499,
+      "images": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "250g"
+      ],
+      "ingredients": "Aqua, Cetearyl Alcohol, Hydrolyzed Keratin, Shea Butter, Behentrimonium Chloride.",
+      "howToUse": "Apply after shampooing from roots to tips. Leave for 5–10 minutes, then rinse thoroughly.",
+      "benefits": [
+        "Repairs Breakage",
+        "Deep Hydration Infusion",
+        "Salon-Smooth Softness"
+      ],
+      "stock": 40,
+      "sku": "PP-HAR-018",
+      "rating": 4.7,
+      "reviewCount": 68,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-12-10"
+    },
+    {
+      "id": "prod-19",
+      "name": "Pretty Puff Chérie Eau De Parfum",
+      "slug": "pretty-puff-cherie-eau-de-parfum",
+      "category": "fragrances",
+      "subcategory": "perfumes",
+      "brand": "Pretty Puff",
+      "shortDescription": "An intoxicating blend of French peony, crisp pear, and warm vanilla amber.",
+      "description": "An elegant, long-lasting signature fragrance crafted by master perfumers. Opening with sparkling bergamot and pink pear, blooming into a romantic floral heart, and settling into sensual amber cashmere.",
+      "price": 4999,
+      "salePrice": 4299,
+      "discount": 14,
+      "images": [
+        "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "50ml / 1.7 fl oz",
+        "100ml / 3.4 fl oz"
+      ],
+      "ingredients": "Alcohol Denat., Parfum/Fragrance, Aqua, Benzyl Salicylate, Limonene, Linalool, Coumarin.",
+      "howToUse": "Spritz onto pulse points: wrists, inner elbows, and base of neck for all-day sillage.",
+      "benefits": [
+        "Eau de Parfum 20% Oil Concentration",
+        "Lasts Up to 12+ Hours",
+        "Luxurious Glass Flacon"
+      ],
+      "stock": 30,
+      "sku": "PP-FRG-019",
+      "rating": 4.9,
+      "reviewCount": 220,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-09-20"
+    },
+    {
+      "id": "prod-20",
+      "name": "Pretty Puff Velvet Rose & Lychee Body Mist",
+      "slug": "pretty-puff-velvet-rose-and-lychee-body-mist",
+      "category": "fragrances",
+      "subcategory": "body-mists",
+      "brand": "Pretty Puff",
+      "shortDescription": "Refreshing all-over mist blending sweet lychee and morning dew roses.",
+      "description": "A delicate and invigorating fragrance mist designed for all-day layering. Light, romantic, and effortlessly charming.",
+      "price": 1899,
+      "salePrice": 1599,
+      "discount": 16,
+      "images": [
+        "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "250ml"
+      ],
+      "ingredients": "Alcohol Denat., Water, Fragrance, Aloe Barbadensis Leaf Extract, Chamomilla Recutita Extract.",
+      "howToUse": "Spritz generously all over body, hair, and clothing throughout the day.",
+      "benefits": [
+        "Airy & Uplifting Scent",
+        "Enriched with Aloe Vera",
+        "Ideal for Everyday Wear"
+      ],
+      "stock": 80,
+      "sku": "PP-FRG-020",
+      "rating": 4.8,
+      "reviewCount": 145,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-01-12"
+    },
+    {
+      "id": "prod-21",
+      "name": "Pretty Puff Whipped Nude Vanilla Body Cream",
+      "slug": "pretty-puff-whipped-nude-vanilla-body-cream",
+      "category": "body-care",
+      "subcategory": "body-lotion",
+      "brand": "Pretty Puff",
+      "shortDescription": "Rich whipped shea body butter that sinks in with a cozy vanilla cashmere aroma.",
+      "description": "An indulgent, velvety body cream infused with organic shea butter, cocoa butter, and sweet almond oil that hydrates deeply without stickiness.",
+      "price": 2199,
+      "salePrice": 1799,
+      "discount": 18,
+      "images": [
+        "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "200g"
+      ],
+      "ingredients": "Butyrospermum Parkii (Shea) Butter, Cocoa Butter, Sweet Almond Oil, Vanilla Planifolia Extract.",
+      "howToUse": "Massage liberally onto dry or damp skin immediately following shower or bath.",
+      "benefits": [
+        "48h Moisture Seal",
+        "Warm Cozy Scent",
+        "Velvety Whipped Texture"
+      ],
+      "stock": 65,
+      "sku": "PP-BDY-021",
+      "rating": 4.9,
+      "reviewCount": 178,
+      "isFeatured": true,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-10-30"
+    },
+    {
+      "id": "prod-22",
+      "name": "Pretty Puff Himalayan Pink Salt & Rose Polish",
+      "slug": "pretty-puff-himalayan-pink-salt-and-rose-polish",
+      "category": "body-care",
+      "subcategory": "body-scrub",
+      "brand": "Pretty Puff",
+      "shortDescription": "Gentle exfoliating body polish with pure mineral salts and coconut oil.",
+      "description": "Buffs away dead surface cells to unveil ultra-smooth, silky-soft skin with a radiant, conditioned healthy glow.",
+      "price": 1999,
+      "salePrice": 1699,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1519735777090-ec97162dc266?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1519735777090-ec97162dc266?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "280g"
+      ],
+      "ingredients": "Sodium Chloride (Himalayan Salt), Coconut Oil, Rosa Damascena Flower Oil, Vitamin E.",
+      "howToUse": "In shower, massage circular motions over wet skin, focusing on knees and elbows. Rinse thoroughly.",
+      "benefits": [
+        "Smooths Rough Patches",
+        "Leaves Velvety Oil Veil",
+        "Natural Mineral Salts"
+      ],
+      "stock": 55,
+      "sku": "PP-BDY-022",
+      "rating": 4.8,
+      "reviewCount": 92,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-05"
+    },
+    {
+      "id": "prod-23",
+      "name": "Pretty Puff Ballet Rose High-Shine Nail Polish Set",
+      "slug": "pretty-puff-ballet-rose-high-shine-nail-polish-set",
+      "category": "nails",
+      "subcategory": "nail-polish",
+      "brand": "Pretty Puff",
+      "shortDescription": "Trio of chip-resistant, salon-grade nude and blush nail lacquers.",
+      "description": "Long-wearing, toxic-free 10-free formula that provides gel-like high gloss and rich opacity in just two coats.",
+      "price": 1899,
+      "salePrice": 1599,
+      "discount": 16,
+      "images": [
+        "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Soft Cashmere",
+          "hex": "#EBDCD4"
+        },
+        {
+          "name": "Ballet Slipper Pink",
+          "hex": "#F7CBD2"
+        },
+        {
+          "name": "French Mauve",
+          "hex": "#C78C98"
+        }
+      ],
+      "sizes": [
+        "3 x 10ml"
+      ],
+      "ingredients": "Butyl Acetate, Ethyl Acetate, Nitrocellulose, Isopropyl Alcohol, Acetyl Tributyl Citrate.",
+      "howToUse": "Apply base coat, two thin layers of color, and seal with high-shine top coat.",
+      "benefits": [
+        "10-Free Clean Polish",
+        "Chip-Resistant for 7 Days",
+        "Gel-Like Glossy Finish"
+      ],
+      "stock": 75,
+      "sku": "PP-NAL-023",
+      "rating": 4.7,
+      "reviewCount": 88,
+      "isFeatured": true,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-05"
+    },
+    {
+      "id": "prod-24",
+      "name": "Pretty Puff Rose Cuticle Revival Oil Dropper",
+      "slug": "pretty-puff-rose-cuticle-revival-oil-dropper",
+      "category": "nails",
+      "subcategory": "nail-care",
+      "brand": "Pretty Puff",
+      "shortDescription": "Nourishing botanical blend that strengthens brittle nails and softens cuticles.",
+      "description": "Formulated with organic sweet almond, jojoba, and rosehip oil to rescue dry, damaged nails from gel treatments.",
+      "price": 1299,
+      "images": [
+        "https://images.unsplash.com/photo-1608248597359-2165b4c10c14?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1608248597359-2165b4c10c14?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "15ml"
+      ],
+      "ingredients": "Prunus Amygdalus Dulcis Oil, Simmondsia Chinensis Seed Oil, Rosa Canina Fruit Oil, Vitamin E.",
+      "howToUse": "Massage a drop onto each nail bed and surrounding cuticles daily before bedtime.",
+      "benefits": [
+        "Repairs Brittle Nails",
+        "Deep Cuticle Hydration",
+        "Handbag Friendly"
+      ],
+      "stock": 80,
+      "sku": "PP-NAL-024",
+      "rating": 4.8,
+      "reviewCount": 62,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-12-20"
+    },
+    {
+      "id": "prod-25",
+      "name": "Pretty Puff Cloud Touch Teardrop Sponge Trio",
+      "slug": "pretty-puff-cloud-touch-teardrop-sponge-trio",
+      "category": "beauty-tools",
+      "subcategory": "beauty-blenders",
+      "brand": "Pretty Puff",
+      "shortDescription": "Ultra-soft, latex-free seamless blending sponges for an airbrushed complexion.",
+      "description": "Our signature sponges double in size when damp, absorbing minimal product while effortlessly bouncing liquid and cream makeup into a flawless second-skin finish.",
+      "price": 1499,
+      "salePrice": 1199,
+      "discount": 20,
+      "images": [
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Blush Pink",
+          "hex": "#F2BAC4"
+        },
+        {
+          "name": "Rose Nude",
+          "hex": "#DEB5B8"
+        },
+        {
+          "name": "Cream Peach",
+          "hex": "#F5D3C4"
+        }
+      ],
+      "sizes": [
+        "Pack of 3"
+      ],
+      "ingredients": "Latex-Free Hydrophilic Polyurethane Foam.",
+      "howToUse": "Wet sponge with water and squeeze out excess until damp. Bounce across face to blend foundation, concealer, or cream blush.",
+      "benefits": [
+        "Ultra-Pliable Texture",
+        "Airbrushed Finish",
+        "Latex-Free & Antimicrobial",
+        "Minimal Product Waste"
+      ],
+      "stock": 150,
+      "sku": "PP-TOL-025",
+      "rating": 4.9,
+      "reviewCount": 390,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-07-15"
+    },
+    {
+      "id": "prod-26",
+      "name": "Pretty Puff Silk Luxe 8-Piece Face & Eye Brush Set",
+      "slug": "pretty-puff-silk-luxe-8-piece-face-and-eye-brush-set",
+      "category": "beauty-tools",
+      "subcategory": "makeup-brushes",
+      "brand": "Pretty Puff",
+      "shortDescription": "Vegan cruelty-free brush collection with champagne gold ferrules and velvet pouch.",
+      "description": "Designed for precision and seamless blending. Includes powder brush, angled contour, tapered blush, foundation buffer, and four essential eye sculpting brushes.",
+      "price": 3899,
+      "salePrice": 3299,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "8-piece set with luxury pouch"
+      ],
+      "ingredients": "Ultra-Dense Micro-Fiber Synthetic Bristles, Recycled Aluminum Ferrules, Solid Birchwood Handles.",
+      "howToUse": "Use dense brushes for cream and liquid bases; use tapered fluffy brushes for powders and eye blending.",
+      "benefits": [
+        "100% Cruelty-Free & Vegan",
+        "Zero Bristle Shedding",
+        "Champagne Luxury Handles"
+      ],
+      "stock": 45,
+      "sku": "PP-TOL-026",
+      "rating": 4.9,
+      "reviewCount": 162,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-10-01"
+    },
+    {
+      "id": "prod-27",
+      "name": "Pretty Puff Natural Rose Quartz Facial Roller & Gua Sha Set",
+      "slug": "pretty-puff-natural-rose-quartz-facial-roller-and-gua-sha-set",
+      "category": "beauty-tools",
+      "subcategory": "facial-rollers",
+      "brand": "Pretty Puff",
+      "shortDescription": "Authentic Brazilian rose quartz stones to depuff, contour, and drain lymphatic fluid.",
+      "description": "An ancient self-care ritual modernised. Regular facial rolling eases muscle tension, enhances skincare absorption, and contours the jawline.",
+      "price": 2699,
+      "salePrice": 2299,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1608248597359-2165b4c10c14?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1608248597359-2165b4c10c14?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "Roller + Heart Gua Sha in Gift Box"
+      ],
+      "ingredients": "100% Genuine Natural Rose Quartz, Solid Zinc Alloy Frame.",
+      "howToUse": "Pair with facial oil or serum. Roll gently in upward and outward strokes from the neck to forehead.",
+      "benefits": [
+        "Depuffs Morning Swelling",
+        "Contours Cheekbones & Jaw",
+        "Boosts Serum Penetration"
+      ],
+      "stock": 50,
+      "sku": "PP-TOL-027",
+      "rating": 4.8,
+      "reviewCount": 97,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-01-25"
+    },
+    {
+      "id": "prod-28",
+      "name": "Pretty Puff Rose Gold Ergonomic Eyelash Curler",
+      "slug": "pretty-puff-rose-gold-ergonomic-eyelash-curler",
+      "category": "beauty-tools",
+      "subcategory": "eyelash-curlers",
+      "brand": "Pretty Puff",
+      "shortDescription": "Pinch-proof stainless steel curler with extra-thick silicone pads.",
+      "description": "Engineered with a universally calibrated curve to lift every individual lash from corner to corner without pinching eyelids or crimping lashes.",
+      "price": 1199,
+      "images": [
+        "https://images.unsplash.com/photo-1583241800698-e9ab01830a27?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1583241800698-e9ab01830a27?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "Includes 2 Replacement Silicone Pads"
+      ],
+      "ingredients": "Rose Gold Plated Carbon Steel, Hypoallergenic Silicone.",
+      "howToUse": "Place curler at lash base, gently pulse for 3 seconds, then walk curler outward to tip.",
+      "benefits": [
+        "Pinch-Free Universal Curve",
+        "Long-Lasting Sky High Lift",
+        "Durable Rose Gold Finish"
+      ],
+      "stock": 85,
+      "sku": "PP-TOL-028",
+      "rating": 4.8,
+      "reviewCount": 74,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-19"
+    },
+    {
+      "id": "prod-29",
+      "name": "Pretty Puff Quilted Velvet Vanity Pouch",
+      "slug": "pretty-puff-quilted-velvet-vanity-pouch",
+      "category": "beauty-accessories",
+      "subcategory": "makeup-bags",
+      "brand": "Pretty Puff",
+      "shortDescription": "Plush quilted cosmetic bag with gold hardware and wipe-clean waterproof lining.",
+      "description": "Roomy enough to house all your daily beauty staples, yet chic enough to carry as a clutch. Features interior brush sleeves and structured compartments.",
+      "price": 2199,
+      "salePrice": 1799,
+      "discount": 18,
+      "images": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Blush Pink",
+          "hex": "#EBB4BD"
+        },
+        {
+          "name": "Warm Champagne",
+          "hex": "#E0CCA2"
+        }
+      ],
+      "sizes": [
+        "22cm x 14cm x 11cm"
+      ],
+      "ingredients": "Quilted Velvet Exterior, Water-Resistant Satin Interior, Gold-Toned Brass Zippers.",
+      "howToUse": "Store brushes, makeup, and compacts securely at home or on the go.",
+      "benefits": [
+        "Water-Resistant Spill Lining",
+        "Structured Wide-Mouth Opening",
+        "Elegant Gold Monogrammed Pulls"
+      ],
+      "stock": 60,
+      "sku": "PP-ACC-029",
+      "rating": 4.9,
+      "reviewCount": 130,
+      "isFeatured": true,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-12"
+    },
+    {
+      "id": "prod-30",
+      "name": "Pretty Puff 100% Pure Mulberry Silk Scrunchie 3-Pack",
+      "slug": "pretty-puff-100-pure-mulberry-silk-scrunchie-3-pack",
+      "category": "beauty-accessories",
+      "subcategory": "hair-accessories",
+      "brand": "Pretty Puff",
+      "shortDescription": "High-grade 22 Momme organic silk scrunchies that prevent hair crease and breakage.",
+      "description": "Tired of hair ties that tug and pull? Our pure silk hair scrunchies glide smoothly across hair, locking in your top-knot or ponytail with zero friction or damage.",
+      "price": 1699,
+      "salePrice": 1399,
+      "discount": 18,
+      "images": [
+        "https://images.unsplash.com/photo-1519735777090-ec97162dc266?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1519735777090-ec97162dc266?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Blush, Rose & Champagne Trio",
+          "hex": "#E7BDC3"
+        }
+      ],
+      "sizes": [
+        "Pack of 3"
+      ],
+      "ingredients": "100% Grade 6A 22 Momme Mulberry Silk.",
+      "howToUse": "Wrap twice around ponytails, buns, or braids for gentle, secure hold.",
+      "benefits": [
+        "Zero Crease & Breakage",
+        "Gentle on Fine & Fragile Strands",
+        "Hypoallergenic Natural Silk"
+      ],
+      "stock": 95,
+      "sku": "PP-ACC-030",
+      "rating": 4.9,
+      "reviewCount": 204,
+      "isFeatured": false,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-10-14"
+    },
+    {
+      "id": "prod-31",
+      "name": "Pretty Puff LED Daylight Rechargeable Compact Mirror",
+      "slug": "pretty-puff-led-daylight-rechargeable-compact-mirror",
+      "category": "beauty-accessories",
+      "subcategory": "mirrors",
+      "brand": "Pretty Puff",
+      "shortDescription": "Dual-magnification compact with natural daylight LED ring and USB-C charging.",
+      "description": "1x true reflection and 3x close-up magnification illuminated by soft halo LED lighting. Perfect for on-the-go makeup touch-ups anywhere, anytime.",
+      "price": 2499,
+      "salePrice": 2099,
+      "discount": 16,
+      "images": [
+        "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=600&q=80",
+      "colours": [
+        {
+          "name": "Soft Blush Pink",
+          "hex": "#F0B8C2"
+        }
+      ],
+      "sizes": [
+        "Pocket Size 8.5cm"
+      ],
+      "ingredients": "ABS Shell, Optical Grade Distortion-Free Glass, Lithium Battery.",
+      "howToUse": "Touch sensor on glass to switch on daylight lighting; long press to dim or brighten.",
+      "benefits": [
+        "True-Color 95+ CRI Daylight LED",
+        "1x & 3x Magnification",
+        "Slim Pocket-Friendly Profile"
+      ],
+      "stock": 40,
+      "sku": "PP-ACC-031",
+      "rating": 4.8,
+      "reviewCount": 78,
+      "isFeatured": false,
+      "isBestSeller": false,
+      "isNew": true,
+      "isActive": true,
+      "createdAt": "2026-02-18"
+    },
+    {
+      "id": "prod-32",
+      "name": "Pretty Puff Dewy Petal 16h Makeup Setting Mist",
+      "slug": "pretty-puff-dewy-petal-16h-makeup-setting-mist",
+      "category": "makeup",
+      "subcategory": "setting-spray",
+      "brand": "Pretty Puff",
+      "shortDescription": "Micro-fine cloud mist that melts powders and locks makeup transfer-free.",
+      "description": "Infused with soothing green tea and hyaluronic acid. Dispenses an ultra-fine, even aerosol-like mist that seals makeup without feeling tight or sticky.",
+      "price": 1999,
+      "salePrice": 1699,
+      "discount": 15,
+      "images": [
+        "https://images.unsplash.com/photo-1556228722-d0b5d120a16b?auto=format&fit=crop&w=900&q=80"
+      ],
+      "thumbnail": "https://images.unsplash.com/photo-1556228722-d0b5d120a16b?auto=format&fit=crop&w=600&q=80",
+      "sizes": [
+        "100ml / 3.4 fl oz"
+      ],
+      "ingredients": "Water, PVP, Butylene Glycol, Camellia Sinensis (Green Tea) Leaf Extract, Hyaluronic Acid.",
+      "howToUse": "Shake well. Hold 8–10 inches from face, close eyes, and mist in an \"X\" and \"T\" motion.",
+      "benefits": [
+        "Transfer-Proof All Day Lock",
+        "Ultra-Fine Cloud Spray",
+        "Soothes & Hydrates"
+      ],
+      "stock": 110,
+      "sku": "PP-MKP-032",
+      "rating": 4.9,
+      "reviewCount": 156,
+      "isFeatured": true,
+      "isBestSeller": true,
+      "isNew": false,
+      "isActive": true,
+      "createdAt": "2025-11-08"
+    }
+  ],
+  "blogCategories": [
+    {
+      "id": "all",
+      "name": "All Articles",
+      "slug": "all",
+      "description": "Explore our complete library of beauty tips, skincare advice, makeup tutorials, and cosmetic inspiration.",
+      "seoTitle": "Beauty Journal & Editorial Articles | Pretty Puff",
+      "metaDescription": "Browse the complete collection of beauty articles, tutorials, and skincare advice from the Pretty Puff editorial team."
+    },
+    {
+      "id": "makeup",
+      "name": "Makeup",
+      "slug": "makeup",
+      "description": "Master effortless everyday glam, flawless complexion hacks, lipstick shade matching, and brush techniques.",
+      "seoTitle": "Makeup Tips, Tutorials & Expert Guides | Pretty Puff Journal",
+      "metaDescription": "Discover professional makeup tips, application tutorials, and shade guides from Pretty Puff cosmetics experts."
+    },
+    {
+      "id": "skincare",
+      "name": "Skincare",
+      "slug": "skincare",
+      "description": "Dermatologist-approved routines, serum layering guides, barrier repair advice, and glowing skin secrets.",
+      "seoTitle": "Skincare Routines, Tips & Dermatology Guides | Pretty Puff",
+      "metaDescription": "Learn how to build healthy skincare routines, correct common mistakes, and choose the best serums for radiant skin."
+    },
+    {
+      "id": "hair-care",
+      "name": "Hair Care",
+      "slug": "hair-care",
+      "description": "Essential rituals, nourishing oil treatments, and heat protection tips for silky, salon-worthy locks.",
+      "seoTitle": "Hair Care Tips & Silky Hair Rituals | Pretty Puff",
+      "metaDescription": "Explore expert hair care advice, oil treatments, and routines for smooth, healthy-looking hair."
+    },
+    {
+      "id": "fragrances",
+      "name": "Fragrances",
+      "slug": "fragrances",
+      "description": "The art of scent layering, perfume notes decoding, and choosing your signature fragrance for every season.",
+      "seoTitle": "Fragrance Guides, Notes & Scent Layering | Pretty Puff",
+      "metaDescription": "Explore artisanal perfume guides, fragrance longevity secrets, and signature scent recommendations."
+    },
+    {
+      "id": "body-care",
+      "name": "Body Care",
+      "slug": "body-care",
+      "description": "Head-to-toe body care rituals, velvety moisturizers, and pampering bath routines for baby-soft skin.",
+      "seoTitle": "Body Care Rituals & Glowing Skin Secrets | Pretty Puff",
+      "metaDescription": "Nourish your skin with luxurious body care tips, gentle exfoliators, and deep moisturizing routines."
+    },
+    {
+      "id": "nails",
+      "name": "Nails",
+      "slug": "nails",
+      "description": "Manicure care, cuticle nourishment, elegant nail colors, and techniques for long-lasting polish.",
+      "seoTitle": "Nail Care & Elegant Manicure Guides | Pretty Puff",
+      "metaDescription": "Tips and tricks for healthy cuticles, elegant nail shades, and salon-quality DIY manicures."
+    },
+    {
+      "id": "beauty-tips",
+      "name": "Beauty Tips",
+      "slug": "beauty-tips",
+      "description": "Quick beauty hacks, time-saving vanity secrets, and everyday confidence boosters from our beauty team.",
+      "seoTitle": "Quick Beauty Tips & Everyday Hacks | Pretty Puff",
+      "metaDescription": "Everyday beauty tips and hacks to elevate your routine with minimal effort and radiant results."
+    },
+    {
+      "id": "product-guides",
+      "name": "Product Guides",
+      "slug": "product-guides",
+      "description": "In-depth buyer guides, formulation comparisons, and how to pick the right beauty formulas for your unique needs.",
+      "seoTitle": "Beauty Product Guides & Ingredient Breakdowns | Pretty Puff",
+      "metaDescription": "Comprehensive cosmetic guides to help you choose the best foundations, serums, and beauty tools."
+    },
+    {
+      "id": "beauty-trends",
+      "name": "Beauty Trends",
+      "slug": "beauty-trends",
+      "description": "Stay ahead with the latest seasonal aesthetics, runway inspirations, clean beauty innovations, and 2026 trends.",
+      "seoTitle": "2026 Beauty Trends & Runway Forecasts | Pretty Puff",
+      "metaDescription": "Explore the hottest beauty and cosmetic trends for 2026, from glass skin to minimalist lip silhouettes."
+    },
+    {
+      "id": "pretty-puff-news",
+      "name": "Pretty Puff News",
+      "slug": "pretty-puff-news",
+      "description": "Brand announcements, behind-the-scenes formulation journeys, new collection launches, and community stories.",
+      "seoTitle": "Pretty Puff Brand News & Collection Launches",
+      "metaDescription": "Stay updated with new product drops, clean formulation milestones, and brand updates from Pretty Puff."
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": "post-01",
+      "title": "10 Makeup Tips for a Flawless Everyday Look",
+      "slug": "10-makeup-tips-for-a-flawless-everyday-look",
+      "excerpt": "Achieving an effortlessly glowing complexion does not require hours in front of the mirror. Discover our editorial team’s top 10 makeup secrets for a natural, all-day radiant finish.",
+      "featuredImage": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Model applying radiant everyday makeup with a beauty blender",
+      "category": "Makeup",
+      "categorySlug": "makeup",
+      "tags": [
+        "makeup tips",
+        "everyday makeup",
+        "flawless skin",
+        "beauty tutorial",
+        "foundation application"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe, specializing in modern skin-first beauty aesthetics."
+      },
+      "publishedAt": "2026-09-18",
+      "updatedAt": "2026-09-20",
+      "readingTime": 6,
+      "isFeatured": true,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-01",
+        "prod-02",
+        "prod-11",
+        "prod-04"
+      ],
+      "relatedArticleSlugs": [
+        "how-to-choose-the-right-foundation-for-your-skin",
+        "how-to-make-your-makeup-last-all-day",
+        "how-to-apply-concealer-for-a-natural-finish"
+      ],
+      "seoTitle": "10 Makeup Tips for a Flawless Everyday Look | Pretty Puff",
+      "metaDescription": "Master an effortless, luminous everyday makeup routine with 10 expert beauty tips from the Pretty Puff cosmetics editorial team.",
+      "focusKeyword": "makeup tips for everyday look",
+      "secondaryKeywords": [
+        "flawless everyday makeup",
+        "natural beauty routine",
+        "blending foundation tips",
+        "glowing everyday skin"
+      ],
+      "sections": [
+        {
+          "id": "the-art-of-skin-preparation",
+          "heading": "1. Skin Preparation Is 80% of the Magic",
+          "level": 2,
+          "paragraphs": [
+            "Many people assume that cakey foundation is caused by poor formula quality. In reality, over 80% of makeup settling and patchiness stems from dry, unprepared skin.",
+            "Before applying even a single drop of foundation, gently cleanse with a hydrating foam and pat in an essence or balancing toner. Allow your daily moisturizer to absorb for at least 3 to 5 minutes so it acts as a smooth, welcoming cushion for pigment."
+          ],
+          "tip": {
+            "title": "Pretty Puff Pro Tip",
+            "text": "If your skin feels extra dehydrated, mix half a drop of face oil or peptide serum directly into your liquid foundation for an instant dewy veil."
+          }
+        },
+        {
+          "id": "less-is-always-more",
+          "heading": "2. Embrace the \"Micro-Dotting\" Technique",
+          "level": 2,
+          "paragraphs": [
+            "Instead of slathering foundation all across the perimeter of your face, apply small micro-dots only where you experience redness, discoloration, or active breakouts—typically around the nose, center of the forehead, and chin.",
+            "Blend outward toward your hairline and jaw with a damp beauty sponge. This technique preserves the natural translucency of your skin along the cheekbones and temples, tricking the eye into thinking you are wearing no base at all."
+          ],
+          "bulletList": [
+            "Dot lightly at the center of the face where coverage is needed most.",
+            "Always dampen your makeup sponge with lukewarm water and squeeze out excess moisture in a towel.",
+            "Press, never drag—dragging moves pigment and creates micro-streaks."
+          ]
+        },
+        {
+          "id": "conceal-with-intention",
+          "heading": "3. Conceal with Surgical Precision",
+          "level": 2,
+          "paragraphs": [
+            "Heavy triangles of concealer beneath the eyes are a relic of 2016 YouTube tutorials. Today’s modern editorial aesthetic is all about targeted brightening.",
+            "Place a pinpoint dab at the inner corner of the tear duct and a subtle upward flick at the outer corner of the eye. Gently tap with your ring finger or a small fluffy blending brush to lift the whole contour naturally."
+          ],
+          "recommendedProductIds": [
+            "prod-02"
+          ]
+        },
+        {
+          "id": "cream-over-powder",
+          "heading": "4. Layer Creams Before You Touch Any Powder",
+          "level": 2,
+          "paragraphs": [
+            "To keep your skin supple and youthful, prioritize cream blushes, liquid bronzers, and subtle highlighting sticks. Powder absorbs moisture; creams mimic the radiant lipid layer of natural healthy dermis.",
+            "Smile softly and tap blush slightly higher than the apples of your cheeks along the cheekbone line. This delivers an instant lifting effect rather than dragging the face downward."
+          ],
+          "quote": "Makeup should feel like a celebration of what makes you uniquely you, not a heavy costume that hides your true skin."
+        },
+        {
+          "id": "selective-setting",
+          "heading": "5. Set Selectively, Never Globally",
+          "level": 2,
+          "paragraphs": [
+            "You rarely need to powder your entire face. Dip a miniature tapered brush into translucent micro-milled powder and press exclusively into the T-zone: the sides of the nostrils, between the eyebrows, and the crease of the chin.",
+            "Leave your cheeks, temples, and brow bones powder-free so natural light reflects beautifully during daylight hours."
+          ],
+          "table": {
+            "headers": [
+              "Zone",
+              "Powder Requirement",
+              "Recommended Technique"
+            ],
+            "rows": [
+              [
+                "Under-eyes",
+                "Very minimal",
+                "Press lightly with a velvet puff; brush off excess immediately"
+              ],
+              [
+                "T-Zone / Forehead",
+                "Moderate",
+                "Use translucent loose powder to control midday shine"
+              ],
+              [
+                "Cheeks & Jawline",
+                "None",
+                "Keep fresh and radiant to catch daylight"
+              ]
+            ]
+          }
+        },
+        {
+          "id": "groom-soft-brows",
+          "heading": "6. Brushed-Up, Feathery Brows",
+          "level": 2,
+          "paragraphs": [
+            "Sharp, blocky brows instantly age the face. Instead, brush your brow hairs upward using a clear nourishing styling gel or spoolie. Fill in only sparse gaps with light, hair-like strokes using an ultra-fine brow pencil."
+          ]
+        },
+        {
+          "id": "curling-lashes-the-right-way",
+          "heading": "7. The Triple-Pump Lash Curl",
+          "level": 2,
+          "paragraphs": [
+            "Curling your lashes opens up your eyes more effectively than heavy eyeliner. Use an eyelash curler at three distinct points: clamp gently at the base for 4 seconds, walk it to the midpoint for 3 seconds, and give a final soft squeeze near the tips.",
+            "Follow with one coat of defining mascara focused at the roots rather than clumped at the ends."
+          ]
+        },
+        {
+          "id": "blotted-lip-method",
+          "heading": "8. The Soft Blotted French Lip",
+          "level": 2,
+          "paragraphs": [
+            "A harsh, rigid lip outline can feel overpowering for casual mornings. Instead, tap your favourite rose or nude lipstick onto the center of your lips and diffuse outwards using your clean fingertip.",
+            "This creates an effortless, bitten-rose stain that fades evenly throughout coffee breaks and meetings without requiring constant touch-ups."
+          ],
+          "recommendedProductIds": [
+            "prod-03"
+          ]
+        },
+        {
+          "id": "hydrating-facial-mist",
+          "heading": "9. Lock in Moisture with a Rosewater Finish",
+          "level": 2,
+          "paragraphs": [
+            "After you complete your makeup, hold a balancing facial mist approximately 10 inches from your face and mist in an \"X\" and \"T\" motion. This melds powders and creams together seamlessly, eliminating any powdery residue."
+          ]
+        },
+        {
+          "id": "midday-freshening",
+          "heading": "10. Touch Up with Blotting Paper, Not Compacts",
+          "level": 2,
+          "paragraphs": [
+            "When natural sebum surfaces around 2:00 PM, resist the temptation to layer more compact powder on top. Adding powder over midday oil creates a muddy texture.",
+            "Instead, press a clean blotting sheet against the shiny zones, then mist with hydrating spray. Your morning glow will look instantly revived!"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-02",
+      "title": "How to Choose the Right Foundation for Your Skin",
+      "slug": "how-to-choose-the-right-foundation-for-your-skin",
+      "excerpt": "Struggling to find your holy-grail foundation? Learn how to accurately diagnose your skin type, undertone, and formula needs to avoid ghost-white casts or oxidized orange finishes.",
+      "featuredImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Assortment of liquid foundations matched against various skin tones",
+      "category": "Product Guides",
+      "categorySlug": "product-guides",
+      "tags": [
+        "foundation",
+        "shade matching",
+        "undertones",
+        "skin types",
+        "cosmetic guide"
+      ],
+      "author": {
+        "name": "Sameer Liaqat",
+        "role": "Beauty Formulations & Product Strategist",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "bio": "Sameer leads ingredient safety and skin-first cosmetics formulation testing at Pretty Puff."
+      },
+      "publishedAt": "2026-09-15",
+      "updatedAt": "2026-09-19",
+      "readingTime": 7,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-01",
+        "prod-02",
+        "prod-11"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "how-to-apply-concealer-for-a-natural-finish",
+        "matte-vs-glossy-makeup-which-look-is-right-for-you"
+      ],
+      "seoTitle": "How to Choose the Right Foundation for Your Skin | Pretty Puff",
+      "metaDescription": "Step-by-step guide to finding your ideal foundation shade, formula, and undertone. Discover whether matte, radiant, or satin finish matches your skin best.",
+      "focusKeyword": "how to choose foundation for skin",
+      "secondaryKeywords": [
+        "find foundation shade",
+        "cool warm neutral undertone test",
+        "foundation for oily skin",
+        "dry skin foundation guide"
+      ],
+      "sections": [
+        {
+          "id": "understanding-undertones",
+          "heading": "Decoding Your Skin Undertone: Warm, Cool, or Neutral?",
+          "level": 2,
+          "paragraphs": [
+            "Surface skin color changes with sun exposure, seasonal shifts, and mild redness, but your undertone remains constant for life. Choosing the wrong undertone is why foundation looks ashy (too cool) or like orange paint (too warm)."
+          ],
+          "bulletList": [
+            "Cool Undertones: Veins appear blue or purplish under natural daylight; silver jewelry complements your skin best.",
+            "Warm Undertones: Veins appear greenish; gold jewelry glows naturally against your complexion.",
+            "Neutral Undertones: A balanced mix of both; you look equally stunning in silver and yellow gold."
+          ],
+          "tip": {
+            "title": "The White Sheet Test",
+            "text": "Hold a piece of pure bright white printer paper beside your clean, unmade-up face in natural window light. If your skin looks yellow, golden, or peach against the paper, you are warm. If it reads rosy or pinkish, you are cool."
+          }
+        },
+        {
+          "id": "matching-formula-to-skin-type",
+          "heading": "Matching Formula to Your Unique Skin Type",
+          "level": 2,
+          "paragraphs": [
+            "Once your undertone is established, the formula texture must work in harmony with your sebaceous glands."
+          ],
+          "table": {
+            "headers": [
+              "Skin Type",
+              "Best Formula Finish",
+              "Ingredients to Look For"
+            ],
+            "rows": [
+              [
+                "Oily / Combination",
+                "Soft Velvet Matte",
+                "Niacinamide, Silica, Salicylic derivatives"
+              ],
+              [
+                "Dry / Flaky",
+                "Dewy / Radiant Hydrating",
+                "Hyaluronic Acid, Squalane, Glycerin"
+              ],
+              [
+                "Sensitive / Reactive",
+                "Clean Mineral Fluid",
+                "Centella Asiatica, Aloe, Fragrance-Free"
+              ]
+            ]
+          }
+        },
+        {
+          "id": "where-to-test-swatches",
+          "heading": "Never Swatch on the Back of Your Hand",
+          "level": 2,
+          "paragraphs": [
+            "The skin on your hands receives drastically different UV exposure and is frequently drier or tanned compared to your face. Always swatch three promising shades side-by-side along your lower jawline down to the neck.",
+            "Step into natural sunlight and wait 5 minutes to see if the formula oxidizes before making your final selection."
+          ],
+          "recommendedProductIds": [
+            "prod-01"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-03",
+      "title": "Beginner's Guide to Building a Skincare Routine",
+      "slug": "beginners-guide-to-building-a-skincare-routine",
+      "excerpt": "Overwhelmed by 12-step skincare trends? You do not need a bathroom full of potions. Here is the dermatologist-approved 4-step foundation for healthy, radiant skin.",
+      "featuredImage": "https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Gentle facial cleanser and botanical moisturizer on a minimalist vanity",
+      "category": "Skincare",
+      "categorySlug": "skincare",
+      "tags": [
+        "skincare routine",
+        "beginners skincare",
+        "cleansing",
+        "moisturizer",
+        "healthy skin"
+      ],
+      "author": {
+        "name": "Dr. Maria Siddiqui",
+        "role": "Consultant Dermatologist & Beauty Contributor",
+        "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+        "bio": "Dr. Maria is a practicing clinical dermatologist with a passion for demystifying active skincare ingredients."
+      },
+      "publishedAt": "2026-09-14",
+      "updatedAt": "2026-09-19",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-08",
+        "prod-07",
+        "prod-06",
+        "prod-05"
+      ],
+      "relatedArticleSlugs": [
+        "7-skincare-mistakes-you-should-avoid",
+        "serum-vs-moisturiser-whats-the-difference"
+      ],
+      "seoTitle": "Beginner's Guide to Building a Skincare Routine | Pretty Puff",
+      "metaDescription": "Discover how to build an easy, effective morning and nighttime skincare routine. Learn the essential order of cleanser, toner, serum, and moisturizer.",
+      "focusKeyword": "beginners guide skincare routine",
+      "secondaryKeywords": [
+        "easy skincare steps",
+        "morning skincare order",
+        "essential skin products",
+        "cleanser toner moisturizer sequence"
+      ],
+      "sections": [
+        {
+          "id": "why-simplicity-wins",
+          "heading": "Why A Simplified Routine Wins Every Time",
+          "level": 2,
+          "paragraphs": [
+            "When beginners rush into complex regimens mixing retinoids, AHAs, BHAs, and high-percentage vitamin C, the skin barrier often rebels with redness, micro-tears, and breakout purges.",
+            "A healthy skin barrier requires only four core pillars: Cleanse, Hydrate, Moisturize, and Protect."
+          ]
+        },
+        {
+          "id": "morning-routine-steps",
+          "heading": "The Morning Routine (AM): Shield & Hydrate",
+          "level": 2,
+          "paragraphs": [
+            "In the morning, your primary goal is shielding delicate skin cells against environmental pollution, blue light, and intense UV rays."
+          ],
+          "numberedList": [
+            "Gentle Cleanser: Wash away overnight sebum without stripping your moisture barrier.",
+            "Balancing Toner: Restore optimal acidic skin pH (5.5) and deliver immediate hydration.",
+            "Antioxidant Serum: Optional step for brightening and free-radical defense.",
+            "Lightweight Moisturiser: Seal in water content with ceramides.",
+            "Broad-Spectrum Sunscreen (SPF 50): The non-negotiable step that prevents 90% of premature aging."
+          ],
+          "recommendedProductIds": [
+            "prod-08",
+            "prod-07",
+            "prod-06"
+          ]
+        },
+        {
+          "id": "evening-routine-steps",
+          "heading": "The Evening Routine (PM): Repair & Nourish",
+          "level": 2,
+          "paragraphs": [
+            "During sleep, cellular turnover speeds up significantly. Cleanse thoroughly to dissolve grime, makeup, and sunscreen, then layer replenishing peptide or ceramide creams to wake up plump and rested."
+          ],
+          "tip": {
+            "title": "The Golden 60-Second Rule",
+            "text": "Spend a full 60 seconds gently massaging your cleansing foam with your fingertips around the jawline and nose. This breaks down trapped sebum without aggressive scrubbing."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-04",
+      "title": "7 Skincare Mistakes You Should Avoid for Clear Skin",
+      "slug": "7-skincare-mistakes-you-should-avoid",
+      "excerpt": "Are you unknowingly sabotaging your skin? From hot water washing to sleeping on dirty pillowcases, avoid these common habits that trigger irritation and breakouts.",
+      "featuredImage": "https://images.unsplash.com/photo-1512290900672-1f4a9b5f9e80?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Woman washing face with lukewarm water avoiding common skincare errors",
+      "category": "Skincare",
+      "categorySlug": "skincare",
+      "tags": [
+        "skincare mistakes",
+        "clear skin",
+        "acne prevention",
+        "skin barrier",
+        "beauty advice"
+      ],
+      "author": {
+        "name": "Dr. Maria Siddiqui",
+        "role": "Consultant Dermatologist & Beauty Contributor",
+        "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+        "bio": "Dr. Maria is a practicing clinical dermatologist with a passion for demystifying active skincare ingredients."
+      },
+      "publishedAt": "2026-09-12",
+      "updatedAt": "2026-09-18",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-08",
+        "prod-06",
+        "prod-07"
+      ],
+      "relatedArticleSlugs": [
+        "beginners-guide-to-building-a-skincare-routine",
+        "serum-vs-moisturiser-whats-the-difference"
+      ],
+      "seoTitle": "7 Skincare Mistakes You Should Avoid | Pretty Puff Journal",
+      "metaDescription": "Are these common beauty missteps ruining your complexion? Learn the 7 worst skincare mistakes and how to correct them for healthy, glowing skin.",
+      "focusKeyword": "skincare mistakes to avoid",
+      "secondaryKeywords": [
+        "bad skincare habits",
+        "damaged skin barrier signs",
+        "over exfoliating mistakes",
+        "face washing mistakes"
+      ],
+      "sections": [
+        {
+          "id": "over-exfoliating",
+          "heading": "1. Over-Exfoliating with Harsh Physical Scrubs",
+          "level": 2,
+          "paragraphs": [
+            "Scrubbing with coarse apricot kernels or daily acid peels damages the lipid matrix of your skin barrier, triggering rebound oiliness, stinging, and redness. Limit gentle exfoliation to once or twice a week at most."
+          ]
+        },
+        {
+          "id": "skipping-sunscreen-indoors",
+          "heading": "2. Skipping Sunscreen on Cloudy Days or Indoors",
+          "level": 2,
+          "paragraphs": [
+            "UVA rays penetrate glass windows, cloud cover, and light rain. If you work near a window, broad-spectrum UV protection remains vital year-round."
+          ]
+        },
+        {
+          "id": "applying-serum-to-dry-skin",
+          "heading": "3. Applying Hyaluronic Acid to Bone-Dry Skin",
+          "level": 2,
+          "paragraphs": [
+            "Hyaluronic acid is a moisture magnet. In dry or air-conditioned environments, applying it to dry skin can cause it to pull moisture from your deeper dermis rather than the air. Always mist with toner first to give the molecule water to bind with!"
+          ],
+          "tip": {
+            "title": "The Damp Skin Secret",
+            "text": "Apply your hydrating serums within 30 seconds of stepping out of the shower while your pores are primed and skin is lightly damp."
+          }
+        },
+        {
+          "id": "dirty-phone-screens",
+          "heading": "4. Holding Bacteria-Laden Phones Against Your Cheeks",
+          "level": 2,
+          "paragraphs": [
+            "Notice breakouts concentrated on one cheek? Your smartphone screen collects oil, makeup, and outdoor bacteria. Wipe your phone with an alcohol swab daily or use earphones for phone calls."
+          ]
+        },
+        {
+          "id": "using-hot-water",
+          "heading": "5. Washing Your Face with Steaming Hot Water",
+          "level": 2,
+          "paragraphs": [
+            "Hot water strips away natural protective ceramides, leaving your face tight and prone to broken capillaries. Stick strictly to lukewarm or room temperature water."
+          ]
+        },
+        {
+          "id": "frequently-switching-products",
+          "heading": "6. Switching Serums Every 4 Days",
+          "level": 2,
+          "paragraphs": [
+            "Skin cellular turnover takes approximately 28 to 40 days. Give any new brightening or barrier treatment at least 4 to 6 weeks of consistent use before evaluating results."
+          ]
+        },
+        {
+          "id": "neglecting-the-neck",
+          "heading": "7. Stopping Your Skincare at the Jawline",
+          "level": 2,
+          "paragraphs": [
+            "The neck and décolletage have fewer sebaceous glands and show sun damage, wrinkles, and sagging earlier than the face. Always sweep serums and moisturizers down to your collarbones."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-05",
+      "title": "How to Apply Concealer for a Natural, Crease-Free Finish",
+      "slug": "how-to-apply-concealer-for-a-natural-finish",
+      "excerpt": "Tired of under-eye concealer settling into fine lines or caking up by noon? Master the hydrating prep, placement angles, and setting secrets used by backstage makeup artists.",
+      "featuredImage": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Delicate application of liquid concealer around the eyes with a soft brush",
+      "category": "Makeup",
+      "categorySlug": "makeup",
+      "tags": [
+        "concealer",
+        "crease-free",
+        "dark circles",
+        "under-eye makeup",
+        "makeup tutorial"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-09-10",
+      "updatedAt": "2026-09-17",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": false,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-02",
+        "prod-11",
+        "prod-12"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "how-to-choose-the-right-foundation-for-your-skin"
+      ],
+      "seoTitle": "How to Apply Concealer for a Natural Finish | Pretty Puff",
+      "metaDescription": "Learn how to apply under-eye concealer without creasing or caking. Expert guide on prep, lifting placement, and crease-proof setting powder techniques.",
+      "focusKeyword": "how to apply concealer natural finish",
+      "secondaryKeywords": [
+        "crease free under eye concealer",
+        "cover dark circles naturally",
+        "concealer placement for eye lift",
+        "best concealer blending"
+      ],
+      "sections": [
+        {
+          "id": "under-eye-skin-prep",
+          "heading": "Hydrate the Delicate Under-Eye Canvas First",
+          "level": 2,
+          "paragraphs": [
+            "The skin surrounding your eyes is roughly 40% thinner than the rest of your face. If this area lacks hydration, pigment immediately clings to dryness and accentuates tiny texture lines.",
+            "Gently tap a pea-sized amount of lightweight eye gel or peptide cream with your ring finger. Wait 2 minutes for it to sink in before introducing pigment."
+          ]
+        },
+        {
+          "id": "placement-for-an-instant-facelift",
+          "heading": "Modern Concealer Placement That Lifts",
+          "level": 2,
+          "paragraphs": [
+            "Avoid the outdated heavy triangle. Instead, place one dot right in the inner hollow where blue or purple shadows concentrate. Place a second dot angling upward from the outer lash line toward the temple.",
+            "Blend both dots with a damp micro beauty sponge using pressing motions. You will achieve twice the brightening with half the product."
+          ],
+          "recommendedProductIds": [
+            "prod-02",
+            "prod-11"
+          ]
+        },
+        {
+          "id": "the-crease-check",
+          "heading": "The Essential 60-Second \"Crease Check\"",
+          "level": 2,
+          "paragraphs": [
+            "Before setting with powder, look up toward the ceiling and check your under-eyes in a mirror. Tap out any tiny creases that may have formed naturally with a clean fingertip, then immediately dust an ultra-fine translucent powder over the area."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-06",
+      "title": "Matte vs Glossy Makeup: Which Look Is Right for You?",
+      "slug": "matte-vs-glossy-makeup-which-look-is-right-for-you",
+      "excerpt": "Velveteen cloud skin or dewy glass radiance? We break down the aesthetic differences, longevity factors, and skin type compatibility to help you choose your signature finish.",
+      "featuredImage": "https://images.unsplash.com/photo-1503236823255-94609f598e71?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Comparison portrait showing luminous glossy finish versus velvety matte complexion",
+      "category": "Beauty Trends",
+      "categorySlug": "beauty-trends",
+      "tags": [
+        "matte makeup",
+        "dewy makeup",
+        "glass skin",
+        "makeup trends",
+        "beauty aesthetic"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-09-08",
+      "updatedAt": "2026-09-16",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-01",
+        "prod-04",
+        "prod-03"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "how-to-make-your-makeup-last-all-day",
+        "2026-beauty-trends-to-watch"
+      ],
+      "seoTitle": "Matte vs Glossy Makeup: Which Look Is Right for You? | Pretty Puff",
+      "metaDescription": "Matte vs dewy makeup showdown: compare skin types, climate suitability, longevity, and trending aesthetics to find your perfect everyday beauty style.",
+      "focusKeyword": "matte vs glossy makeup",
+      "secondaryKeywords": [
+        "velvet matte skin",
+        "dewy glass skin makeup",
+        "which makeup finish is best",
+        "oily vs dry skin makeup finish"
+      ],
+      "sections": [
+        {
+          "id": "the-allure-of-velvet-matte",
+          "heading": "The Modern Velvet Matte Aesthetic",
+          "level": 2,
+          "paragraphs": [
+            "Gone are the days of flat, chalky, mask-like matte finishes. The contemporary velvet matte (or \"cloud skin\") aesthetic provides poreless, blurred coverage with a soft interior glow.",
+            "It is the gold standard for warm, humid climates and long festive events where photography flashes and humidity would melt high-shine formulas."
+          ]
+        },
+        {
+          "id": "the-glass-skin-appeal",
+          "heading": "The Radiance of Glossy Glass Skin",
+          "level": 2,
+          "paragraphs": [
+            "Glossy, dewy makeup prioritizes fresh skin reflection. It celebrates hyper-hydrated skin, juicy lip oils, and light-catching balms. It looks incredibly fresh for daytime brunches and golden-hour outdoor settings."
+          ]
+        },
+        {
+          "id": "head-to-head-comparison",
+          "heading": "Head-to-Head Comparison",
+          "level": 2,
+          "paragraphs": [
+            "Here is a quick reference guide to see which look suits your daily lifestyle best:"
+          ],
+          "table": {
+            "headers": [
+              "Factor",
+              "Velvet Matte",
+              "Luminous Dewy / Glossy"
+            ],
+            "rows": [
+              [
+                "Wear Time",
+                "12–16 hours with minimal touch-ups",
+                "4–7 hours; requires occasional refreshing"
+              ],
+              [
+                "Best Climate",
+                "Hot, humid, or rainy seasons",
+                "Cool, dry, winter, or air-conditioned spaces"
+              ],
+              [
+                "Ideal Skin Type",
+                "Normal, Combination, Oily",
+                "Dry, Mature, Dehydrated"
+              ],
+              [
+                "Photo Friendliness",
+                "Exceptional flash photography finish",
+                "Stunning in golden sunlight; can look oily under harsh flash"
+              ]
+            ]
+          },
+          "tip": {
+            "title": "The Editorial Hybrid (\"Cloud Skin\")",
+            "text": "Why choose only one? Keep your forehead, chin, and nose soft matte, while letting your cheekbones and lip center stay ultra-dewy."
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-07",
+      "title": "How to Make Your Makeup Last All Day in Heat and Humidity",
+      "slug": "how-to-make-your-makeup-last-all-day",
+      "excerpt": "From primer sandwiching to setting spray sealing techniques, discover foolproof methods to keep your base fresh from 8 AM meetings to midnight dinners.",
+      "featuredImage": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Woman holding setting spray misting face for all-day makeup longevity",
+      "category": "Beauty Tips",
+      "categorySlug": "beauty-tips",
+      "tags": [
+        "long-lasting makeup",
+        "makeup longevity",
+        "setting spray",
+        "sweat proof beauty",
+        "beauty hacks"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-09-05",
+      "updatedAt": "2026-09-15",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-01",
+        "prod-02",
+        "prod-04"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "how-to-choose-the-right-foundation-for-your-skin"
+      ],
+      "seoTitle": "How to Make Your Makeup Last All Day | Pretty Puff Beauty Journal",
+      "metaDescription": "Proven techniques to make your foundation, concealer, and blush last 12+ hours without fading, melting, or creasing in high humidity.",
+      "focusKeyword": "how to make makeup last all day",
+      "secondaryKeywords": [
+        "sweatproof makeup tips",
+        "long lasting foundation routine",
+        "makeup setting spray sandwich",
+        "humidity proof makeup"
+      ],
+      "sections": [
+        {
+          "id": "primer-grip",
+          "heading": "1. The Primer Sandwich Technique",
+          "level": 2,
+          "paragraphs": [
+            "Backstage artists swear by \"sandwiching\" liquids between light setting mist. Lightly mist your bare, moisturized face with setting spray before applying foundation. Then apply your base, and mist once again.",
+            "This locks the makeup between two polymer film barriers, preventing skin perspiration from breaking through the pigment."
+          ]
+        },
+        {
+          "id": "powder-puff-press",
+          "heading": "2. Press with a Velveteen Puff, Do Not Swirl",
+          "level": 2,
+          "paragraphs": [
+            "Swirling a large powder brush displaces the liquid foundation you just perfected. Instead, load a triangular velour puff with finely milled translucent powder, tap the excess on the back of your wrist, and press firmly into oily zones."
+          ]
+        },
+        {
+          "id": "waterproof-cream-bases",
+          "heading": "3. Anchor Powders Over Creams",
+          "level": 2,
+          "paragraphs": [
+            "Always layer a matching powder blush over your cream blush. The cream delivers pigment depth and hydration, while the powder locks it in place for all-day vibrancy."
+          ],
+          "recommendedProductIds": [
+            "prod-04"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-08",
+      "title": "How to Choose the Perfect Lipstick Shade for Your Undertone",
+      "slug": "how-to-choose-the-perfect-lipstick-shade",
+      "excerpt": "Nude, berry, terracotta, or classic crimson? Find the most flattering lip colors tailored to your natural skin undertone, lip pigmentation, and everyday aesthetic.",
+      "featuredImage": "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Range of luxury satin and matte lipsticks in warm rose, nude, and red shades",
+      "category": "Makeup",
+      "categorySlug": "makeup",
+      "tags": [
+        "lipstick guide",
+        "nude lips",
+        "lip swatches",
+        "red lipstick",
+        "color matching"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-09-02",
+      "updatedAt": "2026-09-14",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-03"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "how-to-choose-the-right-foundation-for-your-skin"
+      ],
+      "seoTitle": "How to Choose the Perfect Lipstick Shade | Pretty Puff",
+      "metaDescription": "Discover your dream lipstick shade based on your skin undertone. Explore expert recommendations for nudes, pinks, berries, and classic reds.",
+      "focusKeyword": "how to choose lipstick shade",
+      "secondaryKeywords": [
+        "best nude lipstick for warm skin",
+        "red lipstick for cool undertones",
+        "flattering lipstick colors",
+        "how to find my lip shade"
+      ],
+      "sections": [
+        {
+          "id": "the-secret-to-everyday-nude",
+          "heading": "Finding Your True \"My Lips But Better\" (MLBB) Nude",
+          "level": 2,
+          "paragraphs": [
+            "A common mistake is picking a nude lipstick that matches your facial skin tone, which results in a washed-out concealer-lip look. Your ideal nude should match the deeper tone of your natural inner bottom lip or gumline.",
+            "If you have warm olive or golden undertones, seek nudes with caramel, terracotta, or warm peach undertones. For cool complexions, look for dusty rose, mauve, or subtle berry undertones."
+          ],
+          "recommendedProductIds": [
+            "prod-03"
+          ]
+        },
+        {
+          "id": "red-lipstick-rules",
+          "heading": "The Universal Red Lipstick Guide",
+          "level": 2,
+          "paragraphs": [
+            "Anyone can wear a bold red lip—the secret is harmonizing with your teeth and undertone:"
+          ],
+          "bulletList": [
+            "Blue-Based Ruby Reds: Instantly make your teeth appear whiter and look breathtaking on neutral-to-cool skin.",
+            "Orange-Based Scarlet Reds: Emit vibrant warmth and flatter golden and deep skin tones gorgeously.",
+            "Brick / Terracotta Reds: The effortless, wearable red for everyday daytime wear."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-09",
+      "title": "Simple Hair Care Tips for Silky, Healthier-Looking Hair",
+      "slug": "simple-hair-care-tips-for-healthier-looking-hair",
+      "excerpt": "Revive dull, frizzy strands with clean botanical rituals. Learn the power of scalp pre-cleansing, argan oil sealing, and heat protection habits.",
+      "featuredImage": "https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Woman with glossy, healthy, flowing chestnut hair in soft daylight",
+      "category": "Hair Care",
+      "categorySlug": "hair-care",
+      "tags": [
+        "hair care",
+        "healthy hair",
+        "hair oiling",
+        "frizz control",
+        "hair tips"
+      ],
+      "author": {
+        "name": "Sameer Liaqat",
+        "role": "Beauty Formulations & Product Strategist",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "bio": "Sameer leads ingredient safety and skin-first cosmetics formulation testing at Pretty Puff."
+      },
+      "publishedAt": "2026-08-28",
+      "updatedAt": "2026-09-12",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": false,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-09"
+      ],
+      "relatedArticleSlugs": [
+        "beginners-guide-to-building-a-skincare-routine",
+        "everyday-beauty-essentials-every-woman-should-have"
+      ],
+      "seoTitle": "Simple Hair Care Tips for Healthier-Looking Hair | Pretty Puff",
+      "metaDescription": "Transform dry, frizzy hair into silky, salon-smooth tresses with simple botanical oiling routines, sulfate-free washing, and gentle drying techniques.",
+      "focusKeyword": "simple hair care tips",
+      "secondaryKeywords": [
+        "how to get silky hair",
+        "hair oiling ritual benefits",
+        "prevent hair breakage",
+        "frizz free hair routine"
+      ],
+      "sections": [
+        {
+          "id": "scalp-care-is-hair-care",
+          "heading": "Treat Your Scalp Like Your Facial Skin",
+          "level": 2,
+          "paragraphs": [
+            "Healthy hair follicles require clean, oxygenated, well-nourished soil to thrive. Excessive dry shampoo buildup and hard water minerals congest follicles, leading to thinning and dullness.",
+            "Incorporate a gentle scalp pre-oil massage once a week using lightweight botanicals like Argan, Jojoba, and Rosemary. Massage in circular motions for 5 minutes to stimulate blood microcirculation before showering."
+          ],
+          "recommendedProductIds": [
+            "prod-09"
+          ]
+        },
+        {
+          "id": "microfiber-drying",
+          "heading": "Ditch the Rough Terry Towel",
+          "level": 2,
+          "paragraphs": [
+            "Wet hair is at its most fragile, vulnerable state. Rubbing vigorously with a heavy cotton bath towel raises the hair cuticles, causing instant split ends and uncontrollable frizz.",
+            "Squeeze excess water gently with a soft microfiber towel or an old clean cotton t-shirt, and always apply a drop of hair oil to damp mid-lengths and ends."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-10",
+      "title": "Serum vs Moisturiser: What's the Real Difference?",
+      "slug": "serum-vs-moisturiser-whats-the-difference",
+      "excerpt": "Do you really need both a serum and a moisturizer? Discover molecular weight differences, active ingredient penetration, and how to layer them for maximum glow.",
+      "featuredImage": "https://images.unsplash.com/photo-1608248597359-2c70d47d488c?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Dropper dispensing golden peptide serum next to rich hydrating cream jar",
+      "category": "Skincare",
+      "categorySlug": "skincare",
+      "tags": [
+        "serum vs moisturizer",
+        "skincare layering",
+        "peptide serum",
+        "hydration",
+        "product guide"
+      ],
+      "author": {
+        "name": "Dr. Maria Siddiqui",
+        "role": "Consultant Dermatologist & Beauty Contributor",
+        "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80",
+        "bio": "Dr. Maria is a practicing clinical dermatologist with a passion for demystifying active skincare ingredients."
+      },
+      "publishedAt": "2026-08-25",
+      "updatedAt": "2026-09-10",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-05",
+        "prod-06"
+      ],
+      "relatedArticleSlugs": [
+        "beginners-guide-to-building-a-skincare-routine",
+        "7-skincare-mistakes-you-should-avoid"
+      ],
+      "seoTitle": "Serum vs Moisturiser: What's the Difference? | Pretty Puff",
+      "metaDescription": "Understand the key differences between face serums and moisturizers. Learn molecular weights, functions, and why both are essential for healthy skin.",
+      "focusKeyword": "serum vs moisturiser difference",
+      "secondaryKeywords": [
+        "do i need both serum and moisturizer",
+        "how to layer serum and moisturizer",
+        "face serum benefits",
+        "best hydrating cream"
+      ],
+      "sections": [
+        {
+          "id": "molecular-breakdown",
+          "heading": "Molecular Size: The Core Distinction",
+          "level": 2,
+          "paragraphs": [
+            "The fundamental difference between a serum and a moisturizer lies in molecular structure. Serums are formulated with ultra-small molecular weights designed to penetrate through the outer stratum corneum and deliver concentrated actives (like peptides, niacinamide, and hyaluronic acid) deep into the epidermis.",
+            "Moisturizers, conversely, feature larger molecular emollients and occlusives (like squalane, ceramides, and shea butter). Their purpose is to sit on the surface, sealing in hydration and reinforcing the physical lipid barrier."
+          ],
+          "recommendedProductIds": [
+            "prod-05",
+            "prod-06"
+          ]
+        },
+        {
+          "id": "can-one-replace-the-other",
+          "heading": "Can a Serum Replace a Moisturizer?",
+          "level": 2,
+          "paragraphs": [
+            "In short: No. If you use a serum without a moisturizer, the water content you just applied will evaporate into ambient air via transepidermal water loss (TEWL). Always treat serum as the nourishing treatment and moisturizer as the protective seal."
+          ],
+          "table": {
+            "headers": [
+              "Feature",
+              "Facial Serum",
+              "Moisturising Cream"
+            ],
+            "rows": [
+              [
+                "Primary Function",
+                "Targeted treatment (hyperpigmentation, elasticity)",
+                "Barrier reinforcement & water locking"
+              ],
+              [
+                "Texture",
+                "Lightweight liquid, gel, or fluid",
+                "Rich cream, lotion, or balm"
+              ],
+              [
+                "Application Order",
+                "First (directly on toned damp skin)",
+                "Second (over top of serums)"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-11",
+      "title": "How to Properly Clean Your Makeup Brushes and Sponges",
+      "slug": "how-to-properly-clean-your-makeup-brushes",
+      "excerpt": "Dirty makeup brushes harbor acne-causing bacteria, dead skin cells, and oxidized oils. Learn how to wash and dry your beauty tools without shedding or damaging bristles.",
+      "featuredImage": "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Cleaning professional makeup brushes with gentle soap and warm water",
+      "category": "Product Guides",
+      "categorySlug": "product-guides",
+      "tags": [
+        "brush cleaning",
+        "beauty tools",
+        "hygiene",
+        "makeup sponge care",
+        "beauty tips"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-08-20",
+      "updatedAt": "2026-09-08",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": false,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-12",
+        "prod-11"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "everyday-beauty-essentials-every-woman-should-have"
+      ],
+      "seoTitle": "How to Properly Clean Your Makeup Brushes | Pretty Puff",
+      "metaDescription": "Step-by-step guide to washing, sanitizing, and reshaping cosmetic brushes and beauty sponges. Prevent breakouts and extend brush lifespan.",
+      "focusKeyword": "how to clean makeup brushes",
+      "secondaryKeywords": [
+        "wash beauty blender sponge",
+        "how often to wash makeup brushes",
+        "clean brushes acne prevention",
+        "care for vegan synthetic brushes"
+      ],
+      "sections": [
+        {
+          "id": "the-hidden-dangers-of-dirty-brushes",
+          "heading": "Why Dirty Brushes Cause Mysterious Breakouts",
+          "level": 2,
+          "paragraphs": [
+            "Every time you swirl a foundation brush across your face, it picks up facial sebum and dead skin cells. Trapped inside a warm makeup bag, this becomes an ideal breeding ground for bacteria.",
+            "Foundation and concealer brushes should be cleaned once a week, while eyeshadow brushes can be washed every two weeks."
+          ]
+        },
+        {
+          "id": "the-cleansing-process",
+          "heading": "The 4-Step Gentle Cleaning Protocol",
+          "level": 2,
+          "paragraphs": [
+            "Follow these simple steps to keep bristles soft and prevent the ferrule glue from loosening:"
+          ],
+          "numberedList": [
+            "Wet only the bristles pointing downward under lukewarm running water. Never submerge the metal ferrule or wooden handle.",
+            "Swirl bristles against a gentle clarifying brush cleanser or baby shampoo in the palm of your hand until a rich lather forms.",
+            "Rinse thoroughly with bristles pointing down until water runs completely clear.",
+            "Gently squeeze excess water with a clean towel, reshape the head, and lay flat over the edge of a table to air dry."
+          ],
+          "recommendedProductIds": [
+            "prod-12",
+            "prod-11"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-12",
+      "title": "Everyday Beauty Essentials Every Woman Should Have in Her Bag",
+      "slug": "everyday-beauty-essentials-every-woman-should-have",
+      "excerpt": "Streamline your cosmetics pouch. From multi-tasking tint balms to peptide hydration mists, here are the non-negotiable essentials for effortless on-the-go glamour.",
+      "featuredImage": "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Curated vanity bag with lip balm, compact blush, concealer, and travel mist",
+      "category": "Beauty Tips",
+      "categorySlug": "beauty-tips",
+      "tags": [
+        "beauty essentials",
+        "everyday pouch",
+        "minimalist makeup",
+        "capsule beauty",
+        "beauty routine"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-08-16",
+      "updatedAt": "2026-09-05",
+      "readingTime": 5,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-02",
+        "prod-03",
+        "prod-04",
+        "prod-10"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "easy-beauty-tips-for-a-fresh-everyday-look"
+      ],
+      "seoTitle": "Everyday Beauty Essentials Every Woman Should Have | Pretty Puff",
+      "metaDescription": "Discover the capsule beauty essentials that belong in every handbag. The top 6 multitasking products for quick touch-ups and fresh everyday elegance.",
+      "focusKeyword": "everyday beauty essentials",
+      "secondaryKeywords": [
+        "capsule makeup bag",
+        "essential cosmetics every woman needs",
+        "on the go beauty products",
+        "handbag makeup checklist"
+      ],
+      "sections": [
+        {
+          "id": "the-capsule-beauty-philosophy",
+          "heading": "The Power of the Capsule Beauty Wardrobe",
+          "level": 2,
+          "paragraphs": [
+            "Carrying a heavy 20-product makeup bag is impractical and stressful. Modern elegance is about versatile, multi-tasking formulas that transition seamlessly from desk to dinner."
+          ],
+          "bulletList": [
+            "Hydrating Brightening Concealer: To erase 3 PM fatigue and touch up red spots.",
+            "Multi-Use Tinted Balm: Dabs onto lips, apples of cheeks, and eyelids in seconds.",
+            "Pocket Eau de Parfum Roller: To refresh your signature floral scent before meetings.",
+            "Oil Blotting Film: Instantly erases shine without adding powdery buildup."
+          ],
+          "recommendedProductIds": [
+            "prod-02",
+            "prod-03",
+            "prod-10"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-13",
+      "title": "How to Choose a Fragrance for Every Occasion and Season",
+      "slug": "how-to-choose-a-fragrance-for-every-occasion",
+      "excerpt": "Scent is your invisible accessory. Discover top, heart, and base notes, how body chemistry alters fragrance projection, and which scents complement work, evenings, and weddings.",
+      "featuredImage": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Elegant glass perfume bottle with rose petals and citrus notes in amber light",
+      "category": "Fragrances",
+      "categorySlug": "fragrances",
+      "tags": [
+        "fragrance guide",
+        "perfume notes",
+        "signature scent",
+        "eau de parfum",
+        "scent layering"
+      ],
+      "author": {
+        "name": "Sameer Liaqat",
+        "role": "Beauty Formulations & Product Strategist",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "bio": "Sameer leads ingredient safety and skin-first cosmetics formulation testing at Pretty Puff."
+      },
+      "publishedAt": "2026-08-11",
+      "updatedAt": "2026-09-02",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": false,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-10"
+      ],
+      "relatedArticleSlugs": [
+        "everyday-beauty-essentials-every-woman-should-have",
+        "2026-beauty-trends-to-watch"
+      ],
+      "seoTitle": "How to Choose a Fragrance for Every Occasion | Pretty Puff",
+      "metaDescription": "A masterclass in choosing your signature perfume. Understand fragrance notes, pulse point application, longevity tips, and event pairings.",
+      "focusKeyword": "how to choose a fragrance",
+      "secondaryKeywords": [
+        "perfume notes explained",
+        "signature scent for women",
+        "how to make perfume last longer",
+        "best fragrance for occasions"
+      ],
+      "sections": [
+        {
+          "id": "the-olfactory-pyramid",
+          "heading": "Understanding the Olfactory Pyramid: Top, Heart, & Base",
+          "level": 2,
+          "paragraphs": [
+            "A luxury fragrance unfolds like a musical piece. The top notes (citrus, bergamot, fresh pear) greet you in the initial 15 minutes. The heart notes (rose damascena, jasmine, peony) bloom for 3–5 hours, while the base notes (amber, sandalwood, vanilla) linger on clothing and skin until the next day."
+          ],
+          "recommendedProductIds": [
+            "prod-10"
+          ]
+        },
+        {
+          "id": "pulse-points",
+          "heading": "Never Rub Your Wrists Together",
+          "level": 2,
+          "paragraphs": [
+            "Rubbing your wrists generates friction heat that bruises the delicate top notes of the fragrance, altering the composer’s intended scent balance. Spray lightly onto pulse points—the base of the neck, inner wrists, and behind the ears—and let it air-dry naturally."
+          ],
+          "tip": {
+            "title": "The Petroleum Jelly Longevity Hack",
+            "text": "Apply an unscented dab of moisturizer or petroleum jelly to your pulse points before spraying perfume. Lipids hold onto fragrance molecules up to three times longer!"
+          }
+        }
+      ]
+    },
+    {
+      "id": "post-14",
+      "title": "Easy Beauty Tips for a Fresh, Radiant Everyday Look",
+      "slug": "easy-beauty-tips-for-a-fresh-everyday-look",
+      "excerpt": "Looking put-together does not require complicated routines. Discover fast, 5-minute beauty enhancements that instantly awaken tired eyes and revitalize tired complexions.",
+      "featuredImage": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Fresh-faced smiling woman with natural glowing skin in natural window light",
+      "category": "Beauty Tips",
+      "categorySlug": "beauty-tips",
+      "tags": [
+        "quick beauty tips",
+        "natural glow",
+        "5 minute makeup",
+        "fresh face",
+        "everyday routine"
+      ],
+      "author": {
+        "name": "Ayla Noor",
+        "role": "Lead Makeup Stylist & Editorial Director",
+        "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80",
+        "bio": "Ayla has spent over 9 years working with celebrity makeup artists across South Asia and Europe."
+      },
+      "publishedAt": "2026-08-05",
+      "updatedAt": "2026-08-29",
+      "readingTime": 4,
+      "isFeatured": false,
+      "isPopular": false,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-02",
+        "prod-04",
+        "prod-03"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "everyday-beauty-essentials-every-woman-should-have"
+      ],
+      "seoTitle": "Easy Beauty Tips for a Fresh Everyday Look | Pretty Puff",
+      "metaDescription": "Short on time? Here are 5 rapid, transformative beauty habits to look instantly fresh, bright, and polished in under five minutes each morning.",
+      "focusKeyword": "easy beauty tips for fresh look",
+      "secondaryKeywords": [
+        "quick natural makeup",
+        "how to look fresh without heavy makeup",
+        "5 minute morning beauty routine",
+        "glowing everyday tips"
+      ],
+      "sections": [
+        {
+          "id": "the-5-minute-face",
+          "heading": "The 5-Minute Morning Transformation",
+          "level": 2,
+          "paragraphs": [
+            "When rushing out the door, focus strictly on the three features that frame your facial expression: your brows, your under-eyes, and your lips."
+          ],
+          "bulletList": [
+            "Under-Eye Brightener: Tap two dots of concealer and blend upward toward temples.",
+            "Brow Gel: Brush hairs upward to open up eye space without drawing dark lines.",
+            "Cheek & Lip Flush: Use a soft cream blush on both the high apples of your cheeks and the center of your lips."
+          ],
+          "recommendedProductIds": [
+            "prod-02",
+            "prod-04",
+            "prod-03"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "post-15",
+      "title": "2026 Beauty Trends: From Cloud Skin to Peptide-Infused Color",
+      "slug": "2026-beauty-trends-to-watch",
+      "excerpt": "The beauty industry is evolving towards skin-first hybrid formulas, sustainable packaging, and subtle, whispered luxury. Here is your definitive editorial forecast for 2026 trends.",
+      "featuredImage": "https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=1400&q=80",
+      "featuredImageAlt": "Modern beauty editorial forecast model showcasing cloud skin and botanical makeup aesthetics",
+      "category": "Beauty Trends",
+      "categorySlug": "beauty-trends",
+      "tags": [
+        "2026 beauty trends",
+        "cloud skin",
+        "hybrid makeup",
+        "skincare makeup hybrids",
+        "trend forecast"
+      ],
+      "author": {
+        "name": "Sameer Liaqat",
+        "role": "Beauty Formulations & Product Strategist",
+        "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80",
+        "bio": "Sameer leads ingredient safety and skin-first cosmetics formulation testing at Pretty Puff."
+      },
+      "publishedAt": "2026-08-01",
+      "updatedAt": "2026-09-01",
+      "readingTime": 6,
+      "isFeatured": false,
+      "isPopular": true,
+      "isPublished": true,
+      "relatedProductIds": [
+        "prod-01",
+        "prod-05",
+        "prod-03"
+      ],
+      "relatedArticleSlugs": [
+        "10-makeup-tips-for-a-flawless-everyday-look",
+        "matte-vs-glossy-makeup-which-look-is-right-for-you"
+      ],
+      "seoTitle": "2026 Beauty Trends to Watch | Pretty Puff Editorial Journal",
+      "metaDescription": "Discover the biggest makeup and skincare trends of 2026. Explore cloud skin, peptide makeup hybrids, clean fragrance layering, and minimal aesthetics.",
+      "focusKeyword": "2026 beauty trends",
+      "secondaryKeywords": [
+        "cosmetics trends 2026",
+        "cloud skin trend",
+        "peptide infused makeup",
+        "clean beauty trends",
+        "future of cosmetics"
+      ],
+      "sections": [
+        {
+          "id": "the-hybrid-skincare-makeup-revolution",
+          "heading": "1. The Hybrid Revolution: Skincare Within Makeup",
+          "level": 2,
+          "paragraphs": [
+            "Consumers are rejecting cosmetics that merely sit as a cosmetic mask on top of the skin. The definitive trend of 2026 is makeup formulated with clinical-grade skincare actives: foundations fortified with niacinamide and hyaluronic acid, lipsticks with ceramides, and setting sprays infused with soothing centella."
+          ],
+          "recommendedProductIds": [
+            "prod-01",
+            "prod-05"
+          ]
+        },
+        {
+          "id": "cloud-skin-supremacy",
+          "heading": "2. \"Cloud Skin\" Replaces Hyper-Gloss",
+          "level": 2,
+          "paragraphs": [
+            "Extreme wet-look highlighter and sticky lip glosses are transitioning into \"Cloud Skin\"—a soft-focus, demi-matte blur that looks lit from within. It offers the flattering poreless illusion of powder with the supple movement of skin creams."
+          ]
+        },
+        {
+          "id": "minimalist-lip-stains",
+          "heading": "3. Diffused Velvet Lip Stains Over Heavy Liners",
+          "level": 2,
+          "paragraphs": [
+            "Overlined, rigid lip pencil boundaries are stepping aside for soft, blurred watercolor lip stains. Formulas with cloud-velvet finishes like Pretty Puff Petal Lipstick deliver long-wearing pigment without drying the lips."
+          ],
+          "recommendedProductIds": [
+            "prod-03"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -88,7 +88,13 @@ const STANDARD_SHIPPING_FEE = 250;
 
 export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Navigation State
-  const [currentPage, setCurrentPage] = useState<NavigationPage>('home');
+  const [currentPage, setCurrentPage] = useState<NavigationPage>(() => {
+    if (typeof window !== 'undefined') {
+      const path = window.location.pathname.toLowerCase();
+      if (path.includes('/admin')) return 'admin';
+    }
+    return 'home';
+  });
   const [currentCategory, setCurrentCategory] = useState<string | null>(null);
   const [currentSubcategory, setCurrentSubcategory] = useState<string | null>(null);
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);

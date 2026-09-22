@@ -1,0 +1,79 @@
+# ============================================================
+# Pretty Puff Luxury Cosmetics — Production Apache .htaccess
+# Designed for standard cPanel Shared Hosting (PHP 8.2+ / Apache 2.4+)
+# ============================================================
+
+DirectoryIndex index.php index.html
+Options -Indexes
+RewriteEngine On
+
+# ------------------------------------------------------------
+# 1. Force HTTPS on Production Domain
+# ------------------------------------------------------------
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^(www\.)?prettypuff\.store$ [NC]
+RewriteRule ^(.*)$ https://prettypuff.store/$1 [L,R=301]
+
+# ------------------------------------------------------------
+# 2. Strict Security: Block Sensitive Files & Dumps
+# ------------------------------------------------------------
+<FilesMatch "^(\.env|\.git|.*\.sql|safe_schema\.sql|database_schema\.sql|seed_data\.json|composer\.(json|lock)|package(-lock)?\.json|.*\.log|.*\.ini|.*\.local\.php)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block direct browser access to internal PHP directories
+RewriteRule ^(config|includes|database|install|private-config)(/.*)?$ - [F,L]
+
+# ------------------------------------------------------------
+# 3. Pass Authorization Header to PHP (FastCGI / PHP-FPM / cPanel)
+# ------------------------------------------------------------
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+# ------------------------------------------------------------
+# 4. Dynamic XML Sitemap & Robots.txt
+# ------------------------------------------------------------
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
+RewriteRule ^robots\.txt$ robots.txt [L]
+
+# ------------------------------------------------------------
+# 5. API Routing — Forward all /api/* to PHP API Front Controller
+# ------------------------------------------------------------
+RewriteRule ^api(/.*)?$ api/index.php [QSA,L]
+
+# ------------------------------------------------------------
+# 6. Direct access to existing static files & directories
+# (CSS, JS, images, fonts, uploads)
+# ------------------------------------------------------------
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# ------------------------------------------------------------
+# 7. Front-Controller & SPA Routing
+# Routes /shop, /product/*, /blog/*, /admin, /cart, /checkout, etc. to index.php
+# ------------------------------------------------------------
+RewriteRule ^ index.php [L]
+
+# ------------------------------------------------------------
+# 8. Security Headers
+# ------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# ------------------------------------------------------------
+# 9. Gzip / Deflate Compression
+# ------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json image/svg+xml
+</IfModule>

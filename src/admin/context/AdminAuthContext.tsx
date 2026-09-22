@@ -24,17 +24,34 @@ interface AdminAuthContextType {
 const AdminAuthContext = createContext<AdminAuthContextType | undefined>(undefined);
 
 export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [token, setToken] = useState<string | null>(() => {
+    return localStorage.getItem('pretty_puff_admin_token');
+  });
+
   const [admin, setAdmin] = useState<AdminUser | null>(() => {
     try {
       const saved = localStorage.getItem('pretty_puff_admin_user');
-      return saved ? JSON.parse(saved) : null;
+      if (saved) {
+        return JSON.parse(saved);
+      }
+      const savedToken = localStorage.getItem('pretty_puff_admin_token');
+      if (savedToken) {
+        const parts = savedToken.split('.');
+        if (parts.length === 3) {
+          const payload = JSON.parse(atob(parts[1]));
+          return {
+            id: payload.id || 'admin-root',
+            email: payload.email || 'admin@prettypuff.store',
+            name: payload.name || 'Admin',
+            role: payload.role || 'SUPER_ADMIN',
+            permissions: ['*'],
+          };
+        }
+      }
+      return null;
     } catch {
       return null;
     }
-  });
-
-  const [token, setToken] = useState<string | null>(() => {
-    return localStorage.getItem('pretty_puff_admin_token');
   });
 
   const [isLoading, setIsLoading] = useState(true);

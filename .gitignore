@@ -7,12 +7,18 @@ build/
 server.js
 seed.js
 .cpanel-staging/
+.php-staging/
+*.zip
 
-# Environment variables
+# Environment variables & Private Credentials
 .env
 .env.local
 .env.*.local
 !.env.example
+private-config/
+*.local.php
+php/config/database.local.php
+
 
 # SQLite Database
 *.db

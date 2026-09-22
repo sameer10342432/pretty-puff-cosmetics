@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, Mail, Sparkles, ArrowRight, ShieldCheck, KeyRound } from 'lucide-react';
+import { Lock, Mail, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useAdminAuth } from '../context/AdminAuthContext';
 import { api } from '../../services/api';
 
@@ -25,11 +25,6 @@ export const AdminLoginPage: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleUseDemo = () => {
-    setEmail('sameerliaqat81@gmail.com');
-    setPassword('Admin@PrettyPuff2026');
   };
 
   const handleForgotSubmit = async (e: React.FormEvent) => {
@@ -79,7 +74,7 @@ export const AdminLoginPage: React.FC = () => {
                 required
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="sameerliaqat81@gmail.com"
+                placeholder="admin@example.com"
                 className="w-full pl-10 pr-4 py-2.5 bg-[#25252E] border border-[#3A3A46] rounded-xl text-sm text-white focus:outline-none focus:border-[#C24560] placeholder-gray-500 transition-colors"
               />
             </div>
@@ -127,20 +122,8 @@ export const AdminLoginPage: React.FC = () => {
           </button>
         </form>
 
-        {/* Demo Account Helper */}
-        <div className="mt-6 pt-6 border-t border-[#2E2E38] text-center">
-          <button
-            type="button"
-            onClick={handleUseDemo}
-            className="inline-flex items-center gap-2 text-xs text-[#F8CAD1] hover:text-white px-3 py-1.5 rounded-lg bg-[#25252E] border border-[#3A3A46] transition-colors"
-          >
-            <KeyRound className="w-3.5 h-3.5" />
-            <span>Autofill Super Admin Demo Credentials</span>
-          </button>
-        </div>
-
         {/* Return to website */}
-        <div className="mt-4 text-center">
+        <div className="mt-6 pt-6 border-t border-[#2E2E38] text-center">
           <a href="/" className="text-xs text-gray-500 hover:text-gray-300 transition-colors">
             ← Return to Pretty Puff customer store
           </a>

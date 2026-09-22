@@ -6,7 +6,7 @@ interface SalesChartProps {
 }
 
 export const SalesTrendChart: React.FC<SalesChartProps> = ({ data }) => {
-  if (!data || data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     return (
       <div className="h-64 flex items-center justify-center text-xs text-gray-400">
         No sales data recorded yet for this period.
@@ -14,13 +14,19 @@ export const SalesTrendChart: React.FC<SalesChartProps> = ({ data }) => {
     );
   }
 
-  const maxSales = Math.max(...data.map(d => d.sales), 1000);
+  const safeData = data.map(d => ({
+    date: d.date || '',
+    sales: typeof d.sales === 'number' && !isNaN(d.sales) ? d.sales : (Number(d.sales) || 0),
+    orders: typeof d.orders === 'number' && !isNaN(d.orders) ? d.orders : (Number(d.orders) || 0),
+  }));
+
+  const maxSales = Math.max(...safeData.map(d => d.sales), 1000);
   const height = 220;
   const width = 600;
   const padding = 40;
 
-  const points = data.map((d, i) => {
-    const x = padding + (i / Math.max(1, data.length - 1)) * (width - 2 * padding);
+  const points = safeData.map((d, i) => {
+    const x = padding + (i / Math.max(1, safeData.length - 1)) * (width - 2 * padding);
     const y = height - padding - (d.sales / maxSales) * (height - 2 * padding);
     return { x, y, ...d };
   });
@@ -29,7 +35,9 @@ export const SalesTrendChart: React.FC<SalesChartProps> = ({ data }) => {
     return i === 0 ? `M ${p.x} ${p.y}` : `${acc} L ${p.x} ${p.y}`;
   }, '');
 
-  const areaD = `${pathD} L ${points[points.length - 1].x} ${height - padding} L ${points[0].x} ${height - padding} Z`;
+  const lastPointX = points[points.length - 1]?.x ?? (width - padding);
+  const firstPointX = points[0]?.x ?? padding;
+  const areaD = `${pathD} L ${lastPointX} ${height - padding} L ${firstPointX} ${height - padding} Z`;
 
   return (
     <div className="w-full overflow-x-auto">
@@ -75,7 +83,7 @@ export const SalesTrendChart: React.FC<SalesChartProps> = ({ data }) => {
             <circle cx={p.x} cy={p.y} r="8" fill="#C24560" opacity="0" className="group-hover:opacity-20 transition-opacity" />
 
             <text x={p.x} y={height - 15} textAnchor="middle" className="text-[10px] fill-gray-500 font-sans">
-              {p.date.split(',')[0]}
+              {p.date ? p.date.split(',')[0] : ''}
             </text>
 
             {/* Hover Tooltip */}
@@ -88,17 +96,22 @@ export const SalesTrendChart: React.FC<SalesChartProps> = ({ data }) => {
 };
 
 export const CategoryBreakdownChart: React.FC<{ data: { category: string; count: number }[] }> = ({ data }) => {
-  if (!data || data.length === 0) {
+  if (!Array.isArray(data) || data.length === 0) {
     return <div className="text-xs text-gray-400 py-8 text-center">No categories recorded.</div>;
   }
 
-  const total = data.reduce((acc, curr) => acc + curr.count, 0) || 1;
+  const safeData = data.map(item => ({
+    category: item.category || 'Uncategorized',
+    count: typeof item.count === 'number' && !isNaN(item.count) ? item.count : (Number(item.count) || 0),
+  }));
+
+  const total = safeData.reduce((acc, curr) => acc + curr.count, 0) || 1;
   const colors = ['#C24560', '#D4AF37', '#93587E', '#3D7068', '#DF8296', '#6F5C72'];
 
   return (
     <div className="space-y-3.5">
-      {data.map((item, index) => {
-        const percentage = Math.round((item.count / total) * 100);
+      {safeData.map((item, index) => {
+        const percentage = Math.min(100, Math.max(0, Math.round((item.count / total) * 100)));
         const color = colors[index % colors.length];
         return (
           <div key={item.category} className="space-y-1">

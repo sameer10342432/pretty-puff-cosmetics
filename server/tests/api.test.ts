@@ -16,8 +16,8 @@ describe('Pretty Puff Cosmetics Full-Stack API Test Suite', () => {
     const loginRes = await request(app)
       .post('/api/auth/login')
       .send({
-        email: 'sameerliaqat81@gmail.com',
-        password: process.env.ADMIN_PASSWORD || 'Admin@PrettyPuff2026',
+        email: process.env.ADMIN_EMAIL || 'sameerliaqat81@gmail.com',
+        password: process.env.ADMIN_PASSWORD || '',
       });
 
     expect(loginRes.status).toBe(200);
