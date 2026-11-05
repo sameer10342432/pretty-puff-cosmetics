@@ -175,15 +175,17 @@ export const HomePage: React.FC = () => {
                         New Arrival
                       </div>
                       <div className="font-serif text-sm text-[#1E1E24] font-medium">
-                        Rose Petal Cream Blush
+                        {allProducts[0] ? allProducts[0].name : 'Rose Petal Cream Blush'}
                       </div>
-                      <div className="text-xs font-semibold text-[#1E1E24]">Rs. 1,399</div>
+                      <div className="text-xs font-semibold text-[#1E1E24]">
+                        Rs. {(allProducts[0]?.salePrice || allProducts[0]?.price || 1399).toLocaleString()}
+                      </div>
                     </div>
                     <button
                       onClick={() =>
-                        navigateTo('product', {
-                          productSlug: 'pretty-puff-rose-petal-cream-blush',
-                        })
+                        allProducts[0]
+                          ? navigateTo('product', { productSlug: allProducts[0].slug })
+                          : navigateTo('shop')
                       }
                       className="px-3.5 py-1.5 bg-[#1E1E24] hover:bg-[#C24560] text-white text-[11px] font-semibold rounded-full transition-colors"
                     >

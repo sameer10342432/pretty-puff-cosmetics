@@ -161,6 +161,7 @@ export const ShopPage: React.FC = () => {
     selectedSubcategory,
     onlyInStock,
     onlyOnSale,
+    dbProducts,
     minRating,
     selectedPriceRange,
     sortBy,

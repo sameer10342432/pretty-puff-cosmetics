@@ -26,6 +26,60 @@ import { TermsPage } from './pages/TermsPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { AdminApp } from './admin/AdminApp';
 
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+class StoreErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  constructor(props: ErrorBoundaryProps) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error: Error): ErrorBoundaryState {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+    console.error('Pretty Puff Customer Store Error Boundary intercepted:', error, errorInfo);
+  }
+
+  handleReload = () => {
+    window.location.href = '/';
+  };
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#FCFAF8] flex items-center justify-center p-6 text-center font-sans">
+          <div className="max-w-md w-full bg-white border border-[#F0E6DE] rounded-3xl p-8 shadow-sm space-y-4">
+            <div className="w-14 h-14 rounded-full bg-[#FDF0F2] text-[#C24560] flex items-center justify-center mx-auto text-xl font-bold">
+              ✦
+            </div>
+            <h2 className="font-serif text-2xl text-[#1E1E24]">Experience Refreshed</h2>
+            <p className="text-xs text-[#7A7478] leading-relaxed">
+              We encountered a temporary viewing glitch. We have safely restored your bag and settings.
+            </p>
+            <button
+              onClick={this.handleReload}
+              className="w-full py-3 px-6 bg-[#1E1E24] hover:bg-[#C24560] text-white text-xs font-semibold tracking-wider uppercase rounded-full transition-colors"
+            >
+              Return to Pretty Puff Home
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 const AppContent: React.FC = () => {
   const { currentPage } = useShop();
 
@@ -99,7 +153,9 @@ const AppContent: React.FC = () => {
 export default function App() {
   return (
     <ShopProvider>
-      <AppContent />
+      <StoreErrorBoundary>
+        <AppContent />
+      </StoreErrorBoundary>
     </ShopProvider>
   );
 }

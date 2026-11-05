@@ -46,68 +46,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
 
   useEffect(() => {
-    let isMounted = true;
-    if (slug) {
-      setLoading(true);
-      api.products
-        .getBySlug(slug)
-        .then(res => {
-          if (isMounted && res?.success && res.data) {
-            setDbProduct(res.data);
-            if (Array.isArray(res.data.variants) && res.data.variants.length > 0) {
-              setSelectedVariant(res.data.variants[0]);
-            }
-          }
-        })
-        .catch(() => {})
-        .finally(() => {
-          if (isMounted) setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [slug]);
-
-  const product = dbProduct || PRODUCTS.find(p => p.slug === slug) || null;
-
-  const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [selectedColour, setSelectedColour] = useState<string | undefined>(
-    product.colours?.[0]?.name
-  );
-  const [selectedSize, setSelectedSize] = useState<string | undefined>(
-    product.sizes?.[0]
-  );
-  const [quantity, setQuantity] = useState(1);
-  const [activeTab, setActiveTab] = useState<
-    'description' | 'ingredients' | 'howToUse' | 'benefits' | 'shipping'
-  >('description');
-
-  // Review form state
-  const [showReviewForm, setShowReviewForm] = useState(false);
-  const [reviewName, setReviewName] = useState('');
-  const [reviewComment, setReviewComment] = useState('');
-  const [reviewRating, setReviewRating] = useState(5);
-  const [submittedReview, setSubmittedReview] = useState(false);
-  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
-  const [dbReviews, setDbReviews] = useState<any[]>([]);
-
-  // Fetch approved reviews from database
-  const loadProductReviews = async (pId: string) => {
-    try {
-      const res = await api.reviews.getByProduct(pId);
-      if (res?.success && Array.isArray(res.data)) {
-        setDbReviews(res.data);
-      }
-    } catch {
-      // fallback smoothly to static testimonials
-    }
-  };
-
-  // Sync when product changes
-  useEffect(() => {
+    if (!product) return;
     setActiveImageIndex(0);
     setSelectedColour(product.colours?.[0]?.name);
     setSelectedSize(product.sizes?.[0]);
@@ -116,19 +55,19 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
     recordRecentlyViewed(product);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     loadProductReviews(product.id);
-  }, [product.id]);
+  }, [product?.id]);
 
-  const inWishlist = isInWishlist(product.id);
+  const inWishlist = product ? isInWishlist(product.id) : false;
 
   // Related products
-  const relatedProducts = PRODUCTS.filter(
+  const relatedProducts = product ? PRODUCTS.filter(
     p => p.id !== product.id && p.category === product.category
-  ).slice(0, 4);
+  ).slice(0, 4) : [];
 
   // Frequently bought together
-  const frequentlyBought = PRODUCTS.filter(
+  const frequentlyBought = product ? PRODUCTS.filter(
     p => p.id !== product.id && p.id !== relatedProducts[0]?.id
-  ).slice(0, 2);
+  ).slice(0, 2) : [];
 
   const handleAddToCart = () => {
     addToCart(product, quantity, selectedVariant?.name, selectedColour, selectedSize);
@@ -216,7 +155,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
             onClick: () => navigateTo('shop'),
           },
           {
-            label: product.category.toUpperCase(),
+            label: (product.category || 'Shop').toUpperCase(),
             onClick: () => navigateTo('shop', { category: product.category }),
           },
           {
@@ -232,7 +171,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
         <div className="lg:col-span-7 space-y-4">
           <div className="relative aspect-square rounded-3xl overflow-hidden bg-[#FAF5F2] border border-[#F0E6DE] shadow-sm">
             <img
-              src={product.images[activeImageIndex] || product.thumbnail}
+              src={(product.images && product.images[activeImageIndex]) || product.thumbnail || ''}
               alt={product.name}
               className="w-full h-full object-cover object-center transition-all duration-300"
             />
@@ -260,7 +199,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
           </div>
 
           {/* Thumbnails Row */}
-          {product.images.length > 1 && (
+          {Array.isArray(product.images) && product.images.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
               {product.images.map((img: string, idx: number) => (
                 <button

@@ -68,7 +68,7 @@ export const QuickViewModal: React.FC = () => {
             <div className="p-6 bg-[#FAF5F2] flex flex-col justify-between">
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-white shadow-xs">
                 <img
-                  src={quickViewProduct.images[activeImageIndex] || quickViewProduct.thumbnail}
+                  src={(Array.isArray(quickViewProduct.images) && quickViewProduct.images[activeImageIndex]) || quickViewProduct.thumbnail || ""}
                   alt={quickViewProduct.name}
                   className="w-full h-full object-cover object-center"
                 />
@@ -82,7 +82,7 @@ export const QuickViewModal: React.FC = () => {
               </div>
 
               {/* Thumbnails */}
-              {quickViewProduct.images.length > 1 && (
+              {Array.isArray(quickViewProduct.images) && quickViewProduct.images.length > 1 && (
                 <div className="flex gap-2 mt-4 overflow-x-auto">
                   {quickViewProduct.images.map((img, idx) => (
                     <button
