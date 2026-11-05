@@ -37,6 +37,7 @@ export const ShopPage: React.FC = () => {
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState<number>(12);
   const [dbProducts, setDbProducts] = useState<Product[]>([]);
+  const allProducts = dbProducts.length > 0 ? dbProducts : PRODUCTS;
 
   useEffect(() => {
     let isMounted = true;
@@ -354,11 +355,11 @@ export const ShopPage: React.FC = () => {
                 }`}
               >
                 <span>All Categories</span>
-                <span className="text-[10px] text-[#A8A0A6]">{PRODUCTS.length}</span>
+                <span className="text-[10px] text-[#A8A0A6]">{allProducts.length}</span>
               </button>
 
               {CATEGORIES.map(cat => {
-                const count = PRODUCTS.filter(p => p.category === cat.slug).length;
+                const count = allProducts.filter(p => ((p as any).categorySlug || '').toLowerCase() === cat.slug.toLowerCase() || (p.category || '').toLowerCase() === cat.slug.toLowerCase() || (p.category || '').toLowerCase() === cat.name.toLowerCase()).length;
                 return (
                   <button
                     key={cat.id}

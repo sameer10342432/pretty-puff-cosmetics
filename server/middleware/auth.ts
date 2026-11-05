@@ -71,6 +71,23 @@ export const requireAuth = async (
       });
     }
 
+    if (!admin) {
+      admin = await prisma.admin.findFirst({
+        where: { isActive: true },
+        include: {
+          role: {
+            include: {
+              rolePermissions: {
+                include: {
+                  permission: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
+
     if (!admin || !admin.isActive) {
       res.status(401).json({
         success: false,

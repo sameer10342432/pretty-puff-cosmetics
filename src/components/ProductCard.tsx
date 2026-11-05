@@ -19,8 +19,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
   );
 
   const inWishlist = isInWishlist(product.id);
-  const hasSecondaryImage = product.images.length > 1;
-  const currentImage = isHovered && hasSecondaryImage ? product.images[1] : product.images[0];
+  const images = Array.isArray(product.images) && product.images.length > 0
+    ? product.images
+    : (product.thumbnail ? [product.thumbnail] : []);
+  const hasSecondaryImage = images.length > 1;
+  const currentImage = (isHovered && hasSecondaryImage ? images[1] : images[0]) || product.thumbnail || '';
 
   const handleCardClick = () => {
     navigateTo('product', { productSlug: product.slug });
@@ -104,7 +107,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         {/* Brand & Category */}
         <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-[#8C868A] font-medium mb-1">
           <span>{product.brand}</span>
-          <span className="capitalize text-[#B3A8A4]">{product.subcategory.replace('-', ' ')}</span>
+          <span className="capitalize text-[#B3A8A4]">{((product.subcategory || product.category || '').replace('-', ' '))}</span>
         </div>
 
         {/* Product Name */}
