@@ -472,6 +472,20 @@ router.post('/admin/create', requireAuth, requirePermission('products.manage'), 
 });
 
 // Update Product
+// Helper: Sanitize Product HTML description (removes dangerous scripts, preserves valid markup and images)
+function sanitizeProductHtml(rawHtml: string): string {
+  if (!rawHtml) return '';
+  return rawHtml
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/<iframe\b[^<]*(?:(?!<\/iframe>)<[^<]*)*<\/iframe>/gi, '')
+    .replace(/<object\b[^<]*(?:(?!<\/object>)<[^<]*)*<\/object>/gi, '')
+    .replace(/<embed\b[^<]*(?:(?!<\/embed>)<[^<]*)*<\/embed>/gi, '')
+    .replace(/\s*on\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/\s*on\w+\s*=\s*[^>\s]+/gi, '')
+    .replace(/javascript:/gi, '')
+    .trim();
+}
+
 router.put('/admin/:id', requireAuth, requirePermission('products.manage'), async (req, res): Promise<void> => {
   try {
     const { id } = req.params;
@@ -514,9 +528,9 @@ router.put('/admin/:id', requireAuth, requirePermission('products.manage'), asyn
         sku: body.sku ? body.sku.toUpperCase().trim() : existing.sku,
         brand: body.brand ?? existing.brand,
         categoryId: body.categoryId ?? existing.categoryId,
-        subcategoryId: body.subcategoryId !== undefined ? body.subcategoryId : existing.subcategoryId,
+        subcategoryId: body.subcategoryId !== undefined ? (body.subcategoryId && String(body.subcategoryId).trim() ? String(body.subcategoryId).trim() : null) : existing.subcategoryId,
         shortDescription: body.shortDescription ?? existing.shortDescription,
-        description: body.description ?? existing.description,
+        description: body.description !== undefined ? sanitizeProductHtml(body.description) : existing.description,
         price: body.price !== undefined ? parseFloat(body.price) : existing.price,
         salePrice: body.salePrice !== undefined ? (body.salePrice ? parseFloat(body.salePrice) : null) : existing.salePrice,
         discount: body.discount !== undefined ? (body.discount ? parseInt(body.discount, 10) : null) : existing.discount,
@@ -538,7 +552,30 @@ router.put('/admin/:id', requireAuth, requirePermission('products.manage'), asyn
         metaDescription: body.metaDescription !== undefined ? body.metaDescription : existing.metaDescription,
         focusKeyword: body.focusKeyword !== undefined ? body.focusKeyword : existing.focusKeyword,
       },
+      include: {
+        category: true,
+        subcategory: true,
+        variants: true,
+      },
     });
+
+    if (Array.isArray(body.variants) && body.variants.length > 0) {
+      for (const v of body.variants) {
+        if (v.id) {
+          await prisma.productVariant.update({
+            where: { id: v.id },
+            data: {
+              ...(v.name !== undefined && { name: v.name }),
+              ...(v.price !== undefined && { price: parseFloat(v.price) }),
+              ...(v.salePrice !== undefined && { salePrice: v.salePrice ? parseFloat(v.salePrice) : null }),
+              ...(v.stock !== undefined && { stock: parseInt(v.stock, 10) }),
+              ...(v.sku !== undefined && { sku: v.sku }),
+              ...(v.image !== undefined && { image: v.image }),
+            },
+          }).catch(() => null);
+        }
+      }
+    }
 
     res.json({
       success: true,

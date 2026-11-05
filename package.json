@@ -22,7 +22,8 @@
     "prisma:push": "node ./node_modules/prisma/build/index.js db push",
     "seed": "node ./node_modules/tsx/dist/cli.mjs server/seed.ts",
     "seed:prod": "node seed.js",
-    "test": "node ./node_modules/vitest/vitest.mjs run"
+    "test": "node ./node_modules/vitest/vitest.mjs run",
+    "cj:sync": "node cj-sync.js"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

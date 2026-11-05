@@ -14,6 +14,7 @@ import { CATEGORIES } from '../data/categories';
 import { PRODUCTS } from '../data/products';
 import { Product, SortOption } from '../types';
 import { formatPKR } from '../components/PriceDisplay';
+import { api } from '../services/api';
 
 export const ShopPage: React.FC = () => {
   const {
@@ -35,6 +36,17 @@ export const ShopPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<SortOption>('featured');
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState<boolean>(false);
   const [visibleCount, setVisibleCount] = useState<number>(12);
+  const [dbProducts, setDbProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.products.getAll().then(res => {
+      if (isMounted && res.success && Array.isArray(res.data) && res.data.length > 0) {
+        setDbProducts(res.data);
+      }
+    }).catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
 
   // Sync with context routing params
   useEffect(() => {
@@ -51,7 +63,8 @@ export const ShopPage: React.FC = () => {
 
   // Filter products
   const filteredProducts = useMemo(() => {
-    let result = [...PRODUCTS];
+    const allProducts = dbProducts.length > 0 ? dbProducts : PRODUCTS;
+    let result = [...allProducts];
 
     // Search query
     if (searchQuery) {
@@ -74,7 +87,10 @@ export const ShopPage: React.FC = () => {
 
     // Category
     if (selectedCategory && selectedCategory !== 'all') {
-      result = result.filter(p => p.category === selectedCategory);
+      result = result.filter(
+        p => ((p as any).categorySlug || '').toLowerCase() === selectedCategory.toLowerCase() ||
+             (p.category || '').toLowerCase() === selectedCategory.toLowerCase()
+      );
     }
 
     // Subcategory

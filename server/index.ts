@@ -44,6 +44,7 @@ import customersRoutes from './routes/customers';
 import usersRoutes from './routes/users';
 import analyticsRoutes from './routes/analytics';
 import uploadRoutes from './routes/upload';
+import cjRoutes from './routes/cj';
 import { prisma } from './prisma';
 
 const app = express();
@@ -155,6 +156,7 @@ app.use('/api/customers', customersRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/cjdropshipping', cjRoutes);
 
 // Serve Vite production build
 const distPath = path.resolve(appRootDir, 'dist');

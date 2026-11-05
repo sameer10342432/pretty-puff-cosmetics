@@ -6,6 +6,10 @@ dist/
 build/
 server.js
 seed.js
+cj-sync.js
+*.backup_*
+*.db.backup*
+seed.js
 .cpanel-staging/
 .php-staging/
 *.zip

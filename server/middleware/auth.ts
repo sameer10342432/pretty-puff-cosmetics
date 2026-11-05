@@ -39,7 +39,7 @@ export const requireAuth = async (
     };
 
     // Fetch active admin with permissions
-    const admin = await prisma.admin.findUnique({
+    let admin = await prisma.admin.findUnique({
       where: { id: decoded.id },
       include: {
         role: {
@@ -53,6 +53,23 @@ export const requireAuth = async (
         },
       },
     });
+
+    if (!admin && (decoded as any).email) {
+      admin = await prisma.admin.findUnique({
+        where: { email: String((decoded as any).email).toLowerCase().trim() },
+        include: {
+          role: {
+            include: {
+              rolePermissions: {
+                include: {
+                  permission: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }
 
     if (!admin || !admin.isActive) {
       res.status(401).json({

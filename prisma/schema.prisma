@@ -158,6 +158,7 @@ model Product {
   seoTitle          String?
   metaDescription   String?
   focusKeyword      String?
+  cjProductId       String?                @unique
   productImages     ProductImage[]
   reviews           ProductReview[]
   orderItems        OrderItem[]
@@ -188,6 +189,7 @@ model ProductVariant {
   colourName   String?
   colourHex    String?
   size         String?
+  cjVariantId  String?
   inventory    Inventory[]
   transactions InventoryTransaction[]
   orderItems   OrderItem[]
@@ -576,4 +578,62 @@ model InventoryTransaction {
   @@index([productId])
   @@index([variantId])
   @@index([changeType])
+}
+
+
+// -------------------------------------------------------------
+// CJdropshipping Integration Models
+// -------------------------------------------------------------
+
+model CjSetting {
+  id                   String    @id @default("default")
+  apiKey               String?
+  apiSecret            String?
+  accessToken          String?
+  accessTokenExpiry    DateTime?
+  refreshToken         String?
+  refreshTokenExpiry   DateTime?
+  openId               String?
+  currencyRatePkr      Float     @default(280.0)
+  pricingType          String    @default("PERCENTAGE") // PERCENTAGE, FIXED, MARGIN
+  markupValue          Float     @default(30.0)
+  estimatedShippingPkr Float     @default(350.0)
+  autoPublish          Boolean   @default(false)
+  autoSyncStock        Boolean   @default(true)
+  autoSyncPrice        Boolean   @default(false)
+  webhookUrl           String?
+  webhookActive        Boolean   @default(false)
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+}
+
+model CjProductMapping {
+  id               String    @id @default(uuid())
+  cjProductId      String    @unique
+  cjSku            String?
+  productId        String?
+  productName      String
+  supplierPriceUsd Float?
+  sellingPricePkr  Float?
+  status           String    @default("IMPORTED") // IMPORTED, DRAFT, FAILED, SYNCED
+  errorMessage     String?
+  lastSyncAt       DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([cjProductId])
+  @@index([productId])
+  @@index([status])
+}
+
+model CjImportLog {
+  id          String   @id @default(uuid())
+  cjProductId String
+  productName String
+  status      String   // SUCCESS, FAILED, WARNING
+  details     String?
+  createdAt   DateTime @default(now())
+
+  @@index([cjProductId])
+  @@index([createdAt])
 }

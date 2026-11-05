@@ -14,6 +14,7 @@ import {
   Sparkles,
   Layers,
   ArrowUpDown,
+  ExternalLink,
 } from 'lucide-react';
 import { api } from '../../services/api';
 import { formatPKR } from '../../components/PriceDisplay';
@@ -30,6 +31,8 @@ export const AdminProductsPage: React.FC = () => {
   const [editingProduct, setEditingProduct] = useState<any | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [descTab, setDescTab] = useState<'edit' | 'preview'>('edit');
 
   // Form State
   const initialForm = {
@@ -59,6 +62,7 @@ export const AdminProductsPage: React.FC = () => {
     seoTitle: '',
     metaDescription: '',
     focusKeyword: '',
+    variants: [] as any[],
   };
 
   const [formData, setFormData] = useState(initialForm);
@@ -69,6 +73,7 @@ export const AdminProductsPage: React.FC = () => {
 
   const loadData = async () => {
     try {
+      setLoading(true);
       const [prodRes, catRes] = await Promise.all([
         api.products.getAdminAll(),
         api.categories.getAll(),
@@ -89,40 +94,43 @@ export const AdminProductsPage: React.FC = () => {
       categoryId: categories[0]?.id || '',
     });
     setFormError('');
+    setDescTab('edit');
     setIsModalOpen(true);
   };
 
   const handleOpenEdit = (product: any) => {
     setEditingProduct(product);
     setFormData({
-      name: product.name,
-      slug: product.slug,
-      sku: product.sku,
+      name: product.name || '',
+      slug: product.slug || '',
+      sku: product.sku || '',
       brand: product.brand || 'Pretty Puff',
       categoryId: product.categoryId || categories[0]?.id || '',
       subcategoryId: product.subcategoryId || '',
       shortDescription: product.shortDescription || '',
       description: product.description || '',
-      price: product.price,
+      price: product.price ?? 0,
       salePrice: product.salePrice ?? '',
       discount: product.discount ?? '',
       costPrice: product.costPrice ?? '',
-      stock: product.stock,
-      lowStockThreshold: product.lowStockThreshold || 5,
-      images: product.images?.length > 0 ? product.images : initialForm.images,
+      stock: product.stock ?? 0,
+      lowStockThreshold: product.lowStockThreshold ?? 5,
+      images: Array.isArray(product.images) && product.images.length > 0 ? product.images : (product.thumbnail ? [product.thumbnail] : initialForm.images),
       thumbnail: product.thumbnail || product.images?.[0] || '',
       ingredients: product.ingredients || '',
       howToUse: product.howToUse || '',
-      benefits: product.benefits?.length > 0 ? product.benefits : initialForm.benefits,
+      benefits: Array.isArray(product.benefits) && product.benefits.length > 0 ? product.benefits : initialForm.benefits,
       isFeatured: !!product.isFeatured,
       isBestSeller: !!product.isBestSeller,
       isNew: !!product.isNew,
       isActive: product.isActive !== false,
-      seoTitle: product.seoTitle || product.name,
-      metaDescription: product.metaDescription || product.shortDescription,
+      seoTitle: product.seoTitle || product.name || '',
+      metaDescription: product.metaDescription || product.shortDescription || '',
       focusKeyword: product.focusKeyword || '',
+      variants: Array.isArray(product.variants) ? product.variants : [],
     });
     setFormError('');
+    setDescTab('edit');
     setIsModalOpen(true);
   };
 
@@ -130,6 +138,8 @@ export const AdminProductsPage: React.FC = () => {
     try {
       const res = await api.products.duplicate(id);
       if (res.success) {
+        setSuccessMessage('Product duplicated successfully.');
+        setTimeout(() => setSuccessMessage(''), 4000);
         loadData();
       }
     } catch (err: any) {
@@ -142,6 +152,8 @@ export const AdminProductsPage: React.FC = () => {
     try {
       await api.products.delete(id);
       setProducts(prev => prev.filter(p => p.id !== id));
+      setSuccessMessage(`Product "${name}" deleted successfully.`);
+      setTimeout(() => setSuccessMessage(''), 4000);
     } catch (err: any) {
       alert(err.message || 'Delete failed');
     }
@@ -155,7 +167,7 @@ export const AdminProductsPage: React.FC = () => {
       if (res.success && res.url) {
         setFormData(prev => ({
           ...prev,
-          thumbnail: res.url,
+          thumbnail: prev.thumbnail || res.url,
           images: [res.url, ...prev.images],
         }));
       }
@@ -172,26 +184,38 @@ export const AdminProductsPage: React.FC = () => {
     try {
       const payload: any = {
         ...formData,
-        price: parseFloat(formData.price as any),
-        salePrice: formData.salePrice ? parseFloat(formData.salePrice) : null,
-        discount: formData.discount ? parseInt(formData.discount, 10) : null,
-        costPrice: formData.costPrice ? parseFloat(formData.costPrice) : null,
-        stock: parseInt(formData.stock as any, 10),
-        lowStockThreshold: parseInt(formData.lowStockThreshold as any, 10),
+        categoryId: formData.categoryId || categories[0]?.id,
+        subcategoryId: formData.subcategoryId && formData.subcategoryId.trim() !== '' ? formData.subcategoryId.trim() : null,
+        price: parseFloat(formData.price as any) || 0,
+        salePrice: formData.salePrice !== '' && formData.salePrice !== null && !isNaN(parseFloat(formData.salePrice)) ? parseFloat(formData.salePrice) : null,
+        discount: formData.discount !== '' && formData.discount !== null && !isNaN(parseInt(formData.discount, 10)) ? parseInt(formData.discount, 10) : null,
+        costPrice: formData.costPrice !== '' && formData.costPrice !== null && !isNaN(parseFloat(formData.costPrice)) ? parseFloat(formData.costPrice) : null,
+        stock: parseInt(formData.stock as any, 10) || 0,
+        lowStockThreshold: parseInt(formData.lowStockThreshold as any, 10) || 5,
+        isActive: Boolean(formData.isActive),
+        isFeatured: Boolean(formData.isFeatured),
+        isBestSeller: Boolean(formData.isBestSeller),
+        isNew: Boolean(formData.isNew),
+        images: formData.images || [],
+        thumbnail: formData.thumbnail || formData.images?.[0] || '',
+        variants: formData.variants || [],
       };
 
-      if (!payload.slug) {
+      if (!payload.slug || payload.slug.trim() === '') {
         payload.slug = payload.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
       }
 
       if (editingProduct) {
         await api.products.update(editingProduct.id, payload);
+        setSuccessMessage(`Product "${payload.name}" updated successfully!`);
       } else {
         await api.products.create(payload);
+        setSuccessMessage(`Product "${payload.name}" created successfully!`);
       }
 
       setIsModalOpen(false);
-      loadData();
+      setTimeout(() => setSuccessMessage(''), 5000);
+      await loadData();
     } catch (err: any) {
       setFormError(err.message || 'Failed to save product.');
     } finally {
@@ -202,8 +226,8 @@ export const AdminProductsPage: React.FC = () => {
   // Filter products
   const filteredProducts = products.filter(p => {
     const matchSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.sku.toLowerCase().includes(searchQuery.toLowerCase());
+      (p.name || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (p.sku || '').toLowerCase().includes(searchQuery.toLowerCase());
     const matchCategory =
       categoryFilter === 'ALL' ||
       p.category?.toLowerCase() === categoryFilter.toLowerCase() ||
@@ -213,6 +237,23 @@ export const AdminProductsPage: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Success Notification Banner */}
+      {successMessage && (
+        <div className="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-800 font-medium flex items-center justify-between shadow-xs transition-all">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>{successMessage}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSuccessMessage('')}
+            className="text-emerald-500 hover:text-emerald-700 p-1"
+          >
+            <X className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
+
       {/* Top Header & Search Bar */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-[#EBE0D7] shadow-xs">
         <div className="flex items-center gap-3 flex-1 max-w-md">
@@ -286,18 +327,25 @@ export const AdminProductsPage: React.FC = () => {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-3">
                         <img
-                          src={p.thumbnail || p.images?.[0]}
+                          src={p.thumbnail || p.images?.[0] || 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?auto=format&fit=crop&w=100&q=80'}
                           alt={p.name}
-                          className="w-10 h-10 rounded-lg object-cover bg-gray-50 shrink-0"
+                          className="w-10 h-10 rounded-lg object-cover bg-gray-50 shrink-0 border border-gray-100"
                         />
                         <div className="max-w-xs truncate">
                           <div className="font-medium text-gray-900 truncate">{p.name}</div>
-                          <div className="text-[10px] text-gray-400">{p.brand}</div>
+                          <div className="text-[10px] text-gray-400 flex items-center gap-1.5">
+                            <span>{p.brand}</span>
+                            {p.cjProductId && (
+                              <span className="px-1.5 py-0.2 bg-purple-50 text-purple-700 rounded text-[9px] font-mono">
+                                CJ
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="py-3 px-4 font-mono text-gray-600">{p.sku}</td>
-                    <td className="py-3 px-4 text-gray-600">{p.category}</td>
+                    <td className="py-3 px-4 text-gray-600">{p.category || 'Cosmetics'}</td>
                     <td className="py-3 px-4 font-semibold text-gray-900">
                       {p.salePrice ? (
                         <div className="flex items-center gap-1.5">
@@ -325,13 +373,13 @@ export const AdminProductsPage: React.FC = () => {
                     </td>
                     <td className="py-3 px-4">
                       <span
-                        className={`inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold ${
+                        className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-semibold ${
                           p.isActive
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-gray-100 text-gray-500'
+                            ? 'bg-emerald-100 text-emerald-800'
+                            : 'bg-amber-100 text-amber-800'
                         }`}
                       >
-                        {p.isActive ? 'Active' : 'Draft'}
+                        {p.isActive ? 'Active & Published' : 'Draft'}
                       </span>
                     </td>
                     <td className="py-3 px-4 text-right">
@@ -373,11 +421,18 @@ export const AdminProductsPage: React.FC = () => {
           <div className="w-full max-w-3xl bg-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-[#F0E6DE] my-8 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between border-b border-[#F0E6DE] pb-4 mb-6">
               <div>
-                <h3 className="font-serif text-2xl text-[#1E1E24]">
-                  {editingProduct ? 'Edit Product' : 'Create New Product'}
-                </h3>
-                <p className="text-xs text-gray-500">
-                  Fill in cosmetics details, pricing, shades, and search engine metadata.
+                <div className="flex items-center gap-2">
+                  <h3 className="font-serif text-2xl text-[#1E1E24]">
+                    {editingProduct ? 'Edit Product' : 'Create New Product'}
+                  </h3>
+                  {editingProduct?.cjProductId && (
+                    <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-[10px] font-semibold rounded-md uppercase tracking-wider">
+                      CJdropshipping Imported
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-gray-500 mt-1">
+                  Update product details, pricing, stock, imagery, and live publishing status.
                 </p>
               </div>
               <button
@@ -447,7 +502,7 @@ export const AdminProductsPage: React.FC = () => {
                     <label className="block font-medium text-gray-700 mb-1">Category *</label>
                     <select
                       value={formData.categoryId}
-                      onChange={e => setFormData(prev => ({ ...prev, categoryId: e.target.value }))}
+                      onChange={e => setFormData(prev => ({ ...prev, categoryId: e.target.value, subcategoryId: '' }))}
                       className="w-full px-3 py-2 border border-[#E0D5CE] rounded-xl text-xs focus:outline-none focus:border-[#C24560] bg-white"
                     >
                       {categories.map(c => (
@@ -470,15 +525,59 @@ export const AdminProductsPage: React.FC = () => {
                   />
                 </div>
 
+                {/* Description with Edit / Preview Switch */}
                 <div>
-                  <label className="block font-medium text-gray-700 mb-1">Full Description *</label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={formData.description}
-                    onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                    className="w-full px-3 py-2 border border-[#E0D5CE] rounded-xl text-xs focus:outline-none focus:border-[#C24560]"
-                  />
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="font-medium text-gray-700">Full Description *</label>
+                    <div className="flex items-center gap-1 bg-[#FAF7F5] border border-[#E0D5CE] rounded-lg p-0.5 text-[10px]">
+                      <button
+                        type="button"
+                        onClick={() => setDescTab('edit')}
+                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
+                          descTab === 'edit'
+                            ? 'bg-[#C24560] text-white shadow-xs'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        Edit HTML / Text
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setDescTab('preview')}
+                        className={`px-2.5 py-1 rounded-md font-medium transition-colors ${
+                          descTab === 'preview'
+                            ? 'bg-[#C24560] text-white shadow-xs'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        Live Preview
+                      </button>
+                    </div>
+                  </div>
+
+                  {descTab === 'edit' ? (
+                    <div>
+                      <textarea
+                        rows={7}
+                        required
+                        value={formData.description}
+                        onChange={e => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                        className="w-full px-3 py-2 border border-[#E0D5CE] rounded-xl text-xs font-mono focus:outline-none focus:border-[#C24560] leading-relaxed"
+                        placeholder="Enter formatted product description or HTML markup..."
+                      />
+                      <p className="text-[10px] text-gray-400 mt-1">
+                        HTML tags & embedded images from CJdropshipping are preserved and formatted safely.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-[#FAF7F5] border border-[#E0D5CE] rounded-xl max-h-64 overflow-y-auto text-xs text-gray-700 leading-relaxed space-y-2 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-lg [&_img]:my-2 [&_p]:mb-2 [&_b]:font-semibold [&_strong]:font-semibold">
+                      {formData.description ? (
+                        <div dangerouslySetInnerHTML={{ __html: formData.description }} />
+                      ) : (
+                        <span className="text-gray-400 italic">No description content to preview.</span>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -489,7 +588,7 @@ export const AdminProductsPage: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                   <div>
-                    <label className="block font-medium text-gray-700 mb-1">Price (PKR) *</label>
+                    <label className="block font-medium text-gray-700 mb-1">Regular Price (PKR) *</label>
                     <input
                       type="number"
                       required
@@ -533,43 +632,170 @@ export const AdminProductsPage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Media Upload */}
+              {/* Media Upload & Gallery */}
               <div className="space-y-4 pt-4 border-t border-[#F0E6DE]">
-                <h4 className="font-semibold text-gray-800 uppercase tracking-wider text-[11px]">
-                  Product Imagery
-                </h4>
-                <div className="flex items-center gap-4">
-                  <img
-                    src={formData.thumbnail}
-                    alt="Thumbnail preview"
-                    className="w-16 h-16 rounded-xl object-cover border border-[#E0D5CE] bg-gray-50"
-                  />
-                  <div>
-                    <label className="inline-flex items-center gap-2 px-3 py-2 bg-white border border-[#E0D5CE] hover:border-[#C24560] rounded-xl text-xs font-medium cursor-pointer transition-colors">
-                      <Upload className="w-3.5 h-3.5 text-[#C24560]" />
-                      <span>Upload Primary Image</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                    </label>
-                    <p className="text-[10px] text-gray-400 mt-1">Supports PNG, JPEG, WebP up to 5MB</p>
-                  </div>
+                <div className="flex items-center justify-between">
+                  <h4 className="font-semibold text-gray-800 uppercase tracking-wider text-[11px]">
+                    Product Imagery & Gallery ({formData.images.length})
+                  </h4>
+                  <span className="text-[10px] text-gray-400">
+                    Click any image to make it the Primary Thumbnail
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                  {formData.images.map((imgUrl: string, idx: number) => {
+                    const isThumb = formData.thumbnail === imgUrl;
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => setFormData(prev => ({ ...prev, thumbnail: imgUrl }))}
+                        className={`relative group w-20 h-20 rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                          isThumb ? 'border-[#C24560] shadow-sm ring-2 ring-[#C24560]/20' : 'border-[#E0D5CE] hover:border-gray-400'
+                        }`}
+                      >
+                        <img
+                          src={imgUrl}
+                          alt={`Product view ${idx + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                        {isThumb && (
+                          <div className="absolute top-1 left-1 bg-[#C24560] text-white text-[8px] font-bold px-1.5 py-0.5 rounded shadow-xs">
+                            Primary
+                          </div>
+                        )}
+                        {formData.images.length > 1 && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const newImgs = formData.images.filter((_: any, i: number) => i !== idx);
+                              setFormData(prev => ({
+                                ...prev,
+                                images: newImgs,
+                                thumbnail: isThumb ? newImgs[0] || '' : prev.thumbnail,
+                              }));
+                            }}
+                            className="absolute top-1 right-1 bg-black/60 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            title="Remove image"
+                          >
+                            <X className="w-2.5 h-2.5" />
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+
+                  <label className="w-20 h-20 flex flex-col items-center justify-center border-2 border-dashed border-[#E0D5CE] hover:border-[#C24560] rounded-xl cursor-pointer bg-gray-50/50 hover:bg-rose-50/20 transition-all text-gray-400 hover:text-[#C24560]">
+                    <Upload className="w-4 h-4 mb-1" />
+                    <span className="text-[9px] font-medium">+ Image</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="hidden"
+                    />
+                  </label>
                 </div>
               </div>
 
+              {/* Product Variants (if available) */}
+              {formData.variants && formData.variants.length > 0 && (
+                <div className="space-y-3 pt-4 border-t border-[#F0E6DE]">
+                  <div className="flex items-center justify-between">
+                    <h4 className="font-semibold text-gray-800 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-[#C24560]" />
+                      <span>Product Variants ({formData.variants.length})</span>
+                    </h4>
+                    <span className="text-[10px] text-gray-400">
+                      Prices & stock levels for each variant
+                    </span>
+                  </div>
+
+                  <div className="border border-[#E0D5CE] rounded-xl overflow-hidden bg-white">
+                    <div className="max-h-48 overflow-y-auto">
+                      <table className="w-full text-[11px]">
+                        <thead className="bg-[#FAF7F5] border-b border-[#E0D5CE] text-gray-500 uppercase sticky top-0">
+                          <tr>
+                            <th className="py-2 px-3 text-left">Variant</th>
+                            <th className="py-2 px-3 text-left">SKU</th>
+                            <th className="py-2 px-3 text-left">Price (PKR)</th>
+                            <th className="py-2 px-3 text-left">Stock</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {formData.variants.map((v: any, vIdx: number) => (
+                            <tr key={v.id || vIdx} className="hover:bg-gray-50/60">
+                              <td className="py-2 px-3">
+                                <div className="flex items-center gap-2">
+                                  {v.image && (
+                                    <img
+                                      src={v.image}
+                                      alt={v.name}
+                                      className="w-7 h-7 rounded-md object-cover bg-gray-100 shrink-0"
+                                    />
+                                  )}
+                                  <input
+                                    type="text"
+                                    value={v.name}
+                                    onChange={e => {
+                                      const newV = [...formData.variants];
+                                      newV[vIdx].name = e.target.value;
+                                      setFormData(prev => ({ ...prev, variants: newV }));
+                                    }}
+                                    className="px-2 py-1 border border-gray-200 rounded-md text-xs w-full max-w-[200px]"
+                                  />
+                                </div>
+                              </td>
+                              <td className="py-2 px-3 font-mono text-[10px] text-gray-500">{v.sku}</td>
+                              <td className="py-2 px-3">
+                                <input
+                                  type="number"
+                                  value={v.price}
+                                  onChange={e => {
+                                    const newV = [...formData.variants];
+                                    newV[vIdx].price = Number(e.target.value);
+                                    setFormData(prev => ({ ...prev, variants: newV }));
+                                  }}
+                                  className="w-20 px-2 py-1 border border-gray-200 rounded-md text-xs"
+                                />
+                              </td>
+                              <td className="py-2 px-3">
+                                <input
+                                  type="number"
+                                  value={v.stock}
+                                  onChange={e => {
+                                    const newV = [...formData.variants];
+                                    newV[vIdx].stock = Number(e.target.value);
+                                    setFormData(prev => ({ ...prev, variants: newV }));
+                                  }}
+                                  className="w-16 px-2 py-1 border border-gray-200 rounded-md text-xs"
+                                />
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {/* Status flags */}
-              <div className="pt-4 border-t border-[#F0E6DE] flex flex-wrap gap-6">
+              <div className="pt-4 border-t border-[#F0E6DE] flex flex-wrap gap-6 bg-[#FAF7F5] p-4 rounded-2xl">
                 <label className="inline-flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.isActive}
                     onChange={e => setFormData(prev => ({ ...prev, isActive: e.target.checked }))}
-                    className="rounded text-[#C24560] focus:ring-[#C24560]"
+                    className="rounded text-[#C24560] focus:ring-[#C24560] w-4 h-4"
                   />
-                  <span>Active & Published</span>
+                  <div>
+                    <span className="font-semibold text-gray-900 block">Active & Published</span>
+                    <span className="text-[10px] text-gray-500">
+                      When checked, product is visible to customers on the website.
+                    </span>
+                  </div>
                 </label>
 
                 <label className="inline-flex items-center gap-2 cursor-pointer">
@@ -577,9 +803,9 @@ export const AdminProductsPage: React.FC = () => {
                     type="checkbox"
                     checked={formData.isFeatured}
                     onChange={e => setFormData(prev => ({ ...prev, isFeatured: e.target.checked }))}
-                    className="rounded text-[#C24560] focus:ring-[#C24560]"
+                    className="rounded text-[#C24560] focus:ring-[#C24560] w-4 h-4"
                   />
-                  <span>Featured Product</span>
+                  <span className="font-medium text-gray-800">Featured Product</span>
                 </label>
 
                 <label className="inline-flex items-center gap-2 cursor-pointer">
@@ -587,9 +813,9 @@ export const AdminProductsPage: React.FC = () => {
                     type="checkbox"
                     checked={formData.isBestSeller}
                     onChange={e => setFormData(prev => ({ ...prev, isBestSeller: e.target.checked }))}
-                    className="rounded text-[#C24560] focus:ring-[#C24560]"
+                    className="rounded text-[#C24560] focus:ring-[#C24560] w-4 h-4"
                   />
-                  <span>Best Seller</span>
+                  <span className="font-medium text-gray-800">Best Seller</span>
                 </label>
 
                 <label className="inline-flex items-center gap-2 cursor-pointer">
@@ -597,9 +823,9 @@ export const AdminProductsPage: React.FC = () => {
                     type="checkbox"
                     checked={formData.isNew}
                     onChange={e => setFormData(prev => ({ ...prev, isNew: e.target.checked }))}
-                    className="rounded text-[#C24560] focus:ring-[#C24560]"
+                    className="rounded text-[#C24560] focus:ring-[#C24560] w-4 h-4"
                   />
-                  <span>New Arrival Badge</span>
+                  <span className="font-medium text-gray-800">New Arrival Badge</span>
                 </label>
               </div>
 
@@ -614,9 +840,18 @@ export const AdminProductsPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-6 py-2 bg-[#C24560] hover:bg-[#A3354E] text-white rounded-xl font-semibold shadow-xs transition-colors"
+                  className="px-6 py-2 bg-[#C24560] hover:bg-[#A3354E] text-white rounded-xl font-semibold shadow-xs transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Saving...' : editingProduct ? 'Save Changes' : 'Create Product'}
+                  {isSubmitting ? (
+                    <>
+                      <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Saving Changes...</span>
+                    </>
+                  ) : editingProduct ? (
+                    'Save Changes'
+                  ) : (
+                    'Create Product'
+                  )}
                 </button>
               </div>
             </form>

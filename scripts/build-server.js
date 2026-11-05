@@ -41,6 +41,21 @@ async function build() {
     });
     console.log('✓ seed.js built successfully');
 
+    // 3. Build CJ Dropshipping Cron Sync CLI
+    await esbuild.build({
+      entryPoints: ['server/cron/cjSync.ts'],
+      bundle: true,
+      platform: 'node',
+      format: 'esm',
+      target: 'node18',
+      packages: 'external',
+      outfile: 'cj-sync.js',
+      banner: {
+        js: `// Pretty Puff Production CJdropshipping Cron Synchroniser\n`,
+      },
+    });
+    console.log('✓ cj-sync.js built successfully');
+
     const duration = ((Date.now() - start) / 1000).toFixed(2);
     console.log(`✨ Server compilation completed in ${duration}s`);
   } catch (error) {

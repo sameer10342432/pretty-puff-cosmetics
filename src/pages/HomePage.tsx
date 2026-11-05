@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
   BookOpen,
@@ -29,9 +29,22 @@ export const HomePage: React.FC = () => {
   const [newsletterEmail, setNewsletterEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
-  const newArrivals = PRODUCTS.filter(p => p.isNew).slice(0, 8);
-  const bestSellers = PRODUCTS.filter(p => p.isBestSeller).slice(0, 8);
-  const featuredEssentials = PRODUCTS.filter(p => p.isFeatured).slice(0, 4);
+  const [dbProducts, setDbProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    api.products.getAll().then(res => {
+      if (isMounted && res.success && Array.isArray(res.data) && res.data.length > 0) {
+        setDbProducts(res.data);
+      }
+    }).catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
+
+  const allProducts = dbProducts.length > 0 ? dbProducts : PRODUCTS;
+  const newArrivals = (allProducts.filter(p => p.isNew).length > 0 ? allProducts.filter(p => p.isNew) : allProducts).slice(0, 8);
+  const bestSellers = (allProducts.filter(p => p.isBestSeller).length > 0 ? allProducts.filter(p => p.isBestSeller) : allProducts).slice(0, 8);
+  const featuredEssentials = (allProducts.filter(p => p.isFeatured).length > 0 ? allProducts.filter(p => p.isFeatured) : allProducts).slice(0, 4);
   const journalArticles = blogService.getAllPosts().slice(0, 3);
 
   const handleSubscribe = async (e: React.FormEvent) => {

@@ -384,4 +384,54 @@ export const api = {
       return data;
     },
   },
+
+  // CJdropshipping Integration
+  cjdropshipping: {
+    getSettings: () => request<{ success: boolean; data: any }>('/cjdropshipping/settings'),
+    updateSettings: (data: any) =>
+      request<{ success: boolean; message: string; data: any }>('/cjdropshipping/settings', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+      }),
+    testConnection: () =>
+      request<{ success: boolean; message: string; openId?: string; expiry?: string }>('/cjdropshipping/test-connection', {
+        method: 'POST',
+      }),
+    getProducts: (params?: Record<string, any>) => {
+      const q = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return request<{ success: boolean; data: any[]; pagination: any }>(`/cjdropshipping/products${q}`);
+    },
+    getProduct: (pid: string) =>
+      request<{ success: boolean; data: any }>(`/cjdropshipping/product/${pid}`),
+    import: (data: { pid: string; customPricePkr?: number; categoryId?: string; subcategoryId?: string; status?: string }) =>
+      request<{ success: boolean; isDuplicate?: boolean; message: string; product: any; mapping: any }>('/cjdropshipping/import', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    importBulk: (data: { pids: string[]; status?: string }) =>
+      request<{ success: boolean; importedCount: number; failedCount: number; results: any[]; errors: any[] }>('/cjdropshipping/import-bulk', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    getImported: (params?: Record<string, any>) => {
+      const q = params ? `?${new URLSearchParams(params as any).toString()}` : '';
+      return request<{ success: boolean; data: any[]; pagination: any }>(`/cjdropshipping/imported${q}`);
+    },
+    sync: (cjProductId: string) =>
+      request<{ success: boolean; message: string; product: any }>(`/cjdropshipping/sync/${cjProductId}`, {
+        method: 'POST',
+      }),
+    syncAll: () =>
+      request<{ success: boolean; message: string; data: any }>('/cjdropshipping/sync-all', {
+        method: 'POST',
+      }),
+    deleteMapping: (id: string) =>
+      request<{ success: boolean; message: string }>(`/cjdropshipping/mapping/${id}`, {
+        method: 'DELETE',
+      }),
+    getLogs: (limit?: number) => {
+      const q = limit ? `?limit=${limit}` : '';
+      return request<{ success: boolean; data: any[] }>(`/cjdropshipping/logs${q}`);
+    },
+  },
 };

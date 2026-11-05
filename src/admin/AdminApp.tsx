@@ -16,6 +16,7 @@ import { AdminMessagesPage } from './pages/AdminMessagesPage';
 import { AdminSubscribersPage } from './pages/AdminSubscribersPage';
 import { AdminSettingsPage } from './pages/AdminSettingsPage';
 import { AdminUsersPage } from './pages/AdminUsersPage';
+import { AdminCjDropshippingPage } from './pages/AdminCjDropshippingPage';
 import { AlertTriangle, RefreshCw, LogOut } from 'lucide-react';
 
 interface ErrorBoundaryProps {
@@ -142,6 +143,8 @@ const AdminContent: React.FC = () => {
         return <AdminSettingsPage />;
       case 'users':
         return <AdminUsersPage />;
+      case 'cjdropshipping':
+        return <AdminCjDropshippingPage />;
       default:
         return <AdminDashboardPage onNavigateTab={setCurrentTab} />;
     }

@@ -41,7 +41,37 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
 
   const slug = productSlug || currentProductSlug;
 
-  const product = PRODUCTS.find(p => p.slug === slug) || PRODUCTS[0];
+  const [dbProduct, setDbProduct] = useState<any | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (slug) {
+      setLoading(true);
+      api.products
+        .getBySlug(slug)
+        .then(res => {
+          if (isMounted && res?.success && res.data) {
+            setDbProduct(res.data);
+            if (Array.isArray(res.data.variants) && res.data.variants.length > 0) {
+              setSelectedVariant(res.data.variants[0]);
+            }
+          }
+        })
+        .catch(() => {})
+        .finally(() => {
+          if (isMounted) setLoading(false);
+        });
+    } else {
+      setLoading(false);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [slug]);
+
+  const product = dbProduct || PRODUCTS.find(p => p.slug === slug) || null;
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [selectedColour, setSelectedColour] = useState<string | undefined>(
@@ -101,11 +131,11 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
   ).slice(0, 2);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity, undefined, selectedColour, selectedSize);
+    addToCart(product, quantity, selectedVariant?.name, selectedColour, selectedSize);
   };
 
   const handleBuyNow = () => {
-    addToCart(product, quantity, undefined, selectedColour, selectedSize);
+    addToCart(product, quantity, selectedVariant?.name, selectedColour, selectedSize);
     setIsCheckoutModalOpen(true);
   };
 
@@ -148,6 +178,33 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
       setIsSubmittingReview(false);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-[50vh] flex items-center justify-center p-6 text-xs text-gray-500 font-sans">
+        Loading product details...
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center p-6 text-center">
+        <div className="max-w-md space-y-4">
+          <h2 className="font-serif text-2xl text-[#1E1E24]">Product Unavailable</h2>
+          <p className="text-xs text-gray-500">
+            This product is currently in draft or has been updated.
+          </p>
+          <button
+            onClick={() => navigateTo('shop')}
+            className="px-6 py-2.5 bg-[#C24560] text-white text-xs font-semibold rounded-xl hover:bg-[#A3354E] transition-colors"
+          >
+            Explore Cosmetics Catalog
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
@@ -205,7 +262,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
           {/* Thumbnails Row */}
           {product.images.length > 1 && (
             <div className="flex gap-3 overflow-x-auto pb-2 no-scrollbar">
-              {product.images.map((img, idx) => (
+              {product.images.map((img: string, idx: number) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
@@ -253,8 +310,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
             {/* Price Box */}
             <div className="p-4 rounded-2xl bg-[#FCFAF8] border border-[#F0E6DE]">
               <PriceDisplay
-                price={product.price}
-                salePrice={product.salePrice}
+                price={selectedVariant?.price || product.price}
+                salePrice={selectedVariant?.salePrice || product.salePrice}
                 size="xl"
               />
               <div className="text-[11px] text-[#7A7478] mt-1.5 flex items-center gap-1">
@@ -268,6 +325,46 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
               {product.shortDescription}
             </p>
 
+            {/* Variants / Style Options */}
+            {product.variants && product.variants.length > 0 && (
+              <div className="pt-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-[#1E1E24] mb-2.5">
+                  Select Style / Variant: <span className="font-normal text-[#C24560]">{selectedVariant?.name || 'Default'}</span>
+                </div>
+                <div className="flex flex-wrap gap-2.5">
+                  {product.variants.map((v: any) => {
+                    const isSelected = selectedVariant?.id === v.id;
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => {
+                          setSelectedVariant(v);
+                          if (v.image && Array.isArray(product.images)) {
+                            const imgIdx = product.images.indexOf(v.image);
+                            if (imgIdx >= 0) setActiveImageIndex(imgIdx);
+                          }
+                        }}
+                        className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs transition-all ${
+                          isSelected
+                            ? 'border-[#C24560] bg-[#FDF0F2] font-semibold ring-1 ring-[#C24560] text-[#C24560]'
+                            : 'border-[#E0D5CE] hover:border-gray-400 bg-white text-gray-700'
+                        }`}
+                      >
+                        {v.image && (
+                          <img src={v.image} alt={v.name} className="w-5 h-5 rounded-md object-cover" />
+                        )}
+                        <span>{v.name}</span>
+                        {v.price && (
+                          <span className="text-[10px] text-gray-400">({formatPKR(v.price)})</span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {/* Shade / Color Swatches */}
             {product.colours && product.colours.length > 0 && (
               <div className="pt-2">
@@ -275,7 +372,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                   Select Shade: <span className="font-normal text-[#C24560]">{selectedColour}</span>
                 </div>
                 <div className="flex flex-wrap gap-2.5">
-                  {product.colours.map(col => (
+                  {product.colours.map((col: any) => (
                     <button
                       key={col.name}
                       onClick={() => setSelectedColour(col.name)}
@@ -303,7 +400,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                   Size: <span className="font-normal text-[#7A7478]">{selectedSize}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map(sz => (
+                  {product.sizes.map((sz: string) => (
                     <button
                       key={sz}
                       onClick={() => setSelectedSize(sz)}
@@ -428,7 +525,14 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
           {activeTab === 'description' && (
             <div className="space-y-4">
               <h3 className="font-serif text-2xl text-[#1E1E24]">Product Formulation</h3>
-              <p>{product.description}</p>
+              {product.description && /<[a-z][\s\S]*>/i.test(product.description) ? (
+                <div
+                  className="prose prose-stone max-w-none text-sm text-[#4A4549] leading-relaxed space-y-3 [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:my-4 [&_img]:shadow-sm [&_p]:mb-3 [&_b]:font-semibold [&_b]:text-[#1E1E24] [&_strong]:font-semibold [&_strong]:text-[#1E1E24] [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+              ) : (
+                <p className="whitespace-pre-line leading-relaxed">{product.description}</p>
+              )}
               <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div className="p-3 bg-[#FAF7F5] rounded-xl border border-[#F0E6DE]">
                   <strong className="text-[#1E1E24] block mb-1">Finish:</strong>
@@ -473,7 +577,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                   'Lightweight texture with breathable all-day finish',
                   'Cruelty-free formulation with skin-nourishing botanicals',
                   'Formulated without harsh parabens, sulfates, or microplastics',
-                ]).map((benefit, idx) => (
+                ]).map((benefit: string, idx: number) => (
                   <div
                     key={idx}
                     className="flex items-start gap-2.5 p-3.5 rounded-xl bg-[#FAF7F5] border border-[#F0E6DE]"

@@ -20,6 +20,7 @@ import {
   X,
   ChevronRight,
   Plus,
+  Globe,
 } from 'lucide-react';
 import { useAdminAuth } from '../context/AdminAuthContext';
 
@@ -37,6 +38,7 @@ export type AdminTab =
   | 'messages'
   | 'subscribers'
   | 'settings'
+  | 'cjdropshipping'
   | 'users';
 
 interface AdminLayoutProps {
@@ -62,6 +64,7 @@ export const AdminLayout: React.FC<AdminLayoutProps> = ({ currentTab, onSelectTa
     { id: 'products', label: 'Products', icon: Package, permission: 'products.manage', group: 'Catalog' },
     { id: 'categories', label: 'Categories', icon: Layers, permission: 'categories.manage', group: 'Catalog' },
     { id: 'inventory', label: 'Inventory', icon: Boxes, permission: 'inventory.manage', group: 'Catalog' },
+    { id: 'cjdropshipping', label: 'CJdropshipping', icon: Globe, permission: 'products.manage', group: 'Catalog' },
     // Sales
     { id: 'orders', label: 'Orders', icon: ShoppingBag, permission: 'orders.manage', group: 'Sales & People' },
     { id: 'customers', label: 'Customers', icon: Users, permission: 'customers.manage', group: 'Sales & People' },
