@@ -389,5 +389,33 @@ router.post('/webhook/stock', async (req: Request, res: Response): Promise<void>
   }
 });
 
+
+// ==========================================
+// LIVE SHIPPING / FREIGHT CALCULATION (CJ API)
+// ==========================================
+router.post('/freight-calculate', async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { endCountryCode, zip, products } = req.body;
+    if (!endCountryCode || !Array.isArray(products) || products.length === 0) {
+      res.status(400).json({
+        success: false,
+        shippingAvailable: false,
+        message: 'Destination country and product items are required.',
+      });
+      return;
+    }
+
+    const result = await cjService.calculateFreight({
+      endCountryCode,
+      zip,
+      products,
+    });
+
+    res.json(result);
+  } catch (error: any) {
+    res.status(500).json({ success: false, shippingAvailable: false, message: error.message });
+  }
+});
+
 export default router;
 

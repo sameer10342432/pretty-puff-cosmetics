@@ -138,6 +138,12 @@ model Product {
   salePrice         Float?
   discount          Int?
   costPrice         Float?
+  currency          String                 @default("USD")
+  originalPkrPrice     Float?
+  originalPkrSalePrice Float?
+  originalPkrCostPrice Float?
+  pkrToUsdRate         Float?
+  migratedAt           DateTime?
   stock             Int                    @default(0)
   lowStockThreshold Int                    @default(5)
   images            String                 // JSON array string of image URLs
@@ -184,6 +190,9 @@ model ProductVariant {
   sku          String                 @unique
   price        Float?
   salePrice    Float?
+  currency     String                 @default("USD")
+  originalPkrPrice     Float?
+  originalPkrSalePrice Float?
   stock        Int                    @default(0)
   image        String?
   colourName   String?
@@ -298,6 +307,9 @@ model Order {
   postalCode     String?
   address        String
   notes          String?
+  currency       String        @default("USD")
+  exchangeRate   Float         @default(1.0)
+  baseCurrencyTotal Float?
   subtotal       Float
   discount       Float         @default(0)
   shippingFee    Float         @default(0)
@@ -615,6 +627,7 @@ model CjProductMapping {
   productName      String
   supplierPriceUsd Float?
   sellingPricePkr  Float?
+  sellingPriceUsd  Float?
   status           String    @default("IMPORTED") // IMPORTED, DRAFT, FAILED, SYNCED
   errorMessage     String?
   lastSyncAt       DateTime?
@@ -637,3 +650,31 @@ model CjImportLog {
   @@index([cjProductId])
   @@index([createdAt])
 }
+
+model ExchangeRate {
+  id        String   @id @default(uuid())
+  currency  String   @unique
+  rate      Float
+  source    String   @default("OPEN_EXCHANGE")
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@index([currency])
+}
+
+model CountrySetting {
+  id                 String   @id @default(uuid())
+  code               String   @unique
+  name               String
+  currency           String
+  isEnabled          Boolean  @default(true)
+  isShippingEnabled  Boolean  @default(true)
+  isPaymentEnabled   Boolean  @default(true)
+  taxRatePercent     Float    @default(0.0)
+  customsDisclaimer  String?
+  updatedAt          DateTime @updatedAt
+  createdAt          DateTime @default(now())
+
+  @@index([code])
+}
+

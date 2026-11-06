@@ -38,6 +38,12 @@ const createOrderSchema = z.object({
     if (v.includes('EASYPAISA') || v.includes('JAZZCASH')) return 'EASYPAISA';
     return 'COD';
   }),
+  country: z.string().optional().nullable(),
+  countryCode: z.string().optional().nullable(),
+  shippingMethod: z.string().optional().nullable(),
+  shippingFee: z.number().optional().nullable(),
+  currency: z.string().optional().nullable(),
+  exchangeRate: z.number().optional().nullable(),
   items: z.array(checkoutItemSchema).min(1),
 });
 
@@ -163,7 +169,13 @@ router.post('/', async (req: Request, res: Response): Promise<void> => {
           province: validated.province || null,
           postalCode: validated.postalCode || null,
           address: validated.address.trim(),
-          notes: validated.notes || null,
+          currency: validated.currency || 'USD',
+          exchangeRate: validated.exchangeRate || 1.0,
+          notes: [
+            validated.notes,
+            validated.country ? `Country: ${validated.country} (${validated.countryCode || ''})` : null,
+            validated.shippingMethod ? `Shipping Carrier: ${validated.shippingMethod}` : null
+          ].filter(Boolean).join(' | ') || null,
           subtotal,
           discount,
           shippingFee,

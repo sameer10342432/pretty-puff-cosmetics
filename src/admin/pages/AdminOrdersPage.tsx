@@ -15,7 +15,7 @@ import {
   Trash2,
 } from 'lucide-react';
 import { api } from '../../services/api';
-import { formatPKR } from '../../components/PriceDisplay';
+import { formatOrderAmount } from '../../utils/currency';
 
 const ORDER_STATUSES = [
   'ALL',
@@ -223,7 +223,7 @@ export const AdminOrdersPage: React.FC = () => {
                       <div className="text-[10px] text-gray-400 font-mono">{order.phone}</div>
                     </td>
                     <td className="py-3 px-4 text-gray-600">{order.city}</td>
-                    <td className="py-3 px-4 font-bold text-gray-900">{formatPKR(order.total)}</td>
+                    <td className="py-3 px-4 font-bold text-gray-900">{formatOrderAmount(order.total, order.currency)}</td>
                     <td className="py-3 px-4">
                       <span className="font-mono text-[10px] px-2 py-0.5 rounded bg-gray-100 text-gray-700">
                         {order.paymentMethod}
@@ -350,9 +350,9 @@ export const AdminOrdersPage: React.FC = () => {
                               {item.sku} {item.selectedColour ? `• ${item.selectedColour}` : ''}
                             </div>
                           </td>
-                          <td className="p-2.5">{formatPKR(item.price)}</td>
+                          <td className="p-2.5">{formatOrderAmount(item.price, activeOrder.currency)}</td>
                           <td className="p-2.5">{item.quantity}</td>
-                          <td className="p-2.5 text-right font-semibold">{formatPKR(item.total)}</td>
+                          <td className="p-2.5 text-right font-semibold">{formatOrderAmount(item.total, activeOrder.currency)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -363,21 +363,21 @@ export const AdminOrdersPage: React.FC = () => {
                 <div className="mt-3 p-3 rounded-xl bg-gray-50 border border-gray-200 max-w-xs ml-auto space-y-1.5 text-right">
                   <div className="flex justify-between text-gray-600">
                     <span>Subtotal:</span>
-                    <span>{formatPKR(activeOrder.subtotal)}</span>
+                    <span>{formatOrderAmount(activeOrder.subtotal, activeOrder.currency)}</span>
                   </div>
                   {activeOrder.discount > 0 && (
                     <div className="flex justify-between text-green-600">
                       <span>Discount:</span>
-                      <span>-{formatPKR(activeOrder.discount)}</span>
+                      <span>-{formatOrderAmount(activeOrder.discount, activeOrder.currency)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping Fee:</span>
-                    <span>{formatPKR(activeOrder.shippingFee)}</span>
+                    <span>{formatOrderAmount(activeOrder.shippingFee, activeOrder.currency)}</span>
                   </div>
                   <div className="flex justify-between text-sm font-bold text-gray-900 pt-1 border-t border-gray-200">
                     <span>Grand Total:</span>
-                    <span className="text-[#C24560]">{formatPKR(activeOrder.total)}</span>
+                    <span className="text-[#C24560]">{formatOrderAmount(activeOrder.total, activeOrder.currency)}</span>
                   </div>
                 </div>
               </div>

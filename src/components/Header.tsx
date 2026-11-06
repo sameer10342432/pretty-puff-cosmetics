@@ -22,6 +22,9 @@ export const Header: React.FC = () => {
     setIsCartDrawerOpen,
     setIsSearchModalOpen,
     showToast,
+    selectedCountry,
+    selectedCurrency,
+    setIsCountryModalOpen,
   } = useShop();
 
   const [isScrolled, setIsScrolled] = useState(false);
@@ -215,6 +218,18 @@ export const Header: React.FC = () => {
 
             {/* Right Action Icons: Search, Account, Wishlist, Cart */}
             <div className="flex items-center space-x-2 sm:space-x-4">
+              
+              {/* Country & Currency Selector */}
+              <button
+                onClick={() => setIsCountryModalOpen(true)}
+                className="hidden md:flex items-center gap-1.5 py-1 px-2.5 rounded-full border border-[#E8DDD5] hover:border-[#C24560] bg-white text-xs text-[#1E1E24] transition-all shadow-2xs cursor-pointer"
+                title="Change country & currency"
+              >
+                <span className="text-sm">{selectedCountry?.flag || '🇺🇸'}</span>
+                <span className="font-semibold text-xs">{selectedCurrency}</span>
+                <ChevronDown className="w-3 h-3 text-gray-400" />
+              </button>
+
               {/* Search */}
               <button
                 id="header-search-btn"

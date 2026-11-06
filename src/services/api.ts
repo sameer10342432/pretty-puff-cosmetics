@@ -433,5 +433,32 @@ export const api = {
       const q = limit ? `?limit=${limit}` : '';
       return request<{ success: boolean; data: any[] }>(`/cjdropshipping/logs${q}`);
     },
+    calculateFreight: (data: { endCountryCode: string; zip?: string; products: Array<{ quantity: number; vid?: string; sku?: string; weight?: number }> }) =>
+      request<{
+        success: boolean;
+        shippingAvailable: boolean;
+        methods: Array<{ logisticName: string; logisticAging: string; priceUsd: number; priceCn?: number }>;
+        message?: string;
+      }>('/cjdropshipping/freight-calculate', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+  },
+
+  // Geolocation & Countries
+  geo: {
+    detect: () => request<{ success: boolean; detected: boolean; country: any; source: string }>('/geo/detect'),
+    getCountries: () => request<{ success: boolean; data: any[] }>('/geo/countries'),
+  },
+
+  // Multi-Currency & Rates
+  currency: {
+    getRates: () => request<{ success: boolean; base: string; rates: Record<string, number> }>('/currency/rates'),
+    refresh: () => request<{ success: boolean; message: string; rates: Record<string, number> }>('/currency/refresh', { method: 'POST' }),
+    override: (currency: string, rate: number) =>
+      request<{ success: boolean; message: string }>('/currency/override', {
+        method: 'PUT',
+        body: JSON.stringify({ currency, rate }),
+      }),
   },
 };

@@ -348,14 +348,24 @@ export const AdminProductsPage: React.FC = () => {
                     <td className="py-3 px-4 text-gray-600">{p.category || 'Cosmetics'}</td>
                     <td className="py-3 px-4 font-semibold text-gray-900">
                       {p.salePrice ? (
-                        <div className="flex items-center gap-1.5">
-                          <span className="text-[#C24560]">{formatPKR(p.salePrice)}</span>
-                          <span className="line-through text-gray-400 text-[10px]">
-                            {formatPKR(p.price)}
-                          </span>
+                        <div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-[#C24560] font-bold">${Number(p.salePrice).toFixed(2)}</span>
+                            <span className="line-through text-gray-400 text-[10px]">
+                              ${Number(p.price).toFixed(2)}
+                            </span>
+                          </div>
+                          <div className="text-[10px] text-gray-400 font-normal">
+                            ≈ Rs. ${Math.round(p.salePrice * 280).toLocaleString()}
+                          </div>
                         </div>
                       ) : (
-                        formatPKR(p.price)
+                        <div>
+                          <span className="font-bold">${Number(p.price).toFixed(2)}</span>
+                          <span className="block text-[10px] text-gray-400 font-normal">
+                            ≈ Rs. ${Math.round(p.price * 280).toLocaleString()}
+                          </span>
+                        </div>
                       )}
                     </td>
                     <td className="py-3 px-4">
@@ -588,7 +598,7 @@ export const AdminProductsPage: React.FC = () => {
                 </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
                   <div>
-                    <label className="block font-medium text-gray-700 mb-1">Regular Price (PKR) *</label>
+                    <label className="block font-medium text-gray-700 mb-1">Base Price (USD $) * <span className="font-normal text-gray-400 text-[10px]">(≈ Rs. {Math.round((Number(formData.price) || 0) * 280).toLocaleString()})</span></label>
                     <input
                       type="number"
                       required
@@ -599,7 +609,7 @@ export const AdminProductsPage: React.FC = () => {
                   </div>
 
                   <div>
-                    <label className="block font-medium text-gray-700 mb-1">Sale Price (PKR)</label>
+                    <label className="block font-medium text-gray-700 mb-1">Sale Price (USD $) <span className="font-normal text-gray-400 text-[10px]">{formData.salePrice ? `(≈ Rs. ${Math.round(Number(formData.salePrice) * 280).toLocaleString()})` : ''}</span></label>
                     <input
                       type="number"
                       value={formData.salePrice}

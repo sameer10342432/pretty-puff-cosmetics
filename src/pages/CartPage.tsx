@@ -11,7 +11,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { Breadcrumb } from '../components/Breadcrumb';
-import { formatPKR, PriceDisplay } from '../components/PriceDisplay';
+import { PriceDisplay } from '../components/PriceDisplay';
 import { ProductCard } from '../components/ProductCard';
 import { QuantitySelector } from '../components/QuantitySelector';
 import { useShop } from '../context/ShopContext';
@@ -33,6 +33,7 @@ export const CartPage: React.FC = () => {
     amountNeededForFreeShipping,
     navigateTo,
     setIsCheckoutModalOpen,
+    formatPrice,
   } = useShop();
 
   const [inputCoupon, setInputCoupon] = useState('');
@@ -87,13 +88,13 @@ export const CartPage: React.FC = () => {
               </span>
             ) : (
               <span>
-                Add <strong className="text-[#C24560]">{formatPKR(amountNeededForFreeShipping)}</strong>{' '}
+                Add <strong className="text-[#C24560]">{formatPrice(amountNeededForFreeShipping)}</strong>{' '}
                 more to your bag for <strong>Free Delivery</strong>!
               </span>
             )}
           </span>
           <span className="text-[11px] text-[#7A7478]">
-            Free Shipping Threshold: {formatPKR(freeShippingThreshold)}
+            Free Shipping Threshold: {formatPrice(freeShippingThreshold)}
           </span>
         </div>
         <div className="w-full h-2 bg-[#E8DDD5] rounded-full overflow-hidden">
@@ -202,13 +203,13 @@ export const CartPage: React.FC = () => {
                         size="md"
                       />
                       <span className="text-xs text-[#7A7478] hidden sm:inline">
-                        @ {formatPKR(item.product.salePrice ?? item.product.price)} each
+                        @ {formatPrice(item.product.salePrice ?? item.product.price)} each
                       </span>
                     </div>
 
                     <div className="text-right">
                       <div className="font-serif text-lg font-bold text-[#1E1E24]">
-                        {formatPKR(
+                        {formatPrice(
                           (item.product.salePrice ?? item.product.price) * item.quantity
                         )}
                       </div>
@@ -271,14 +272,14 @@ export const CartPage: React.FC = () => {
                 <div className="flex justify-between">
                   <span>Bag Subtotal</span>
                   <span className="font-semibold text-[#1E1E24]">
-                    {formatPKR(cartSubtotal)}
+                    {formatPrice(cartSubtotal)}
                   </span>
                 </div>
 
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-[#C24560]">
                     <span>Discount</span>
-                    <span>-{formatPKR(discountAmount)}</span>
+                    <span>-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
 
@@ -290,14 +291,14 @@ export const CartPage: React.FC = () => {
                         FREE
                       </span>
                     ) : (
-                      formatPKR(shippingCost)
+                      formatPrice(shippingCost)
                     )}
                   </span>
                 </div>
 
                 <div className="flex justify-between text-lg font-serif font-bold text-[#1E1E24] pt-3 border-t border-[#F0E6DE]">
                   <span>Total Due</span>
-                  <span className="text-[#C24560]">{formatPKR(cartTotal)}</span>
+                  <span className="text-[#C24560]">{formatPrice(cartTotal)}</span>
                 </div>
               </div>
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useShop } from '../context/ShopContext';
 
 interface PriceDisplayProps {
   price: number;
@@ -6,8 +7,10 @@ interface PriceDisplayProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
   showDiscountPercent?: boolean;
   className?: string;
+  overrideCurrency?: string;
 }
 
+// Backward-compatible fallback
 export const formatPKR = (amount?: number | null): string => {
   if (amount === undefined || amount === null || isNaN(Number(amount))) {
     return 'Rs. 0';
@@ -22,7 +25,10 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   size = 'md',
   showDiscountPercent = true,
   className = '',
+  overrideCurrency,
 }) => {
+  const { formatPrice } = useShop();
+
   const isSale = salePrice !== undefined && salePrice < price;
   const currentPrice = isSale ? salePrice : price;
   const discountPercent = isSale ? Math.round(((price - salePrice) / price) * 100) : 0;
@@ -43,10 +49,10 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
 
   return (
     <div className={`flex items-baseline flex-wrap gap-2 ${className}`}>
-      <span className={currentStyles[size]}>{formatPKR(currentPrice)}</span>
+      <span className={currentStyles[size]}>{formatPrice(currentPrice, overrideCurrency)}</span>
       {isSale && (
         <>
-          <span className={originalStyles[size]}>{formatPKR(price)}</span>
+          <span className={originalStyles[size]}>{formatPrice(price, overrideCurrency)}</span>
           {showDiscountPercent && (
             <span className="text-[11px] font-semibold text-[#C24560] bg-[#FDF0F2] px-1.5 py-0.5 rounded tracking-tight">
               -{discountPercent}%

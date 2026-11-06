@@ -1,26 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { MessageCircle, Phone, Sparkles } from 'lucide-react';
-
-const ANNOUNCEMENTS = [
-  'Free Delivery across Pakistan on Orders Over Rs. 3,000 ✨',
-  'Shop Pretty. Feel Beautiful. | 100% Authentic Luxury Cosmetics',
-  'Use code "PRETTY10" for 10% Off your first order!',
-];
+import { MessageCircle, Phone, Sparkles, Globe } from 'lucide-react';
+import { useShop } from '../context/ShopContext';
 
 export const AnnouncementBar: React.FC = () => {
+  const { selectedCountry, selectedCurrency, setIsCountryModalOpen, formatPrice } = useShop();
   const [index, setIndex] = useState(0);
+
+  const announcements = [
+    `Worldwide Tracked Delivery | Free on Orders Over ${formatPrice(50)} ✨`,
+    'Shop Pretty. Feel Beautiful. | 100% Authentic Luxury Cosmetics',
+    'Official CJdropshipping Live Global Fulfillment',
+    'Use code "PRETTY10" for 10% Off your first order!',
+  ];
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex(prev => (prev + 1) % ANNOUNCEMENTS.length);
+      setIndex(prev => (prev + 1) % announcements.length);
     }, 4500);
     return () => clearInterval(timer);
-  }, []);
+  }, [announcements.length]);
 
   return (
     <aside
       aria-label="Store Announcements"
-      className="bg-[#1E1E24] text-[#FAF7F5] text-[11px] md:text-xs py-2 px-4 relative z-40"
+      className="bg-[#1E1E24] text-[#FAF7F5] text-[11px] md:text-xs py-2 px-4 relative z-40 border-b border-white/5"
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Quick support */}
@@ -40,21 +43,30 @@ export const AnnouncementBar: React.FC = () => {
         <div className="flex-1 text-center font-medium tracking-wide flex items-center justify-center gap-2">
           <Sparkles className="w-3 h-3 text-[#D4AF37] shrink-0" />
           <span className="transition-opacity duration-500 line-clamp-1">
-            {ANNOUNCEMENTS[index]}
+            {announcements[index]}
           </span>
           <Sparkles className="w-3 h-3 text-[#D4AF37] shrink-0" />
         </div>
 
-        {/* Right: Region & Currency */}
-        <div className="hidden sm:flex items-center gap-3 text-[#C7B2A2]">
-          <span>Pakistan (PKR)</span>
-          <span>•</span>
+        {/* Right: Region & Currency Selector */}
+        <div className="flex items-center gap-3 text-[#C7B2A2]">
+          <button
+            onClick={() => setIsCountryModalOpen(true)}
+            className="flex items-center gap-1.5 hover:text-white transition-colors cursor-pointer py-0.5 px-2 rounded-md hover:bg-white/10"
+            title="Change country and currency"
+          >
+            <span className="text-sm">{selectedCountry?.flag || '🇺🇸'}</span>
+            <span className="font-semibold text-white">{selectedCountry?.name || 'United States'}</span>
+            <span className="text-gray-400 font-mono text-[10px]">({selectedCurrency})</span>
+            <Globe className="w-3 h-3 ml-0.5 text-gray-400" />
+          </button>
+          <span className="hidden sm:inline">•</span>
           <a
             href="tel:+923474542881"
-            className="flex items-center gap-1 hover:text-white transition-colors"
+            className="hidden sm:flex items-center gap-1 hover:text-white transition-colors"
           >
             <Phone className="w-3 h-3" />
-            <span>Call Support</span>
+            <span>Support</span>
           </a>
         </div>
       </div>

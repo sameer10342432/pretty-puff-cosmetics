@@ -19,6 +19,8 @@ export interface CjProductItem {
 
 export interface PricingCalculation {
   supplierPriceUsd: number;
+  sellingPriceUsd: number;
+  salePriceUsd: number;
   supplierCostPkr: number;
   estimatedShippingPkr: number;
   totalCostPkr: number;
@@ -330,8 +332,13 @@ export class CjDropshippingService {
     const profitPkr = Math.max(0, sellingPricePkr - totalCostPkr);
     const profitMarginPercent = sellingPricePkr > 0 ? Math.round((profitPkr / sellingPricePkr) * 100) : 0;
 
+    const sellingPriceUsd = Math.round((sellingPricePkr / rate) * 100) / 100;
+    const salePriceUsd = Math.round(sellingPriceUsd * 0.9 * 100) / 100;
+
     return {
       supplierPriceUsd: usdPrice,
+      sellingPriceUsd,
+      salePriceUsd,
       supplierCostPkr,
       estimatedShippingPkr: shippingPkr,
       totalCostPkr,
@@ -580,9 +587,21 @@ export class CjDropshippingService {
       const slug = `${baseSlug}-${uniqueSuffix}`;
       const sku = `PP-CJ-${Date.now().toString().slice(-6)}`;
 
-      const shouldPublish = options.status === 'PUBLISHED' || (options.status !== 'DRAFT' && settings.autoPublish);
+      // 6. Calculate USD authoritative base prices & validate auto-publishing
+      const rate = settings.currencyRatePkr || 280.0;
+      const sellingPriceUsd = Math.round((sellingPrice / rate) * 100) / 100;
+      const salePriceUsd = Math.round((salePrice / rate) * 100) / 100;
 
-      // 6. Create Pretty Puff Product in Database
+      const hasValidTitle = Boolean(cjData.title && cjData.title.trim().length > 2);
+      const hasValidDesc = Boolean(cjData.description && cjData.description.trim().length > 10);
+      const hasValidImages = localImages.length > 0 || Boolean(thumbnail);
+      const hasValidPrice = sellingPriceUsd > 0;
+      const hasValidCategory = Boolean(categoryId);
+      const passesAutoPublishValidation = hasValidTitle && hasValidDesc && hasValidImages && hasValidPrice && hasValidCategory;
+
+      const shouldPublish = (options.status === 'PUBLISHED' || (options.status !== 'DRAFT' && settings.autoPublish)) && passesAutoPublishValidation;
+
+      // Create Pretty Puff Product in Database with USD base currency
       const newProduct = await prisma.product.create({
         data: {
           name: cjData.title,
@@ -593,10 +612,14 @@ export class CjDropshippingService {
           subcategoryId,
           shortDescription: cjData.shortDescription,
           description: cjData.description,
-          price: sellingPrice,
-          salePrice,
+          price: sellingPriceUsd,
+          salePrice: salePriceUsd,
+          currency: 'USD',
+          originalPkrPrice: sellingPrice,
+          originalPkrSalePrice: salePrice,
+          pkrToUsdRate: rate,
+          costPrice: cjData.priceCalc.supplierPriceUsd,
           discount,
-          costPrice: cjData.priceCalc.supplierCostPkr,
           stock: 45,
           lowStockThreshold: 5,
           images: JSON.stringify(localImages),
@@ -608,15 +631,24 @@ export class CjDropshippingService {
           metaDescription: cjData.shortDescription,
           variants: cjData.variants.length > 0
             ? {
-                create: cjData.variants.slice(0, 8).map((v: any, idx: number) => ({
-                  name: v.variantName,
-                  sku: `${sku}-V${idx + 1}`,
-                  price: v.priceCalc.sellingPricePkr || sellingPrice,
-                  salePrice: Math.round((v.priceCalc.sellingPricePkr || sellingPrice) * 0.9),
-                  stock: v.stock || 25,
-                  image: v.variantImage || thumbnail,
-                  cjVariantId: v.vid,
-                })),
+                create: cjData.variants.slice(0, 8).map((v: any, idx: number) => {
+                  const vPricePkr = v.priceCalc?.sellingPricePkr || sellingPrice;
+                  const vPriceUsd = Math.round((vPricePkr / rate) * 100) / 100;
+                  const vSalePriceUsd = Math.round(vPriceUsd * 0.9 * 100) / 100;
+                  return {
+                    name: v.variantName,
+                    sku: `${sku}-V${idx + 1}`,
+                    price: vPriceUsd,
+                    salePrice: vSalePriceUsd,
+                    currency: 'USD',
+                    originalPkrPrice: vPricePkr,
+                    originalPkrSalePrice: Math.round(vPricePkr * 0.9),
+                    pkrToUsdRate: rate,
+                    stock: v.stock || 25,
+                    image: v.variantImage || thumbnail,
+                    cjVariantId: v.vid,
+                  };
+                }),
               }
             : undefined,
           inventory: {
@@ -799,6 +831,82 @@ export class CjDropshippingService {
   // -------------------------------------------------------------
   // Webhook Signature Verification
   // -------------------------------------------------------------
+  
+  // -------------------------------------------------------------
+  // Live Shipping / Freight Calculation (Official CJ API v2.0)
+  // -------------------------------------------------------------
+  async calculateFreight(params: {
+    startCountryCode?: string;
+    endCountryCode: string;
+    zip?: string;
+    products: Array<{
+      quantity: number;
+      vid?: string;
+      sku?: string;
+      weight?: number;
+    }>;
+  }): Promise<{
+    success: boolean;
+    shippingAvailable: boolean;
+    methods: Array<{
+      logisticName: string;
+      logisticAging: string;
+      priceUsd: number;
+      priceCn?: number;
+    }>;
+    message?: string;
+  }> {
+    const token = await this.getValidAccessToken();
+    const startCountry = params.startCountryCode || 'CN';
+    const endCountry = (params.endCountryCode || 'US').toUpperCase().trim();
+
+    try {
+      const res = await fetch(`${this.getBaseUrl()}/api2.0/v1/logistic/freightCalculate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'CJ-Access-Token': token,
+        },
+        body: JSON.stringify({
+          startCountryCode: startCountry,
+          endCountryCode: endCountry,
+          zip: params.zip || '',
+          products: params.products,
+        }),
+      });
+
+      const json = await res.json().catch(() => null);
+      if (json && json.code === 200 && Array.isArray(json.data) && json.data.length > 0) {
+        const methods = json.data.map((m: any) => ({
+          logisticName: m.logisticName || 'Standard Delivery',
+          logisticAging: m.logisticAging ? `${m.logisticAging} business days` : '7-15 business days',
+          priceUsd: typeof m.logisticPrice === 'number' ? m.logisticPrice : parseFloat(m.logisticPrice) || 0,
+          priceCn: m.logisticPriceCn,
+        })).filter((m: any) => m.priceUsd > 0);
+
+        return {
+          success: true,
+          shippingAvailable: methods.length > 0,
+          methods,
+        };
+      }
+
+      return {
+        success: true,
+        shippingAvailable: false,
+        methods: [],
+        message: json?.message || 'No shipping routes currently available for this destination.',
+      };
+    } catch (error: any) {
+      return {
+        success: false,
+        shippingAvailable: false,
+        methods: [],
+        message: error.message || 'Failed to calculate CJ live freight.',
+      };
+    }
+  }
+
   verifyWebhookSignature(rawBody: string, signHeader: string | undefined, openId: string | undefined): boolean {
     if (!signHeader || !openId) return false;
     try {

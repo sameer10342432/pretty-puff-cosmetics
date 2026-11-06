@@ -7,6 +7,7 @@ import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
 import { QuickViewModal } from './components/QuickViewModal';
+import { CountrySelectorModal } from './components/CountrySelectorModal';
 import { SearchModal } from './components/SearchModal';
 import { ToastContainer } from './components/ToastContainer';
 import { ShopProvider, useShop } from './context/ShopContext';
@@ -81,7 +82,16 @@ class StoreErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBounda
 }
 
 const AppContent: React.FC = () => {
-  const { currentPage } = useShop();
+  const {
+    currentPage,
+    showCountryConfirm,
+    detectedCountry,
+    setCountry,
+    dismissCountryConfirm,
+    selectedCountry,
+    isCountryModalOpen,
+    setIsCountryModalOpen,
+  } = useShop();
 
   const renderCurrentPage = () => {
     switch (currentPage) {
@@ -126,6 +136,31 @@ const AppContent: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FCFAF8] text-[#1E1E24] font-sans antialiased selection:bg-[#F8CAD1] selection:text-[#1E1E24]">
+      
+      {/* Geolocation Country Suggestion Bar */}
+      {showCountryConfirm && detectedCountry && (
+        <div className="bg-[#1E1E24] text-white text-xs px-4 py-2.5 flex items-center justify-between border-b border-white/10 z-50">
+          <div className="flex items-center gap-2 max-w-xl mx-auto flex-1 text-center sm:text-left justify-center sm:justify-start">
+            <span>{detectedCountry.flag}</span>
+            <span>It looks like you're shopping from <strong>{detectedCountry.name}</strong>. Would you like to view products and live shipping in <strong>{detectedCountry.currency}</strong>?</span>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={() => setCountry(detectedCountry.code)}
+              className="py-1 px-3 bg-[#C24560] hover:bg-[#A3354E] text-white font-semibold rounded-lg text-[11px] transition-colors"
+            >
+              Update to {detectedCountry.code}
+            </button>
+            <button
+              onClick={dismissCountryConfirm}
+              className="py-1 px-2.5 text-gray-400 hover:text-white text-[11px] transition-colors"
+            >
+              Keep {selectedCountry.code}
+            </button>
+          </div>
+        </div>
+      )}
+  
       {/* Top Announcement Bar */}
       <AnnouncementBar />
 
@@ -139,6 +174,7 @@ const AppContent: React.FC = () => {
       <Footer />
 
       {/* Global Interactive Overlays */}
+      <CountrySelectorModal isOpen={isCountryModalOpen} onClose={() => setIsCountryModalOpen(false)} />
       <CartDrawer />
       <SearchModal />
       <QuickViewModal />

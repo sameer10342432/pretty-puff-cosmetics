@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useShop } from '../context/ShopContext';
 import { PRODUCTS } from '../data/products';
-import { formatPKR, PriceDisplay } from './PriceDisplay';
+import { PriceDisplay } from './PriceDisplay';
 import { QuantitySelector } from './QuantitySelector';
 
 export const CartDrawer: React.FC = () => {
@@ -33,6 +33,7 @@ export const CartDrawer: React.FC = () => {
     navigateTo,
     setIsCheckoutModalOpen,
     addToCart,
+    formatPrice,
   } = useShop();
 
   const [inputCoupon, setInputCoupon] = useState('');
@@ -103,12 +104,12 @@ export const CartDrawer: React.FC = () => {
                   </span>
                 ) : (
                   <span>
-                    Add <strong className="text-[#C24560]">{formatPKR(amountNeededForFreeShipping)}</strong> for Free Delivery
+                    Add <strong className="text-[#C24560]">{formatPrice(amountNeededForFreeShipping)}</strong> for Free Delivery
                   </span>
                 )}
               </span>
               <span className="text-[11px] text-[#7A7478]">
-                Goal: {formatPKR(freeShippingThreshold)}
+                Goal: {formatPrice(freeShippingThreshold)}
               </span>
             </div>
             <div className="w-full h-1.5 bg-[#E8DDD5] rounded-full overflow-hidden">
@@ -228,7 +229,7 @@ export const CartDrawer: React.FC = () => {
                             {rec.name}
                           </div>
                           <div className="text-[11px] text-[#7A7478]">
-                            {formatPKR(rec.salePrice ?? rec.price)}
+                            {formatPrice(rec.salePrice ?? rec.price)}
                           </div>
                         </div>
                       </div>
@@ -292,12 +293,12 @@ export const CartDrawer: React.FC = () => {
               <div className="space-y-1.5 text-xs text-[#6E686C] pt-1">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span className="font-semibold text-[#1E1E24]">{formatPKR(cartSubtotal)}</span>
+                  <span className="font-semibold text-[#1E1E24]">{formatPrice(cartSubtotal)}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex justify-between text-[#C24560]">
                     <span>Discount</span>
-                    <span>-{formatPKR(discountAmount)}</span>
+                    <span>-{formatPrice(discountAmount)}</span>
                   </div>
                 )}
                 <div className="flex justify-between">
@@ -308,13 +309,13 @@ export const CartDrawer: React.FC = () => {
                         FREE
                       </span>
                     ) : (
-                      formatPKR(shippingCost)
+                      formatPrice(shippingCost)
                     )}
                   </span>
                 </div>
                 <div className="flex justify-between text-base font-serif font-bold text-[#1E1E24] pt-2 border-t border-[#F0E6DE]">
                   <span>Estimated Total</span>
-                  <span>{formatPKR(cartTotal)}</span>
+                  <span>{formatPrice(cartTotal)}</span>
                 </div>
               </div>
 
