@@ -403,7 +403,7 @@ export const api = {
     },
     getProduct: (pid: string) =>
       request<{ success: boolean; data: any }>(`/cjdropshipping/product/${pid}`),
-    import: (data: { pid: string; customPricePkr?: number; categoryId?: string; subcategoryId?: string; status?: string }) =>
+    import: (data: { pid: string; customPriceUsd?: number; customPricePkr?: number; categoryId?: string; subcategoryId?: string; status?: string }) =>
       request<{ success: boolean; isDuplicate?: boolean; message: string; product: any; mapping: any }>('/cjdropshipping/import', {
         method: 'POST',
         body: JSON.stringify(data),
@@ -433,6 +433,11 @@ export const api = {
       const q = limit ? `?limit=${limit}` : '';
       return request<{ success: boolean; data: any[] }>(`/cjdropshipping/logs${q}`);
     },
+    getPricingPreview: (pid: string, destinationCountry: string = 'US') =>
+      request<{ success: boolean; data: any }>('/cjdropshipping/pricing-preview', {
+        method: 'POST',
+        body: JSON.stringify({ pid, destinationCountry }),
+      }),
     calculateFreight: (data: { endCountryCode: string; zip?: string; products: Array<{ quantity: number; vid?: string; sku?: string; weight?: number }> }) =>
       request<{
         success: boolean;

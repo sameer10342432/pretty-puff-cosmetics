@@ -19,7 +19,9 @@ model Admin {
   avatar       String?
   roleId       String
   role         Role      @relation(fields: [roleId], references: [id])
-  isActive     Boolean   @default(true)
+  isActive      Boolean       @default(true)
+  targetMargin  Float?
+  markupPercent Float?
   lastLoginAt  DateTime?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
@@ -132,8 +134,8 @@ model Product {
   category          Category               @relation(fields: [categoryId], references: [id])
   subcategoryId     String?
   subcategory       Subcategory?           @relation(fields: [subcategoryId], references: [id])
-  shortDescription  String                 @db.Text
-  description       String                 @db.Text
+  shortDescription  String
+  description       String
   price             Float
   salePrice         Float?
   discount          Int?
@@ -144,16 +146,23 @@ model Product {
   originalPkrCostPrice Float?
   pkrToUsdRate         Float?
   migratedAt           DateTime?
+  cjMarketPrice        Float?
+  minimumPrice         Float?
+  landedCost           Float?
+  estimatedShippingCost Float?
+  packagingCost        Float?                 @default(0.50)
+  handlingCost         Float?                 @default(0.50)
+  targetMargin         Float?
   stock             Int                    @default(0)
   lowStockThreshold Int                    @default(5)
-  images            String                 @db.Text // JSON array string of image URLs
+  images            String                 // JSON array string of image URLs
   thumbnail         String
   variants          ProductVariant[]
-  colours           String?                @db.Text // JSON array string of [{ name, hex, image }]
-  sizes             String?                @db.Text // JSON array string of sizes
-  ingredients       String?                @db.Text
-  howToUse          String?                @db.Text
-  benefits          String?                @db.Text // JSON array string of benefits
+  colours           String?                // JSON array string of [{ name, hex, image }]
+  sizes             String?                // JSON array string of sizes
+  ingredients       String?
+  howToUse          String?
+  benefits          String?                // JSON array string of benefits
   rating            Float                  @default(5.0)
   reviewCount       Int                    @default(0)
   isFeatured        Boolean                @default(false)
@@ -162,7 +171,7 @@ model Product {
   isActive          Boolean                @default(true)
   isArchived        Boolean                @default(false)
   seoTitle          String?
-  metaDescription   String?                @db.Text
+  metaDescription   String?
   focusKeyword      String?
   cjProductId       String?                @unique
   productImages     ProductImage[]
@@ -190,9 +199,13 @@ model ProductVariant {
   sku          String                 @unique
   price        Float?
   salePrice    Float?
+  costPrice    Float?
   currency     String                 @default("USD")
   originalPkrPrice     Float?
   originalPkrSalePrice Float?
+  cjMarketPrice        Float?
+  minimumPrice         Float?
+  landedCost           Float?
   stock        Int                    @default(0)
   image        String?
   colourName   String?
@@ -309,8 +322,15 @@ model Order {
   notes          String?
   currency       String        @default("USD")
   exchangeRate   Float         @default(1.0)
-  baseCurrencyTotal Float?       @db.Text
-  subtotal       Float
+  baseCurrencyTotal Float?
+  totalLandedCost      Float?    @default(0)
+  estimatedProfit      Float?    @default(0)
+  paymentFee           Float?    @default(0)
+  shippingCostActual   Float?    @default(0)       @db.Text
+  subtotal          Float
+  costPrice      Float?
+  landedCost     Float?
+  unitProfit     Float?
   discount       Float         @default(0)
   shippingFee    Float         @default(0)
   total          Float
@@ -613,6 +633,15 @@ model CjSetting {
   autoPublish          Boolean   @default(false)
   autoSyncStock        Boolean   @default(true)
   autoSyncPrice        Boolean   @default(false)
+  targetMargin         Float?    @default(35.0)
+  minMargin            Float?    @default(15.0)
+  minProfitUsd         Float?    @default(2.0)
+  defaultPackagingUsd  Float?    @default(0.50)
+  defaultHandlingUsd   Float?    @default(0.50)
+  paymentFeePercent    Float?    @default(2.9)
+  paymentFeeFixedUsd   Float?    @default(0.30)
+  defaultShippingDestination String? @default("US")
+  shippingIncludedInPrice    Boolean? @default(false)
   webhookUrl           String?
   webhookActive        Boolean   @default(false)
   createdAt            DateTime  @default(now())
@@ -678,3 +707,26 @@ model CountrySetting {
   @@index([code])
 }
 
+
+model Discount {
+  id                 String        @id @default(uuid())
+  name               String
+  description        String?
+  discountType       String        // PERCENTAGE, FIXED_AMOUNT, STOREWIDE, FREE_SHIPPING
+  discountValue      Float
+  appliesTo          String        @default("ALL") // ALL, CATEGORY, PRODUCT
+  categoryIds        String?       // JSON string of category IDs
+  productIds         String?       // JSON string of product IDs
+  couponCode         String?       @unique
+  minOrderAmount     Float?        @default(0)
+  maxDiscountAmount  Float?
+  preventStacking    Boolean       @default(true)
+  startDate          DateTime?
+  endDate            DateTime?
+  isActive           Boolean       @default(true)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  @@index([discountType])
+  @@index([isActive])
+}

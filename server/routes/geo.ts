@@ -105,3 +105,4 @@ router.get('/countries', async (_req: Request, res: Response): Promise<void> => 
 });
 
 export default router;
+

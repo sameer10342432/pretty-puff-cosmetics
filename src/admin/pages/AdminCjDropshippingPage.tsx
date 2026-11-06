@@ -47,6 +47,13 @@ export const AdminCjDropshippingPage: React.FC = () => {
     pricingType: 'PERCENTAGE',
     markupValue: 35,
     estimatedShippingPkr: 350,
+    targetMargin: 35,
+    minMargin: 15,
+    minProfitUsd: 2.0,
+    defaultPackagingUsd: 0.50,
+    defaultHandlingUsd: 0.50,
+    paymentFeePercent: 2.9,
+    defaultShippingDestination: 'US',
     autoPublish: false,
     autoSyncStock: true,
     autoSyncPrice: false,
@@ -59,8 +66,11 @@ export const AdminCjDropshippingPage: React.FC = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
 
-  // Selected Product Detail Modal
+  // Selected Product Detail Modal & Live Pricing Preview
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [previewCountry, setPreviewCountry] = useState('US');
+  const [pricingPreview, setPricingPreview] = useState<any | null>(null);
+  const [loadingPreview, setLoadingPreview] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
   const [customPrice, setCustomPrice] = useState<number | ''>('');
   const [selectedStatus, setSelectedStatus] = useState<'DRAFT' | 'PUBLISHED'>('DRAFT');
@@ -81,6 +91,21 @@ export const AdminCjDropshippingPage: React.FC = () => {
   useEffect(() => {
     loadSettings();
   }, []);
+
+
+  const fetchPricingPreview = async (pid: string, country: string) => {
+    setLoadingPreview(true);
+    try {
+      const res = await api.cjdropshipping.getPricingPreview(pid, country);
+      if (res?.success && res.data) {
+        setPricingPreview(res.data);
+      }
+    } catch (e) {
+      console.warn('Failed to load pricing preview:', e);
+    } finally {
+      setLoadingPreview(false);
+    }
+  };
 
   // Load Tab-specific data
   useEffect(() => {
@@ -111,6 +136,13 @@ export const AdminCjDropshippingPage: React.FC = () => {
           pricingType: res.data.pricingType || 'PERCENTAGE',
           markupValue: res.data.markupValue || 35,
           estimatedShippingPkr: res.data.estimatedShippingPkr || 350,
+          targetMargin: res.data.targetMargin ?? 35,
+          minMargin: res.data.minMargin ?? 15,
+          minProfitUsd: res.data.minProfitUsd ?? 2.0,
+          defaultPackagingUsd: res.data.defaultPackagingUsd ?? 0.50,
+          defaultHandlingUsd: res.data.defaultHandlingUsd ?? 0.50,
+          paymentFeePercent: res.data.paymentFeePercent ?? 2.9,
+          defaultShippingDestination: res.data.defaultShippingDestination || 'US',
           autoPublish: !!res.data.autoPublish,
           autoSyncStock: res.data.autoSyncStock !== false,
           autoSyncPrice: !!res.data.autoSyncPrice,
@@ -231,7 +263,7 @@ export const AdminCjDropshippingPage: React.FC = () => {
       setActionLoading(true);
       const res = await api.cjdropshipping.import({
         pid,
-        customPricePkr: customPriceVal || (customPrice ? Number(customPrice) : undefined),
+        customPriceUsd: customPriceVal || (customPrice ? Number(customPrice) : undefined),
         status: statusVal || selectedStatus,
       });
 
@@ -1128,31 +1160,143 @@ export const AdminCjDropshippingPage: React.FC = () => {
               ))}
             </div>
 
-            {/* Pricing Summary */}
-            <div className="bg-[#141418] p-4 rounded-xl border border-[#2E2E38] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-              <div>
-                <span className="text-gray-400 block text-[11px]">Wholesale Cost:</span>
-                <span className="text-white font-semibold">${selectedProduct.priceCalc?.supplierPriceUsd}</span>
-                <span className="text-[10px] text-gray-500 block">({selectedProduct.priceCalc?.supplierCostPkr?.toLocaleString()} PKR)</span>
+            {/* Destination Selection & Live Shipping Quote */}
+            <div className="bg-[#141418] p-4 rounded-xl border border-[#2E2E38] space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#282832] pb-3">
+                <div>
+                  <span className="text-xs font-semibold text-white block">Destination-Based Shipping & Landed Cost</span>
+                  <span className="text-[11px] text-gray-400">Select destination to retrieve actual live CJ carrier freight quotation.</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-400">Ship to:</span>
+                  <select
+                    value={previewCountry}
+                    onChange={e => {
+                      const c = e.target.value;
+                      setPreviewCountry(c);
+                      if (selectedProduct) fetchPricingPreview(selectedProduct.pid, c);
+                    }}
+                    className="px-3 py-1.5 bg-[#1C1C22] border border-[#3E3E4C] rounded-lg text-xs text-white focus:outline-none focus:border-[#C27A86]"
+                  >
+                    <option value="US">🇺🇸 United States</option>
+                    <option value="GB">🇬🇧 United Kingdom</option>
+                    <option value="AE">🇦🇪 United Arab Emirates</option>
+                    <option value="PK">🇵🇰 Pakistan</option>
+                    <option value="CA">🇨🇦 Canada</option>
+                    <option value="AU">🇦🇺 Australia</option>
+                    <option value="SA">🇸🇦 Saudi Arabia</option>
+                    <option value="DE">🇩🇪 Germany</option>
+                    <option value="FR">🇫🇷 France</option>
+                  </select>
+                </div>
               </div>
-              <div>
-                <span className="text-gray-400 block text-[11px]">Shipping Buffer:</span>
-                <span className="text-white font-semibold">+{selectedProduct.priceCalc?.estimatedShippingPkr} PKR</span>
-              </div>
-              <div>
-                <span className="text-[#C27A86] block text-[11px] font-semibold">Pretty Puff Retail:</span>
-                <span className="text-white font-bold text-sm">{selectedProduct.priceCalc?.sellingPricePkr?.toLocaleString()} PKR</span>
-              </div>
-              <div>
-                <span className="text-emerald-400 block text-[11px] font-semibold">Net Profit:</span>
-                <span className="text-emerald-300 font-bold">+{selectedProduct.priceCalc?.profitPkr?.toLocaleString()} PKR</span>
+
+              {/* Comprehensive Cost & Profit Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs">
+                  <thead>
+                    <tr className="text-gray-400 border-b border-[#282832] text-[11px]">
+                      <th className="py-2 font-medium">Cost Component / Metric</th>
+                      <th className="py-2 text-right font-medium">Amount (USD)</th>
+                      <th className="py-2 text-right font-medium">PKR Equivalent</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#24242C] text-gray-300">
+                    <tr>
+                      <td className="py-1.5">CJ Supplier Base Cost</td>
+                      <td className="py-1.5 text-right font-mono font-semibold text-white">
+                        ${(pricingPreview?.preview?.landedCost?.supplierCostUsd ?? selectedProduct.priceCalc?.supplierPriceUsd ?? 0).toFixed(2)}
+                      </td>
+                      <td className="py-1.5 text-right text-[11px] text-gray-400 font-mono">
+                        Rs. {Math.round((pricingPreview?.preview?.landedCost?.supplierCostUsd ?? selectedProduct.priceCalc?.supplierPriceUsd ?? 0) * 280).toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1.5 flex items-center gap-1.5">
+                        <span>CJ Live Shipping ({previewCountry})</span>
+                        {pricingPreview?.shippingQuotes?.[0] && (
+                          <span className="text-[10px] bg-emerald-950 text-emerald-400 px-1.5 py-0.2 rounded border border-emerald-800">
+                            {pricingPreview.shippingQuotes[0].logisticName} ({pricingPreview.shippingQuotes[0].logisticAging})
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-1.5 text-right font-mono font-semibold text-white">
+                        ${(pricingPreview?.selectedShippingCostUsd ?? selectedProduct.priceCalc?.shippingCostUsd ?? 1.25).toFixed(2)}
+                      </td>
+                      <td className="py-1.5 text-right text-[11px] text-gray-400 font-mono">
+                        Rs. {Math.round((pricingPreview?.selectedShippingCostUsd ?? selectedProduct.priceCalc?.shippingCostUsd ?? 1.25) * 280).toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="py-1.5 text-gray-400">Packaging & Handling Buffer</td>
+                      <td className="py-1.5 text-right font-mono text-gray-400">
+                        ${((pricingPreview?.preview?.landedCost?.packagingCostUsd ?? 0.5) + (pricingPreview?.preview?.landedCost?.handlingCostUsd ?? 0.5)).toFixed(2)}
+                      </td>
+                      <td className="py-1.5 text-right text-[11px] text-gray-500 font-mono">
+                        Rs. {Math.round(((pricingPreview?.preview?.landedCost?.packagingCostUsd ?? 0.5) + (pricingPreview?.preview?.landedCost?.handlingCostUsd ?? 0.5)) * 280).toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr className="bg-[#1C1C22]/50 font-semibold text-white">
+                      <td className="py-1.5">Total Landed Product Cost</td>
+                      <td className="py-1.5 text-right font-mono text-[#C27A86]">
+                        ${(pricingPreview?.preview?.landedCost?.totalLandedCostUsd ?? selectedProduct.priceCalc?.landedCostUsd ?? 7.10).toFixed(2)}
+                      </td>
+                      <td className="py-1.5 text-right text-[11px] text-[#C27A86] font-mono">
+                        Rs. {Math.round((pricingPreview?.preview?.landedCost?.totalLandedCostUsd ?? selectedProduct.priceCalc?.landedCostUsd ?? 7.10) * 280).toLocaleString()}
+                      </td>
+                    </tr>
+                    {selectedProduct.priceCalc?.cjMarketPriceUsd && (
+                      <tr className="text-amber-300">
+                        <td className="py-1.5">CJ Recommended Market Price (Reference)</td>
+                        <td className="py-1.5 text-right font-mono font-semibold">
+                          ${Number(selectedProduct.priceCalc.cjMarketPriceUsd).toFixed(2)}
+                        </td>
+                        <td className="py-1.5 text-right text-[11px] font-mono">
+                          Rs. {Math.round(Number(selectedProduct.priceCalc.cjMarketPriceUsd) * 280).toLocaleString()}
+                        </td>
+                      </tr>
+                    )}
+                    <tr className="bg-[#181820] text-emerald-300 font-bold border-t border-[#2E2E38]">
+                      <td className="py-2">Pretty Puff Suggested Price</td>
+                      <td className="py-2 text-right font-mono text-emerald-400 text-sm">
+                        ${(pricingPreview?.preview?.suggestedRegularPriceUsd ?? selectedProduct.priceCalc?.sellingPriceUsd ?? 11.99).toFixed(2)}
+                      </td>
+                      <td className="py-2 text-right text-xs font-mono text-emerald-300">
+                        Rs. {Math.round((pricingPreview?.preview?.suggestedRegularPriceUsd ?? selectedProduct.priceCalc?.sellingPriceUsd ?? 11.99) * 280).toLocaleString()}
+                      </td>
+                    </tr>
+                    <tr className="text-gray-400 text-[11px]">
+                      <td className="py-1">Minimum Profitable Price (Protected)</td>
+                      <td className="py-1 text-right font-mono font-medium text-white">
+                        ${(pricingPreview?.preview?.minimumPriceUsd ?? selectedProduct.priceCalc?.minimumPriceUsd ?? 11.99).toFixed(2)}
+                      </td>
+                      <td className="py-1 text-right text-gray-500 font-mono">
+                        Max Discount: ${(pricingPreview?.preview?.maxSafeDiscountUsd ?? selectedProduct.priceCalc?.maxSafeDiscountUsd ?? 0).toFixed(2)}
+                      </td>
+                    </tr>
+                    <tr className="text-emerald-400 text-[11px]">
+                      <td className="py-1">Estimated Net Profit & Margin</td>
+                      <td className="py-1 text-right font-mono font-semibold">
+                        +${(pricingPreview?.preview?.estimatedProfit?.netProfitUsd ?? selectedProduct.priceCalc?.profitUsd ?? 4.24).toFixed(2)}
+                      </td>
+                      <td className="py-1 text-right font-mono font-bold">
+                        {(pricingPreview?.preview?.estimatedProfit?.profitMarginPercent ?? selectedProduct.priceCalc?.profitMarginPercent ?? 35)}% margin
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
 
             {/* Custom Price & Status Selection */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
               <div>
-                <label className="block text-gray-300 font-medium mb-1">Custom Selling Price (PKR)</label>
+                <label className="block text-gray-300 font-medium mb-1">
+    Custom Selling Price (USD $)
+    <span className="text-[10px] text-gray-400 font-normal ml-2">
+      {customPrice ? `(≈ Rs. ${Math.round(Number(customPrice) * 280).toLocaleString()})` : ''}
+    </span>
+  </label>
                 <input
                   type="number"
                   value={customPrice}

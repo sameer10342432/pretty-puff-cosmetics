@@ -1,3 +1,4 @@
+import { PricingEngine } from './pricingEngine';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
@@ -21,12 +22,23 @@ export interface PricingCalculation {
   supplierPriceUsd: number;
   sellingPriceUsd: number;
   salePriceUsd: number;
+  minimumPriceUsd: number;
+  landedCostUsd: number;
+  shippingCostUsd: number;
+  packagingCostUsd: number;
+  handlingCostUsd: number;
+  cjMarketPriceUsd: number | null;
+  maxSafeDiscountUsd: number;
+  maxSafeDiscountPercent: number;
+  profitUsd: number;
+  profitMarginPercent: number;
+  meetsMinMargin: boolean;
+  cjMarketPriceEvaluation?: any;
   supplierCostPkr: number;
   estimatedShippingPkr: number;
   totalCostPkr: number;
   sellingPricePkr: number;
   profitPkr: number;
-  profitMarginPercent: number;
 }
 
 export class CjDropshippingService {
@@ -96,6 +108,15 @@ export class CjDropshippingService {
         ...(data.autoPublish !== undefined && { autoPublish: data.autoPublish }),
         ...(data.autoSyncStock !== undefined && { autoSyncStock: data.autoSyncStock }),
         ...(data.autoSyncPrice !== undefined && { autoSyncPrice: data.autoSyncPrice }),
+        ...((data as any).targetMargin !== undefined && { targetMargin: (data as any).targetMargin }),
+        ...((data as any).minMargin !== undefined && { minMargin: (data as any).minMargin }),
+        ...((data as any).minProfitUsd !== undefined && { minProfitUsd: (data as any).minProfitUsd }),
+        ...((data as any).defaultPackagingUsd !== undefined && { defaultPackagingUsd: (data as any).defaultPackagingUsd }),
+        ...((data as any).defaultHandlingUsd !== undefined && { defaultHandlingUsd: (data as any).defaultHandlingUsd }),
+        ...((data as any).paymentFeePercent !== undefined && { paymentFeePercent: (data as any).paymentFeePercent }),
+        ...((data as any).paymentFeeFixedUsd !== undefined && { paymentFeeFixedUsd: (data as any).paymentFeeFixedUsd }),
+        ...((data as any).defaultShippingDestination !== undefined && { defaultShippingDestination: (data as any).defaultShippingDestination }),
+        ...((data as any).shippingIncludedInPrice !== undefined && { shippingIncludedInPrice: (data as any).shippingIncludedInPrice }),
       },
     });
   }
@@ -303,48 +324,70 @@ export class CjDropshippingService {
   }
 
   // -------------------------------------------------------------
-  // Pricing Calculation Engine (PKR)
+  // Pricing & Profit Protection Engine
   // -------------------------------------------------------------
-  calculatePrice(rawPriceUsd: number | string, settings: any): PricingCalculation {
-    const usdPrice = typeof rawPriceUsd === 'number' ? rawPriceUsd : parseFloat(String(rawPriceUsd).replace(/[^0-9.]/g, '')) || 0;
+  calculatePrice(
+    rawPriceUsd: number | string,
+    settings: any,
+    options?: {
+      shippingCostUsd?: number;
+      cjMarketPriceUsd?: number | null;
+      categoryTargetMargin?: number | null;
+    }
+  ): PricingCalculation {
+    const usdPrice = typeof rawPriceUsd === 'number'
+      ? rawPriceUsd
+      : parseFloat(String(rawPriceUsd).replace(/[^0-9.]/g, '')) || 0;
+
     const rate = settings.currencyRatePkr || 280.0;
+    const shippingUsd = options?.shippingCostUsd !== undefined
+      ? options.shippingCostUsd
+      : ((settings.estimatedShippingPkr || 350.0) / rate);
+
+    const targetMargin = options?.categoryTargetMargin || settings.targetMargin || settings.markupValue || 35.0;
+
+    const suggestion = PricingEngine.calculatePriceSuggestion({
+      supplierCostUsd: usdPrice,
+      shippingCostUsd: shippingUsd,
+      packagingCostUsd: settings.defaultPackagingUsd ?? 0.50,
+      handlingCostUsd: settings.defaultHandlingUsd ?? 0.50,
+      cjMarketPriceUsd: options?.cjMarketPriceUsd,
+      settings: {
+        targetMargin,
+        minMargin: settings.minMargin ?? 15.0,
+        minProfitUsd: settings.minProfitUsd ?? 2.0,
+        paymentFeePercent: settings.paymentFeePercent ?? 2.9,
+        paymentFeeFixedUsd: settings.paymentFeeFixedUsd ?? 0.30,
+        currencyRatePkr: rate,
+      },
+    });
+
+    const sellingPricePkr = Math.round(suggestion.suggestedRegularPriceUsd * rate);
     const supplierCostPkr = Math.round(usdPrice * rate);
-    const shippingPkr = settings.estimatedShippingPkr || 350.0;
-    const totalCostPkr = supplierCostPkr + shippingPkr;
-
-    let sellingPricePkr = totalCostPkr;
-    const markupVal = settings.markupValue || 35.0;
-
-    if (settings.pricingType === 'PERCENTAGE') {
-      sellingPricePkr = Math.round(totalCostPkr * (1 + markupVal / 100));
-    } else if (settings.pricingType === 'FIXED') {
-      sellingPricePkr = Math.round(totalCostPkr + markupVal);
-    } else if (settings.pricingType === 'MARGIN') {
-      const margin = Math.min(markupVal, 85) / 100;
-      sellingPricePkr = Math.round(totalCostPkr / (1 - margin));
-    }
-
-    // Psychology pricing rounding (e.g. round to nearest 99 or 50)
-    if (sellingPricePkr > 500) {
-      sellingPricePkr = Math.ceil(sellingPricePkr / 50) * 50 - 1; // e.g., 1499, 1999
-    }
-
-    const profitPkr = Math.max(0, sellingPricePkr - totalCostPkr);
-    const profitMarginPercent = sellingPricePkr > 0 ? Math.round((profitPkr / sellingPricePkr) * 100) : 0;
-
-    const sellingPriceUsd = Math.round((sellingPricePkr / rate) * 100) / 100;
-    const salePriceUsd = Math.round(sellingPriceUsd * 0.9 * 100) / 100;
+    const totalCostPkr = Math.round(suggestion.landedCost.totalLandedCostUsd * rate);
+    const profitPkr = Math.round(suggestion.estimatedProfit.netProfitUsd * rate);
 
     return {
       supplierPriceUsd: usdPrice,
-      sellingPriceUsd,
-      salePriceUsd,
+      sellingPriceUsd: suggestion.suggestedRegularPriceUsd,
+      salePriceUsd: suggestion.suggestedSalePriceUsd,
+      minimumPriceUsd: suggestion.minimumPriceUsd,
+      landedCostUsd: suggestion.landedCost.totalLandedCostUsd,
+      shippingCostUsd: suggestion.landedCost.shippingCostUsd,
+      packagingCostUsd: suggestion.landedCost.packagingCostUsd,
+      handlingCostUsd: suggestion.landedCost.handlingCostUsd,
+      cjMarketPriceUsd: suggestion.cjMarketPriceUsd,
+      maxSafeDiscountUsd: suggestion.maxSafeDiscountUsd,
+      maxSafeDiscountPercent: suggestion.maxSafeDiscountPercent,
+      profitUsd: suggestion.estimatedProfit.netProfitUsd,
+      profitMarginPercent: suggestion.estimatedProfit.profitMarginPercent,
+      meetsMinMargin: suggestion.estimatedProfit.meetsMinMargin,
+      cjMarketPriceEvaluation: suggestion.cjMarketPriceEvaluation,
       supplierCostPkr,
-      estimatedShippingPkr: shippingPkr,
+      estimatedShippingPkr: Math.round(shippingUsd * rate),
       totalCostPkr,
       sellingPricePkr,
       profitPkr,
-      profitMarginPercent,
     };
   }
 
@@ -441,14 +484,25 @@ export class CjDropshippingService {
     const token = await this.getValidAccessToken();
     const settings = await this.getSettings();
 
-    const res = await fetch(`${this.getBaseUrl()}/api2.0/v1/product/query?pid=${encodeURIComponent(pid)}`, {
+    let res = await fetch(`${this.getBaseUrl()}/api2.0/v1/product/query?pid=${encodeURIComponent(pid)}`, {
       headers: {
         'CJ-Access-Token': token,
         'Content-Type': 'application/json',
       },
     });
 
-    const data = await res.json().catch(() => null);
+    let data = await res.json().catch(() => null);
+
+    if (data?.message && /QPS limit|Too Many Requests/i.test(data.message)) {
+      await new Promise(r => setTimeout(r, 1200));
+      res = await fetch(`${this.getBaseUrl()}/api2.0/v1/product/query?pid=${encodeURIComponent(pid)}`, {
+        headers: {
+          'CJ-Access-Token': token,
+          'Content-Type': 'application/json',
+        },
+      });
+      data = await res.json().catch(() => null);
+    }
 
     if (!res.ok || !data || data.code !== 200 || !data.data) {
       throw new Error(`Failed to retrieve product details from CJ: ${data?.message || res.status}`);
@@ -465,21 +519,40 @@ export class CjDropshippingService {
       ? raw.productImageSet
       : [raw.bigImage || raw.productImage].filter(Boolean);
 
-    const priceCalc = this.calculatePrice(raw.sellPrice || 0, settings);
+    // Parse CJ recommended market price from API
+    let cjMarketPrice: number | null = null;
+    if (raw.suggestSellPrice) {
+      const match = String(raw.suggestSellPrice).match(/[0-9.]+/);
+      if (match) cjMarketPrice = parseFloat(match[0]);
+    }
+
+    const priceCalc = this.calculatePrice(raw.sellPrice || 0, settings, {
+      cjMarketPriceUsd: cjMarketPrice,
+    });
     const categoryMapping = await this.mapCategory(raw.categoryName, title);
 
-    // Parse variants if available
-    const variants = (raw.variants || []).map((v: any) => ({
-      vid: String(v.vid),
-      pid: String(v.pid || pid),
-      variantName: v.variantNameEn || v.variantName || 'Standard',
-      variantSku: v.variantSku || `${raw.productSku || pid}-${v.vid}`,
-      variantImage: v.variantImage || raw.bigImage || raw.productImage,
-      priceCalc: this.calculatePrice(v.variantSellPrice || raw.sellPrice || 0, settings),
-      weight: v.variantWeight || raw.productWeight || 0,
-      standard: v.variantStandard || null,
-      stock: v.variantStock !== undefined ? v.variantStock : 50,
-    }));
+    // Parse variants if available with individual recommended prices
+    const variants = (raw.variants || []).map((v: any) => {
+      let vCjMarketPrice: number | null = null;
+      if (v.variantSugSellPrice) {
+        const vMatch = String(v.variantSugSellPrice).match(/[0-9.]+/);
+        if (vMatch) vCjMarketPrice = parseFloat(vMatch[0]);
+      }
+      return {
+        vid: String(v.vid),
+        pid: String(v.pid || pid),
+        variantName: v.variantNameEn || v.variantName || 'Standard',
+        variantSku: v.variantSku || `${raw.productSku || pid}-${v.vid}`,
+        variantImage: v.variantImage || raw.bigImage || raw.productImage,
+        cjMarketPrice: vCjMarketPrice,
+        priceCalc: this.calculatePrice(v.variantSellPrice || raw.sellPrice || 0, settings, {
+          cjMarketPriceUsd: vCjMarketPrice,
+        }),
+        weight: v.variantWeight || raw.productWeight || 0,
+        standard: v.variantStandard || null,
+        stock: v.variantStock !== undefined ? v.variantStock : 50,
+      };
+    });
 
     return {
       pid: String(raw.pid || pid),
@@ -589,15 +662,21 @@ export class CjDropshippingService {
 
       // 6. Calculate USD authoritative base prices & validate auto-publishing
       const rate = settings.currencyRatePkr || 280.0;
-      const sellingPriceUsd = Math.round((sellingPrice / rate) * 100) / 100;
-      const salePriceUsd = Math.round((salePrice / rate) * 100) / 100;
+      const sellingPriceUsd = (options as any).customPriceUsd !== undefined && (options as any).customPriceUsd > 0
+        ? (options as any).customPriceUsd
+        : (options.customPricePkr ? Math.round((options.customPricePkr / rate) * 100) / 100 : cjData.priceCalc.sellingPriceUsd);
+
+      const salePriceUsd = Math.round(sellingPriceUsd * 0.9 * 100) / 100;
+      const minimumPrice = cjData.priceCalc.minimumPriceUsd;
+      const landedCost = cjData.priceCalc.landedCostUsd;
+      const isProfitable = sellingPriceUsd >= minimumPrice;
 
       const hasValidTitle = Boolean(cjData.title && cjData.title.trim().length > 2);
       const hasValidDesc = Boolean(cjData.description && cjData.description.trim().length > 10);
       const hasValidImages = localImages.length > 0 || Boolean(thumbnail);
       const hasValidPrice = sellingPriceUsd > 0;
       const hasValidCategory = Boolean(categoryId);
-      const passesAutoPublishValidation = hasValidTitle && hasValidDesc && hasValidImages && hasValidPrice && hasValidCategory;
+      const passesAutoPublishValidation = hasValidTitle && hasValidDesc && hasValidImages && hasValidPrice && hasValidCategory && isProfitable;
 
       const shouldPublish = (options.status === 'PUBLISHED' || (options.status !== 'DRAFT' && settings.autoPublish)) && passesAutoPublishValidation;
 
@@ -614,12 +693,20 @@ export class CjDropshippingService {
           description: cjData.description,
           price: sellingPriceUsd,
           salePrice: salePriceUsd,
-          currency: 'USD',
-          originalPkrPrice: sellingPrice,
-          originalPkrSalePrice: salePrice,
-          pkrToUsdRate: rate,
           costPrice: cjData.priceCalc.supplierPriceUsd,
-          discount,
+          landedCost,
+          estimatedShippingCost: cjData.priceCalc.shippingCostUsd,
+          packagingCost: cjData.priceCalc.packagingCostUsd,
+          handlingCost: cjData.priceCalc.handlingCostUsd,
+          cjMarketPrice: cjData.priceCalc.cjMarketPriceUsd,
+          minimumPrice,
+          targetMargin: settings.targetMargin || 35.0,
+          currency: 'USD',
+          originalPkrPrice: Math.round(sellingPriceUsd * rate),
+          originalPkrSalePrice: Math.round(salePriceUsd * rate),
+          originalPkrCostPrice: Math.round(cjData.priceCalc.supplierPriceUsd * rate),
+          pkrToUsdRate: rate,
+          discount: 10,
           stock: 45,
           lowStockThreshold: 5,
           images: JSON.stringify(localImages),
@@ -632,18 +719,20 @@ export class CjDropshippingService {
           variants: cjData.variants.length > 0
             ? {
                 create: cjData.variants.slice(0, 8).map((v: any, idx: number) => {
-                  const vPricePkr = v.priceCalc?.sellingPricePkr || sellingPrice;
-                  const vPriceUsd = Math.round((vPricePkr / rate) * 100) / 100;
+                  const vPriceUsd = v.priceCalc?.sellingPriceUsd || sellingPriceUsd;
                   const vSalePriceUsd = Math.round(vPriceUsd * 0.9 * 100) / 100;
                   return {
                     name: v.variantName,
                     sku: `${sku}-V${idx + 1}`,
                     price: vPriceUsd,
                     salePrice: vSalePriceUsd,
+                    costPrice: v.priceCalc?.supplierPriceUsd || cjData.priceCalc.supplierPriceUsd,
+                    landedCost: v.priceCalc?.landedCostUsd || landedCost,
+                    cjMarketPrice: v.cjMarketPrice || null,
+                    minimumPrice: v.priceCalc?.minimumPriceUsd || minimumPrice,
                     currency: 'USD',
-                    originalPkrPrice: vPricePkr,
-                    originalPkrSalePrice: Math.round(vPricePkr * 0.9),
-                    pkrToUsdRate: rate,
+                    originalPkrPrice: Math.round(vPriceUsd * rate),
+                    originalPkrSalePrice: Math.round(vSalePriceUsd * rate),
                     stock: v.stock || 25,
                     image: v.variantImage || thumbnail,
                     cjVariantId: v.vid,

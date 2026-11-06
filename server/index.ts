@@ -47,6 +47,7 @@ import uploadRoutes from './routes/upload';
 import cjRoutes from './routes/cj';
 import geoRoutes from './routes/geo';
 import currencyRoutes from './routes/currency';
+import discountsRoutes from './routes/discounts';
 import { prisma } from './prisma';
 
 const app = express();
@@ -161,6 +162,7 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/cjdropshipping', cjRoutes);
 app.use('/api/geo', geoRoutes);
 app.use('/api/currency', currencyRoutes);
+app.use('/api/discounts', discountsRoutes);
 
 // Serve Vite production build
 const distPath = path.resolve(appRootDir, 'dist');

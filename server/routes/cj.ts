@@ -1,3 +1,4 @@
+import { PricingEngine } from '../services/pricingEngine';
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { prisma } from '../prisma';
@@ -34,6 +35,15 @@ router.get('/settings', requireAuth, requirePermission('products.manage'), async
         autoPublish: settings.autoPublish,
         autoSyncStock: settings.autoSyncStock,
         autoSyncPrice: settings.autoSyncPrice,
+        targetMargin: (settings as any).targetMargin ?? 35.0,
+        minMargin: (settings as any).minMargin ?? 15.0,
+        minProfitUsd: (settings as any).minProfitUsd ?? 2.0,
+        defaultPackagingUsd: (settings as any).defaultPackagingUsd ?? 0.50,
+        defaultHandlingUsd: (settings as any).defaultHandlingUsd ?? 0.50,
+        paymentFeePercent: (settings as any).paymentFeePercent ?? 2.9,
+        paymentFeeFixedUsd: (settings as any).paymentFeeFixedUsd ?? 0.30,
+        defaultShippingDestination: (settings as any).defaultShippingDestination ?? 'US',
+        shippingIncludedInPrice: (settings as any).shippingIncludedInPrice ?? false,
         webhookProductUrl,
         webhookStockUrl,
       },
@@ -54,6 +64,15 @@ const updateSettingsSchema = z.object({
   autoPublish: z.boolean().optional(),
   autoSyncStock: z.boolean().optional(),
   autoSyncPrice: z.boolean().optional(),
+  targetMargin: z.number().nonnegative().optional(),
+  minMargin: z.number().nonnegative().optional(),
+  minProfitUsd: z.number().nonnegative().optional(),
+  defaultPackagingUsd: z.number().nonnegative().optional(),
+  defaultHandlingUsd: z.number().nonnegative().optional(),
+  paymentFeePercent: z.number().nonnegative().optional(),
+  paymentFeeFixedUsd: z.number().nonnegative().optional(),
+  defaultShippingDestination: z.string().optional(),
+  shippingIncludedInPrice: z.boolean().optional(),
 });
 
 router.put('/settings', requireAuth, requirePermission('products.manage'), async (req: AuthRequest, res: Response): Promise<void> => {
@@ -127,16 +146,87 @@ router.get('/product/:pid', requireAuth, requirePermission('products.manage'), a
   }
 });
 
+
+// Real-time CJ Pricing & Landed Cost Preview with Destination Shipping
+router.post('/pricing-preview', requireAuth, requirePermission('products.manage'), async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { pid, destinationCountry = 'US' } = req.body;
+    if (!pid) {
+      res.status(400).json({ success: false, message: 'Product PID required.' });
+      return;
+    }
+
+    const cjData = await cjService.getProductDetail(pid);
+    const settings = await cjService.getSettings();
+
+    // Fetch live shipping quotes for destination
+    let shippingQuotes: any[] = [];
+    let selectedShippingCostUsd = 0;
+    try {
+      const vid = cjData.variants?.[0]?.vid;
+      const freightRes = await cjService.calculateFreight({
+        endCountryCode: destinationCountry,
+        products: vid ? [{ quantity: 1, vid }] : [],
+      });
+      if (freightRes?.success && Array.isArray(freightRes.methods) && freightRes.methods.length > 0) {
+        shippingQuotes = freightRes.methods;
+        const sorted = [...shippingQuotes].sort((a, b) => a.priceUsd - b.priceUsd);
+        selectedShippingCostUsd = sorted[0].priceUsd;
+      }
+    } catch (e: any) {
+      console.warn('Live freight preview failed:', e.message);
+    }
+
+    const preview = PricingEngine.calculatePriceSuggestion({
+      supplierCostUsd: cjData.priceCalc.supplierPriceUsd,
+      shippingCostUsd: selectedShippingCostUsd,
+      packagingCostUsd: (settings as any).defaultPackagingUsd ?? 0.50,
+      handlingCostUsd: (settings as any).defaultHandlingUsd ?? 0.50,
+      cjMarketPriceUsd: cjData.priceCalc.cjMarketPriceUsd,
+      settings: {
+        targetMargin: (settings as any).targetMargin || 35.0,
+        minMargin: (settings as any).minMargin || 15.0,
+        minProfitUsd: (settings as any).minProfitUsd || 2.0,
+        paymentFeePercent: (settings as any).paymentFeePercent || 2.9,
+        paymentFeeFixedUsd: (settings as any).paymentFeeFixedUsd || 0.30,
+        currencyRatePkr: settings.currencyRatePkr || 280.0,
+      },
+    });
+
+    res.json({
+      success: true,
+      data: {
+        product: {
+          pid: cjData.pid,
+          title: cjData.title,
+          sku: cjData.sku,
+          image: cjData.mainImage,
+          variantsCount: cjData.variants.length,
+          cjMarketPrice: cjData.priceCalc.cjMarketPriceUsd,
+        },
+        destinationCountry,
+        shippingQuotes,
+        selectedShippingCostUsd,
+        preview,
+      },
+    });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 // ==========================================
 // 3. PRODUCT IMPORT WORKFLOW
 // ==========================================
 
 const importProductSchema = z.object({
   pid: z.string().min(1),
+  customPriceUsd: z.number().positive().optional(),
   customPricePkr: z.number().positive().optional(),
   categoryId: z.string().optional(),
   subcategoryId: z.string().optional(),
   status: z.enum(['DRAFT', 'PUBLISHED']).optional(),
+  overrideProfitProtection: z.boolean().optional(),
 });
 
 router.post('/import', requireAuth, requirePermission('products.manage'), async (req: AuthRequest, res: Response): Promise<void> => {
@@ -144,11 +234,12 @@ router.post('/import', requireAuth, requirePermission('products.manage'), async 
     const validated = importProductSchema.parse(req.body);
 
     const result = await cjService.importProduct(validated.pid, {
+      customPriceUsd: validated.customPriceUsd,
       customPricePkr: validated.customPricePkr,
       categoryId: validated.categoryId,
       subcategoryId: validated.subcategoryId,
       status: validated.status,
-    });
+    } as any);
 
     res.status(201).json(result);
   } catch (error: any) {

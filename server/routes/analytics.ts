@@ -194,4 +194,167 @@ router.get('/dashboard', requireAuth, requirePermission('dashboard.view'), async
   }
 });
 
+
+// ==========================================
+// PROFIT & PRICING REPORTING DASHBOARD (Part 13)
+// ==========================================
+router.get('/profit-report', requireAuth, requirePermission('dashboard.view'), async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { startDate, endDate, country, currency } = req.query;
+
+    const where: any = {
+      isArchived: false,
+      orderStatus: { not: 'CANCELLED' },
+    };
+
+    if (startDate || endDate) {
+      where.createdAt = {};
+      if (startDate) where.createdAt.gte = new Date(startDate as string);
+      if (endDate) where.createdAt.lte = new Date(endDate as string);
+    }
+
+    if (currency) {
+      where.currency = currency as string;
+    }
+
+    const orders = await prisma.order.findMany({
+      where,
+      include: {
+        items: {
+          include: {
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                costPrice: true,
+                landedCost: true,
+                minimumPrice: true,
+                category: { select: { name: true } },
+              },
+            },
+          },
+        },
+      },
+    });
+
+    let totalRevenue = 0;
+    let totalLandedCost = 0;
+    let totalShippingCost = 0;
+    let totalPaymentFees = 0;
+    let totalDiscounts = 0;
+
+    const productProfitMap = new Map<string, {
+      name: string;
+      category: string;
+      unitsSold: number;
+      revenue: number;
+      landedCost: number;
+      profit: number;
+      marginPercent: number;
+    }>();
+
+    for (const order of orders) {
+      totalRevenue += order.total;
+      totalDiscounts += order.discount || 0;
+      totalShippingCost += (order as any).shippingCostActual || order.shippingFee || 0;
+      totalPaymentFees += (order as any).paymentFee || 0;
+      totalLandedCost += (order as any).totalLandedCost || 0;
+
+      for (const item of order.items) {
+        const pId = item.productId;
+        const pName = item.productName;
+        const catName = item.product?.category?.name || 'Cosmetics';
+        const itemRev = item.price * item.quantity;
+        const itemCost = (item as any).landedCost ? ((item as any).landedCost * item.quantity) : (itemRev * 0.5);
+        const itemProfit = itemRev - itemCost;
+
+        if (!productProfitMap.has(pId)) {
+          productProfitMap.set(pId, {
+            name: pName,
+            category: catName,
+            unitsSold: 0,
+            revenue: 0,
+            landedCost: 0,
+            profit: 0,
+            marginPercent: 0,
+          });
+        }
+
+        const stat = productProfitMap.get(pId)!;
+        stat.unitsSold += item.quantity;
+        stat.revenue += itemRev;
+        stat.landedCost += itemCost;
+        stat.profit += itemProfit;
+        stat.marginPercent = stat.revenue > 0 ? Math.round((stat.profit / stat.revenue) * 100) : 0;
+      }
+    }
+
+    const netProfit = Math.round((totalRevenue - totalLandedCost - totalPaymentFees) * 100) / 100;
+    const avgMarginPercent = totalRevenue > 0 ? Math.round((netProfit / totalRevenue) * 100) : 0;
+
+    const productList = Array.from(productProfitMap.values());
+    const mostProfitable = [...productList].sort((a, b) => b.profit - a.profit).slice(0, 5);
+    const lowMargin = [...productList].filter(p => p.marginPercent < 15).sort((a, b) => a.marginPercent - b.marginPercent);
+
+    // Products in catalog with low margins or below minimum
+    const allCatalogProducts = await prisma.product.findMany({
+      where: { isArchived: false, isActive: true },
+      select: {
+        id: true,
+        name: true,
+        sku: true,
+        price: true,
+        costPrice: true,
+        landedCost: true,
+        minimumPrice: true,
+        cjMarketPrice: true,
+      },
+    });
+
+    const catalogMarginIssues = allCatalogProducts
+      .map(p => {
+        const cost = p.landedCost || p.costPrice || 0;
+        const minP = p.minimumPrice || cost * 1.2;
+        const currentP = p.price;
+        const isBelowMin = currentP < minP;
+        const profit = currentP - cost;
+        const margin = currentP > 0 ? Math.round((profit / currentP) * 100) : 0;
+        return {
+          id: p.id,
+          name: p.name,
+          sku: p.sku,
+          price: currentP,
+          cost,
+          minimumPrice: minP,
+          marginPercent: margin,
+          isBelowMin,
+        };
+      })
+      .filter(p => p.isBelowMin || p.marginPercent < 15);
+
+    res.json({
+      success: true,
+      data: {
+        summary: {
+          totalRevenue: Math.round(totalRevenue * 100) / 100,
+          totalLandedCost: Math.round(totalLandedCost * 100) / 100,
+          totalShippingCost: Math.round(totalShippingCost * 100) / 100,
+          totalPaymentFees: Math.round(totalPaymentFees * 100) / 100,
+          totalDiscounts: Math.round(totalDiscounts * 100) / 100,
+          netProfit,
+          avgMarginPercent,
+          completedOrdersCount: orders.length,
+        },
+        mostProfitableProducts: mostProfitable,
+        lowMarginProducts: lowMargin,
+        catalogMarginIssues,
+      },
+    });
+  } catch (error: any) {
+    console.error('Profit report error:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
 export default router;
