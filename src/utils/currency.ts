@@ -37,12 +37,12 @@ export function formatCurrency(
   currency: string = 'USD',
   rates: Record<string, number> = {}
 ): string {
+  const curr = (currency && typeof currency === 'string' ? currency : 'USD').toUpperCase().trim();
+
   if (amountInUsd === undefined || amountInUsd === null || isNaN(Number(amountInUsd))) {
-    const symbol = CURRENCY_SYMBOLS[currency] || `${currency} `;
+    const symbol = CURRENCY_SYMBOLS[curr] || `${curr} `;
     return `${symbol}0`;
   }
-
-  const curr = currency.toUpperCase().trim();
   const rate = rates[curr] || (curr === 'USD' ? 1.0 : curr === 'PKR' ? 280.0 : 1.0);
   const converted = Number(amountInUsd) * rate;
 
@@ -64,10 +64,10 @@ export function formatCurrency(
  */
 export function convertCurrency(
   amountInUsd: number,
-  currency: string,
-  rates: Record<string, number>
+  currency: string = 'USD',
+  rates: Record<string, number> = {}
 ): number {
-  const curr = currency.toUpperCase().trim();
+  const curr = (currency && typeof currency === 'string' ? currency : 'USD').toUpperCase().trim();
   const rate = rates[curr] || (curr === 'USD' ? 1.0 : curr === 'PKR' ? 280.0 : 1.0);
   const converted = amountInUsd * rate;
   return ZERO_DECIMAL_CURRENCIES.has(curr)

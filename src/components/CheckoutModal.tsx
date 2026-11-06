@@ -60,12 +60,12 @@ export const CheckoutModal: React.FC = () => {
     fullName: '',
     email: '',
     phone: '',
-    city: selectedCountry.code === 'PK' ? 'Lahore' : '',
+    city: selectedCountry?.code === 'PK' ? 'Lahore' : '',
     province: '',
     postalCode: '',
     address: '',
     notes: '',
-    paymentMethod: selectedCountry.code === 'PK' ? 'cod' : 'card', // 'cod' | 'card' | 'bank' | 'paypal'
+    paymentMethod: selectedCountry?.code === 'PK' ? 'cod' : 'card', // 'cod' | 'card' | 'bank' | 'paypal'
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,7 +78,7 @@ export const CheckoutModal: React.FC = () => {
 
   // Sync phone dial code & payment method when country changes
   useEffect(() => {
-    if (selectedCountry.code === 'PK') {
+    if (selectedCountry?.code === 'PK') {
       setFormData(prev => ({
         ...prev,
         city: prev.city || 'Lahore',
@@ -90,7 +90,7 @@ export const CheckoutModal: React.FC = () => {
         paymentMethod: prev.paymentMethod === 'cod' ? 'card' : prev.paymentMethod,
       }));
     }
-  }, [selectedCountry.code]);
+  }, [selectedCountry?.code]);
 
   if (!isCheckoutModalOpen) return null;
 

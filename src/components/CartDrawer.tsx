@@ -46,7 +46,7 @@ export const CartDrawer: React.FC = () => {
   );
 
   const recommendedProducts = PRODUCTS.filter(
-    p => !cart.some(item => item.product.id === p.id)
+    p => !cart.some(item => item?.product?.id === p.id)
   ).slice(0, 3);
 
   const handleApplyCoupon = (e: React.FormEvent) => {

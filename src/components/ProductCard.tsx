@@ -14,9 +14,10 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '' }) => {
   const { navigateTo, addToCart, toggleWishlist, isInWishlist, openQuickView } = useShop();
   const [isHovered, setIsHovered] = useState(false);
-  const [selectedColour, setSelectedColour] = useState<string | undefined>(
-    product.colours?.[0]?.name
-  );
+  const [selectedColour, setSelectedColour] = useState<string | undefined>(() => {
+    const firstCol = product.colours?.[0];
+    return typeof firstCol === 'string' ? firstCol : firstCol?.name;
+  });
 
   const inWishlist = isInWishlist(product.id);
   const images = Array.isArray(product.images) && product.images.length > 0
@@ -107,7 +108,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         {/* Brand & Category */}
         <div className="flex items-center justify-between text-[11px] uppercase tracking-wider text-[#8C868A] font-medium mb-1">
           <span>{product.brand}</span>
-          <span className="capitalize text-[#B3A8A4]">{((product.subcategory || product.category || '').replace('-', ' '))}</span>
+          <span className="capitalize text-[#B3A8A4]">
+            {(
+              (typeof product.subcategory === 'string'
+                ? product.subcategory
+                : typeof product.category === 'string'
+                ? product.category
+                : (product.category as any)?.name || ''
+              ).replace(/-/g, ' ')
+            )}
+          </span>
         </div>
 
         {/* Product Name */}
@@ -121,21 +131,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, className = '
         </div>
 
         {/* Color Shades Previews if available */}
-        {product.colours && product.colours.length > 0 && (
+        {product.colours && Array.isArray(product.colours) && product.colours.length > 0 && (
           <div className="flex items-center gap-1 mb-2.5" onClick={e => e.stopPropagation()}>
-            {product.colours.slice(0, 5).map((col, idx) => (
-              <button
-                key={idx}
-                title={col.name}
-                onClick={() => setSelectedColour(col.name)}
-                className={`w-3.5 h-3.5 rounded-full border transition-transform ${
-                  selectedColour === col.name
-                    ? 'scale-125 ring-1 ring-offset-1 ring-[#1E1E24]'
-                    : 'border-black/15 hover:scale-110'
-                }`}
-                style={{ backgroundColor: col.hex }}
-              />
-            ))}
+            {product.colours.slice(0, 5).map((col: any, idx) => {
+              const colName = typeof col === 'string' ? col : col?.name || `Color ${idx + 1}`;
+              const colHex = typeof col === 'object' && col?.hex ? col.hex : '#C24560';
+              return (
+                <button
+                  key={idx}
+                  title={colName}
+                  onClick={() => setSelectedColour(colName)}
+                  className={`w-3.5 h-3.5 rounded-full border transition-transform ${
+                    selectedColour === colName
+                      ? 'scale-125 ring-1 ring-offset-1 ring-[#1E1E24]'
+                      : 'border-black/15 hover:scale-110'
+                  }`}
+                  style={{ backgroundColor: colHex }}
+                />
+              );
+            })}
             {product.colours.length > 5 && (
               <span className="text-[10px] text-[#8C868A] pl-0.5 font-medium">
                 +{product.colours.length - 5}

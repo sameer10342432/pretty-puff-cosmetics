@@ -37,13 +37,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
     navigateTo,
     setIsCheckoutModalOpen,
     showToast,
+    formatPrice,
   } = useShop();
 
-  const slug = productSlug || currentProductSlug;
+  // Resolve slug from props, context, or browser path
+  const routeSlug =
+    typeof window !== 'undefined' && window.location.pathname.startsWith('/product/')
+      ? window.location.pathname.replace('/product/', '').split('/')[0]
+      : null;
+  const slug = productSlug || currentProductSlug || routeSlug;
 
   const [dbProduct, setDbProduct] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedVariant, setSelectedVariant] = useState<any | null>(null);
+  const [catalogProducts, setCatalogProducts] = useState<any[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -71,12 +78,29 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
     };
   }, [slug]);
 
+  // Load catalog for related products
+  useEffect(() => {
+    let isMounted = true;
+    api.products
+      .getAll({ limit: 20 })
+      .then(res => {
+        if (isMounted && res?.success && Array.isArray(res.data)) {
+          setCatalogProducts(res.data);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const product = dbProduct || PRODUCTS.find(p => p.slug === slug) || null;
 
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [selectedColour, setSelectedColour] = useState<string | undefined>(
-    product?.colours?.[0]?.name
-  );
+  const [selectedColour, setSelectedColour] = useState<string | undefined>(() => {
+    const firstCol = product?.colours?.[0];
+    return typeof firstCol === 'string' ? firstCol : firstCol?.name;
+  });
   const [selectedSize, setSelectedSize] = useState<string | undefined>(
     product?.sizes?.[0]
   );
@@ -110,7 +134,8 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
   useEffect(() => {
     if (!product) return;
     setActiveImageIndex(0);
-    setSelectedColour(product?.colours?.[0]?.name);
+    const firstCol = product?.colours?.[0];
+    setSelectedColour(typeof firstCol === 'string' ? firstCol : firstCol?.name);
     setSelectedSize(product?.sizes?.[0]);
     setQuantity(1);
     setSubmittedReview(false);
@@ -119,23 +144,38 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
     loadProductReviews(product.id);
   }, [product?.id]);
 
-  const inWishlist = product ? isInWishlist(product.id) : false;
+  const inWishlist = product?.id ? isInWishlist(product.id) : false;
 
-  // Related products
-  const relatedProducts = product ? PRODUCTS.filter(
-    p => p.id !== product.id && p.category === product.category
-  ).slice(0, 4) : [];
+  // Related products from live catalog or fallback
+  const allAvailable = catalogProducts.length > 0 ? catalogProducts : PRODUCTS;
+  const relatedProducts = product
+    ? allAvailable
+        .filter(
+          p =>
+            p &&
+            p.id !== product.id &&
+            ((p.category && product.category && p.category === product.category) ||
+              (p.categoryId && product.categoryId && p.categoryId === product.categoryId))
+        )
+        .slice(0, 4)
+    : [];
 
   // Frequently bought together
-  const frequentlyBought = product ? PRODUCTS.filter(
-    p => p.id !== product.id && p.id !== relatedProducts[0]?.id
-  ).slice(0, 2) : [];
+  const frequentlyBought = product
+    ? allAvailable
+        .filter(
+          p => p && p.id !== product.id && (!relatedProducts[0] || p.id !== relatedProducts[0].id)
+        )
+        .slice(0, 2)
+    : [];
 
   const handleAddToCart = () => {
+    if (!product) return;
     addToCart(product, quantity, selectedVariant?.name, selectedColour, selectedSize);
   };
 
   const handleBuyNow = () => {
+    if (!product) return;
     addToCart(product, quantity, selectedVariant?.name, selectedColour, selectedSize);
     setIsCheckoutModalOpen(true);
   };
@@ -357,7 +397,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                         )}
                         <span>{v.name}</span>
                         {v.price && (
-                          <span className="text-[10px] text-gray-400">({formatPKR(v.price)})</span>
+                          <span className="text-[10px] text-gray-400">({formatPrice(v.price)})</span>
                         )}
                       </button>
                     );
@@ -367,53 +407,62 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
             )}
 
             {/* Shade / Color Swatches */}
-            {product.colours && product.colours.length > 0 && (
+            {product.colours && Array.isArray(product.colours) && product.colours.length > 0 && (
               <div className="pt-2">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#1E1E24] mb-2.5">
                   Select Shade: <span className="font-normal text-[#C24560]">{selectedColour}</span>
                 </div>
                 <div className="flex flex-wrap gap-2.5">
-                  {product.colours.map((col: any) => (
-                    <button
-                      key={col.name}
-                      onClick={() => setSelectedColour(col.name)}
-                      className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs transition-all ${
-                        selectedColour === col.name
-                          ? 'border-[#1E1E24] bg-[#F5EFEB] font-semibold ring-1 ring-[#1E1E24]'
-                          : 'border-[#E0D5CE] hover:border-[#1E1E24] bg-white'
-                      }`}
-                    >
-                      <span
-                        className="w-4 h-4 rounded-full border border-black/20 shadow-inner"
-                        style={{ backgroundColor: col.hex }}
-                      />
-                      <span>{col.name}</span>
-                    </button>
-                  ))}
+                  {product.colours.map((col: any, colIdx: number) => {
+                    const colName = typeof col === 'string' ? col : col?.name || `Shade ${colIdx + 1}`;
+                    const colHex = typeof col === 'object' && col?.hex ? col.hex : '#C24560';
+                    return (
+                      <button
+                        key={colName || colIdx}
+                        type="button"
+                        onClick={() => setSelectedColour(colName)}
+                        className={`flex items-center gap-2 px-3.5 py-2 rounded-xl border text-xs transition-all ${
+                          selectedColour === colName
+                            ? 'border-[#1E1E24] bg-[#F5EFEB] font-semibold ring-1 ring-[#1E1E24]'
+                            : 'border-[#E0D5CE] hover:border-[#1E1E24] bg-white'
+                        }`}
+                      >
+                        <span
+                          className="w-4 h-4 rounded-full border border-black/20 shadow-inner"
+                          style={{ backgroundColor: colHex }}
+                        />
+                        <span>{colName}</span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
 
             {/* Sizes */}
-            {product.sizes && product.sizes.length > 1 && (
+            {product.sizes && Array.isArray(product.sizes) && product.sizes.length > 1 && (
               <div className="pt-2">
                 <div className="text-xs font-bold uppercase tracking-wider text-[#1E1E24] mb-2.5">
                   Size: <span className="font-normal text-[#7A7478]">{selectedSize}</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((sz: string) => (
-                    <button
-                      key={sz}
-                      onClick={() => setSelectedSize(sz)}
-                      className={`px-4 py-2 rounded-xl border text-xs font-medium transition-all ${
-                        selectedSize === sz
-                          ? 'border-[#1E1E24] bg-[#1E1E24] text-white shadow-xs'
-                          : 'border-[#E0D5CE] bg-white text-[#4A4549] hover:border-[#1E1E24]'
-                      }`}
-                    >
-                      {sz}
-                    </button>
-                  ))}
+                  {product.sizes.map((sz: any, szIdx: number) => {
+                    const szLabel = typeof sz === 'string' ? sz : String(sz || `Size ${szIdx + 1}`);
+                    return (
+                      <button
+                        key={szLabel || szIdx}
+                        type="button"
+                        onClick={() => setSelectedSize(szLabel)}
+                        className={`px-4 py-2 rounded-xl border text-xs font-medium transition-all ${
+                          selectedSize === szLabel
+                            ? 'border-[#1E1E24] bg-[#1E1E24] text-white shadow-xs'
+                            : 'border-[#E0D5CE] bg-white text-[#4A4549] hover:border-[#1E1E24]'
+                        }`}
+                      >
+                        {szLabel}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -633,7 +682,7 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                     {p.name}
                   </h4>
                   <div className="text-xs font-bold text-[#1E1E24] my-1">
-                    {formatPKR(p.salePrice ?? p.price)}
+                    {formatPrice(p.salePrice ?? p.price)}
                   </div>
                   <button
                     onClick={() =>
@@ -766,11 +815,20 @@ export const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ productSlu
                   <div className="flex items-center justify-between">
                     <span className="text-xs font-bold text-[#1E1E24]">{r.author}</span>
                     <span className="text-[10px] text-[#7A7478]">
-                      {new Date(r.createdAt).toLocaleDateString(undefined, {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })}
+                      {(() => {
+                        try {
+                          const d = new Date(r.createdAt);
+                          return isNaN(d.getTime())
+                            ? ''
+                            : d.toLocaleDateString(undefined, {
+                                month: 'short',
+                                day: 'numeric',
+                                year: 'numeric',
+                              });
+                        } catch {
+                          return '';
+                        }
+                      })()}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">

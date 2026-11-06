@@ -59,14 +59,20 @@ class StoreErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBounda
     if (this.state.hasError) {
       return (
         <div className="min-h-screen bg-[#FCFAF8] flex items-center justify-center p-6 text-center font-sans">
-          <div className="max-w-md w-full bg-white border border-[#F0E6DE] rounded-3xl p-8 shadow-sm space-y-4">
+          <div className="max-w-xl w-full bg-white border border-[#F0E6DE] rounded-3xl p-8 shadow-sm space-y-4 text-left">
             <div className="w-14 h-14 rounded-full bg-[#FDF0F2] text-[#C24560] flex items-center justify-center mx-auto text-xl font-bold">
               ✦
             </div>
-            <h2 className="font-serif text-2xl text-[#1E1E24]">Experience Refreshed</h2>
-            <p className="text-xs text-[#7A7478] leading-relaxed">
+            <h2 className="font-serif text-2xl text-[#1E1E24] text-center">Experience Refreshed</h2>
+            <p className="text-xs text-[#7A7478] leading-relaxed text-center">
               We encountered a temporary viewing glitch. We have safely restored your bag and settings.
             </p>
+            {this.state.error && (
+              <div className="p-3 bg-red-50 border border-red-200 rounded-xl text-red-800 text-xs font-mono overflow-auto max-h-48">
+                <div className="font-bold mb-1">{this.state.error.name}: {this.state.error.message}</div>
+                <div className="whitespace-pre text-[10px] text-red-600">{this.state.error.stack}</div>
+              </div>
+            )}
             <button
               onClick={this.handleReload}
               className="w-full py-3 px-6 bg-[#1E1E24] hover:bg-[#C24560] text-white text-xs font-semibold tracking-wider uppercase rounded-full transition-colors"
@@ -84,6 +90,7 @@ class StoreErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBounda
 const AppContent: React.FC = () => {
   const {
     currentPage,
+    currentProductSlug,
     showCountryConfirm,
     detectedCountry,
     setCountry,
@@ -100,7 +107,12 @@ const AppContent: React.FC = () => {
       case 'shop':
         return <ShopPage />;
       case 'product':
-        return <ProductDetailPage />;
+        return (
+          <ProductDetailPage
+            key={currentProductSlug || 'active-product'}
+            productSlug={currentProductSlug || undefined}
+          />
+        );
       case 'cart':
         return <CartPage />;
       case 'wishlist':

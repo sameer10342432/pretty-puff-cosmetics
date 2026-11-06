@@ -24,7 +24,8 @@ export const QuickViewModal: React.FC = () => {
   useEffect(() => {
     if (quickViewProduct) {
       setActiveImageIndex(0);
-      setSelectedColour(quickViewProduct.colours?.[0]?.name);
+      const firstCol = quickViewProduct.colours?.[0];
+      setSelectedColour(typeof firstCol === 'string' ? firstCol : firstCol?.name);
       setSelectedSize(quickViewProduct.sizes?.[0]);
       setQuantity(1);
     }
@@ -139,30 +140,34 @@ export const QuickViewModal: React.FC = () => {
                 </p>
 
                 {/* Shades Selector */}
-                {quickViewProduct.colours && quickViewProduct.colours.length > 0 && (
+                {quickViewProduct.colours && Array.isArray(quickViewProduct.colours) && quickViewProduct.colours.length > 0 && (
                   <div className="mb-5">
                     <label className="block text-xs font-semibold uppercase tracking-wider text-[#1E1E24] mb-2">
                       Shade: <span className="font-normal text-[#C24560]">{selectedColour}</span>
                     </label>
                     <div className="flex flex-wrap gap-2">
-                      {quickViewProduct.colours.map(col => (
-                        <button
-                          key={col.name}
-                          type="button"
-                          onClick={() => setSelectedColour(col.name)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all ${
-                            selectedColour === col.name
-                              ? 'border-[#1E1E24] bg-[#F5EFEB] font-medium'
-                              : 'border-[#E0D5CE] hover:border-[#1E1E24]'
-                          }`}
-                        >
-                          <span
-                            className="w-3 h-3 rounded-full border border-black/20"
-                            style={{ backgroundColor: col.hex }}
-                          />
-                          <span>{col.name}</span>
-                        </button>
-                      ))}
+                      {quickViewProduct.colours.map((col: any, idx: number) => {
+                        const colName = typeof col === 'string' ? col : col?.name || `Shade ${idx + 1}`;
+                        const colHex = typeof col === 'object' && col?.hex ? col.hex : '#C24560';
+                        return (
+                          <button
+                            key={colName || idx}
+                            type="button"
+                            onClick={() => setSelectedColour(colName)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs transition-all ${
+                              selectedColour === colName
+                                ? 'border-[#1E1E24] bg-[#F5EFEB] font-medium'
+                                : 'border-[#E0D5CE] hover:border-[#1E1E24]'
+                            }`}
+                          >
+                            <span
+                              className="w-3 h-3 rounded-full border border-black/20"
+                              style={{ backgroundColor: colHex }}
+                            />
+                            <span>{colName}</span>
+                          </button>
+                        );
+                      })}
                     </div>
                   </div>
                 )}

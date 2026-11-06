@@ -122,14 +122,43 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Navigation State
   const [currentPage, setCurrentPage] = useState<NavigationPage>(() => {
     if (typeof window !== 'undefined') {
-      const path = window.location.pathname.toLowerCase();
-      if (path.includes('/admin')) return 'admin';
+      let path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/pretty-puff-cosmetics')) {
+        path = path.slice('/pretty-puff-cosmetics'.length);
+      }
+      if (!path.startsWith('/')) path = '/' + path;
+      if (path.startsWith('/admin')) return 'admin';
+      if (path.startsWith('/product/')) return 'product';
+      if (path === '/shop') return 'shop';
+      if (path === '/cart') return 'cart';
+      if (path === '/wishlist') return 'wishlist';
+      if (path === '/about') return 'about';
+      if (path === '/contact') return 'contact';
+      if (path === '/faq') return 'faq';
+      if (path === '/shipping') return 'shipping';
+      if (path === '/returns') return 'returns';
+      if (path === '/privacy') return 'privacy';
+      if (path === '/terms') return 'terms';
+      if (path.startsWith('/blog/')) return 'blog-post';
+      if (path === '/blog') return 'blog';
     }
     return 'home';
   });
   const [currentCategory, setCurrentCategory] = useState<string | null>(null);
   const [currentSubcategory, setCurrentSubcategory] = useState<string | null>(null);
-  const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
+  const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(() => {
+    if (typeof window !== 'undefined') {
+      let path = window.location.pathname.toLowerCase();
+      if (path.startsWith('/pretty-puff-cosmetics')) {
+        path = path.slice('/pretty-puff-cosmetics'.length);
+      }
+      if (!path.startsWith('/')) path = '/' + path;
+      if (path.startsWith('/product/')) {
+        return path.replace('/product/', '').split('/')[0] || null;
+      }
+    }
+    return null;
+  });
   const [currentBlogCategory, setCurrentBlogCategory] = useState<string | null>('all');
   const [currentBlogSlug, setCurrentBlogSlug] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -572,36 +601,42 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Wishlist Operations
   const toggleWishlist = (product: Product) => {
+    if (!product || !product.id) return;
     setWishlist(prev => {
-      const exists = prev.some(item => item.id === product.id);
+      const safePrev = Array.isArray(prev) ? prev.filter(item => item && item.id) : [];
+      const exists = safePrev.some(item => item.id === product.id);
       if (exists) {
         showToast(`Removed from your wishlist`, 'info');
-        return prev.filter(item => item.id !== product.id);
+        return safePrev.filter(item => item.id !== product.id);
       } else {
         showToast(`Saved to your wishlist`, 'success');
-        return [...prev, product];
+        return [...safePrev, product];
       }
     });
   };
 
   const removeFromWishlist = (productId: string) => {
-    setWishlist(prev => prev.filter(item => item.id !== productId));
+    setWishlist(prev => (Array.isArray(prev) ? prev.filter(item => item && item.id !== productId) : []));
     showToast('Removed from wishlist', 'info');
   };
 
   const isInWishlist = (productId: string) => {
-    return wishlist.some(item => item.id === productId);
+    if (!productId || !Array.isArray(wishlist)) return false;
+    return wishlist.some(item => item && item.id === productId);
   };
 
   const moveWishlistToCart = (product: Product) => {
+    if (!product) return;
     addToCart(product, 1);
     removeFromWishlist(product.id);
   };
 
   // Recently Viewed Operations
   const addRecentlyViewed = (product: Product) => {
+    if (!product || !product.id) return;
     setRecentlyViewed(prev => {
-      const filtered = prev.filter(p => p.id !== product.id);
+      const safePrev = Array.isArray(prev) ? prev.filter(p => p && p.id) : [];
+      const filtered = safePrev.filter(p => p.id !== product.id);
       return [product, ...filtered].slice(0, 10);
     });
   };
@@ -632,12 +667,17 @@ export const ShopProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Calculations in Authoritative Base USD
-  const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+  const cartCount = Array.isArray(cart)
+    ? cart.reduce((total, item) => total + (item?.quantity || 0), 0)
+    : 0;
 
-  const cartSubtotal = cart.reduce((total, item) => {
-    const unitPrice = item.product.salePrice ?? item.product.price;
-    return total + unitPrice * item.quantity;
-  }, 0);
+  const cartSubtotal = Array.isArray(cart)
+    ? cart.reduce((total, item) => {
+        if (!item || !item.product) return total;
+        const unitPrice = item.product.salePrice ?? item.product.price ?? 0;
+        return total + unitPrice * (item.quantity || 1);
+      }, 0)
+    : 0;
 
   const discountAmount = Math.round(((cartSubtotal * discountPercent) / 100) * 100) / 100;
 
